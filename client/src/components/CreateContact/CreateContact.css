@@ -1,0 +1,8 @@
+#create-contact-form {
+    display: flex;
+    flex-direction: column;
+}
+
+#create-contact-form input {
+    margin-bottom: 1rem;
+}
