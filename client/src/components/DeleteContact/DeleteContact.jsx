@@ -1,4 +1,4 @@
-
+import '../DeleteContact/DeleteContact.css'
 
 export default function DeleteContact() {
     return (
