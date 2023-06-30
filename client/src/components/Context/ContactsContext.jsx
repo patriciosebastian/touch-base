@@ -5,6 +5,7 @@ export const ContactsContext = createContext();
 export const ContactsProvider = ({ children }) => {
   const [contacts, setContacts] = useState([]);
 
+  // Get all contacts
   // useCallback to memoize fetchContacts
   const fetchContacts = useCallback(async () => {
     const response = await fetch("http://localhost:5300/contacts");
@@ -18,13 +19,15 @@ export const ContactsProvider = ({ children }) => {
     }
   }, []);
 
+  // Create contact
   const addContact = (newContact) => {
     setContacts((prevContacts) => [...prevContacts, newContact]);
     console.log('Contact created successfully');
   };
 
-  const updateContact = async (id, updatedContact) => {
-    const response = await fetch(`http://localhost:5300/contacts/${id}`, {
+  // Update contact
+  const updateContact = async (contacts_id, updatedContact) => {
+    const response = await fetch(`http://localhost:5300/contacts/${contacts_id}`, {
       method: "PUT",
       body: updatedContact,
     });
@@ -38,7 +41,7 @@ export const ContactsProvider = ({ children }) => {
     if (response.ok) {
       setContacts((prevContacts) => {
         return prevContacts.map((contact) =>
-          contact.id === id ? updatedContactJson : contact
+          contact.contacts_id === contacts_id ? updatedContactJson : contact
         );
       });
       console.log("Contact updated successfully");
@@ -46,9 +49,26 @@ export const ContactsProvider = ({ children }) => {
     }
   };
 
+  // Delete contact
+  const deleteContact = async (id) => {
+    const response = await fetch(`http://localhost:5300/contacts/${id}`, {
+        method: "DELETE",
+    });
+
+    if (!response.ok) {
+        throw new Error('Failed to delete contact');
+    }
+    if (response.ok) {
+        setContacts((prevContacts) => {
+            return prevContacts.filter((contact) => contact.contacts_id !== id);
+        });
+        console.log("Contact deleted successfully");
+    }
+  }
+
   return (
     <ContactsContext.Provider
-      value={{ contacts, addContact, fetchContacts, updateContact }}
+      value={{ contacts, addContact, fetchContacts, updateContact, deleteContact }}
     >
       {children}
     </ContactsContext.Provider>

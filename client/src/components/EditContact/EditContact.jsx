@@ -22,6 +22,7 @@ export default function EditContact() {
                 console.log(data);
             } else {
                 console.error('Error:', response);
+                // display message and re-route user.
             }
         }
 
@@ -44,7 +45,9 @@ export default function EditContact() {
             data.append('photo', photoFile);
         }
 
-        await updateContact(id, data);
+        await updateContact(contact.contacts_id, data);
+        // give confirmation to user that contact was updated.
+        // route user back to previous navigation.
     };
 
     return (

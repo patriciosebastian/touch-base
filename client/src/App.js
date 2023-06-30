@@ -19,7 +19,7 @@ function App() {
           <Route path="/view-contacts" Component={ViewContacts} />
           <Route path="/edit-contact/:id" Component={EditContact} /> {/* EditContact will become a link or button that opens a modal */}
           <Route path="/contact/:id" Component={ContactDetails} /> {/* ContactDetails will become a link or button */}
-          <Route path="/delete-contact/:id" Component={DeleteContact} />
+          <Route path="/delete-contact/:id" Component={DeleteContact} /> {/* I think I'm removing this */}
         </Routes>
       </ContactsProvider>
     </Router>

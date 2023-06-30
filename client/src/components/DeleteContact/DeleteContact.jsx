@@ -1,7 +1,25 @@
-import '../DeleteContact/DeleteContact.css'
+import { useContext } from 'react';
+import { ContactsContext } from '../Context/ContactsContext';
+import { useNavigate } from 'react-router-dom';
+import '../DeleteContact/DeleteContact.css';
 
-export default function DeleteContact() {
+//not sure if I want this as a button or something else
+export default function DeleteContact({ id }) {
+    const { deleteContact } = useContext(ContactsContext);
+    const navigate = useNavigate();
+
+    const handleDelete = async () => {
+        if (window.confirm('Are you sure you want to delete this contact?')) {
+            try {
+                await deleteContact(id);
+                navigate('/view-contacts');
+            } catch (err) {
+                console.error(err);
+            }
+        }
+    };
+
     return (
-        <h1>Delete Contact</h1>
+        <button onClick={handleDelete}>Delete Contact</button>
     )
 }
