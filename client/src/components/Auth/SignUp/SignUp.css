@@ -1,0 +1,12 @@
+.sign-up-container h1 {
+    margin-bottom: 1rem;
+}
+
+.sign-up-form {
+    display: flex;
+    flex-direction: column;
+}
+
+.sign-up-form input {
+    margin-bottom: 1rem;
+}

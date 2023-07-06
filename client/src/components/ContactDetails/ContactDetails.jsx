@@ -1,34 +1,51 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import { useAuth } from "../Context/AuthContext";
 import "../ContactDetails/ContactDetails.css";
+import { getAuth } from "firebase/auth";
 
 export default function ContactDetails() {
   const [contact, setContact] = useState(null);
   const { id } = useParams();
+  const { currentUser } = useAuth;
+  const auth = getAuth();
 
   useEffect(() => {
-    fetch(`http://localhost:5300/contacts/${id}`)
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("Network response was not ok");
-        }
-        return response.json();
-      })
-      .then((data) => {
-        setContact(data);
-        if (data) {
-          console.log(data);
-        }
-      })
-      .catch((error) => {
-        console.error(
-          "There has been a problem with your request:",
-          error
-        );
-      });
+    const fetchContact = async () => {
+      let idToken = '';
+      if (auth.currentUser) {
+        idToken = await auth.currentUser.getIdToken();
+      }
 
+      fetch(`http://localhost:5300/contacts/${id}`, {
+        headers: {
+          Authorization: `Bearer ${idToken}`
+        },
+      })
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error("Network response was not ok");
+          }
+          return response.json();
+        })
+        .then((data) => {
+          setContact(data);
+          if (data) {
+            currentUser ? console.log(data) : console.log(null);
+          }
+        })
+        .catch((error) => {
+          console.error(
+            "There has been a problem with your request:",
+            error
+          );
+        });
+
+    };
+
+    fetchContact();
     // eslint-disable-next-line
-  }, [id]);
+  }, [id, auth, currentUser]);
 
   if (!contact) return <div>Error with request. Are you sure you're in the right place?</div>;
   //   "re-routing..."
@@ -45,7 +62,7 @@ export default function ContactDetails() {
           {contact.address1} {contact.address2}, {contact.city}, {contact.state}, {contact.zip}
         </p>
         <p><strong>Categories: </strong>{contact.categories}</p>
-        <p><strong>Description: </strong>{contact.description}</p>
+        <p><strong>Notes: </strong>{contact.notes}</p>
       </div>
     </div>
   );

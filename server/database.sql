@@ -25,6 +25,12 @@ ALTER TABLE contacts
 ALTER COLUMN first_name SET NOT NULL,
 ADD CONSTRAINT first_name_not_empty CHECK (first_name <> '');
 
+ALTER TABLE contacts
+ADD COLUMN user_id VARCHAR(255);
+
+ALTER TABLE contacts
+RENAME COLUMN description TO notes;
+
 
 -- Todo: Create a User table
 -- In user table, make certain fields required with NOT NULL constraints/CHECK costraints

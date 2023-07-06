@@ -13,7 +13,7 @@ export default function CreateContact() {
     const [state, setState] = useState('');
     const [zip, setZip] = useState('');
     const [categories, setCategories] = useState('');
-    const [description, setDescription] = useState('');
+    const [notes, setNotes] = useState('');
     const [photoFile, setPhotoFile] = useState(null);
     
     const { addContact } = useContext(ContactsContext);
@@ -32,24 +32,12 @@ export default function CreateContact() {
         data.append('state', state);
         data.append('zip', zip);
         data.append('categories', categories);
-        data.append('description', description);
+        data.append('notes', notes);
         data.append('photo', photoFile);
-      
-        const response = await fetch('http://localhost:5300/contacts', {
-          method: 'POST',
-          // No 'Content-Type' header when sending FormData
-          body: data,
-        });
-      
-        if (response.ok) {
-          console.log('Contact added successfully');
-          const newContact = await response.json();
-          console.log(newContact); // remove after verifying
-          addContact(newContact);
-          // Clear the form or redirect the user. (Not sure what I'm doing yet).
-        } else {
-          console.error('Error:', response);
-        }
+
+        const newContact = data;
+        addContact(newContact);
+        // Clear the form or redirect the user. Maybe add loading state. (Not sure what I'm doing yet).
     };
 
     return (
@@ -86,8 +74,8 @@ export default function CreateContact() {
             <label htmlFor="categories">Categories</label>
             <input type="text" id='categories' name='categories' value={categories} onChange={e => setCategories(e.target.value)} />
             
-            <label htmlFor="description">Description</label>
-            <input type="text" id='description' name='description' value={description} onChange={e => setDescription(e.target.value)} />
+            <label htmlFor="notes">Notes</label>
+            <input type="text" id='notes' name='notes' value={notes} onChange={e => setNotes(e.target.value)} />
 
             <label htmlFor="photo">Select a photo:</label>
             <input type="file" id='photo' name='photo' onChange={e => setPhotoFile(e.target.files[0])} />

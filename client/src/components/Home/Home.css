@@ -26,6 +26,7 @@
 }
 
 .hero-section-cta {
+    text-decoration: none;
     margin-top: .75rem;
     color: var(--primary-color);
     background-color: white;

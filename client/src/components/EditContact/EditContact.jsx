@@ -1,25 +1,38 @@
 import { useState, useEffect, useContext } from 'react';
 import { ContactsContext } from '../Context/ContactsContext';
 import { useParams } from 'react-router-dom';
+import { useAuth } from '../Context/AuthContext';
 import '../EditContact/EditContact.css';
+import { getAuth } from 'firebase/auth';
 
 export default function EditContact() {
     const { id } = useParams();
     const { updateContact } = useContext(ContactsContext);
     const [contact, setContact] = useState({});
     const [photoFile, setPhotoFile] = useState(null);
+    const { currentUser } = useAuth;
+    const auth = getAuth();
 
     // Get most up to date info for the contact,
     // monitor state of contact based on id
     useEffect(() => {
         const fetchContact = async () => {
-            const response = await fetch(`http://localhost:5300/contacts/${id}`);
+            let idToken = '';
+            if (auth.currentUser) {
+              idToken = await auth.currentUser.getIdToken();
+            }
+
+            const response = await fetch(`http://localhost:5300/contacts/${id}`, {
+                headers: {
+                    Authorization: `Bearer ${idToken}`
+                },
+            });
             const data = await response.json();
             setContact(data);
             setPhotoFile(data.photoFile);
             if (response.ok) {
-                console.log("Contact fetched successfully")
-                console.log(data);
+                // console.log("Contact fetched successfully")
+                currentUser ? console.log(data) : console.log(null);
             } else {
                 console.error('Error:', response);
                 // display message and re-route user.
@@ -27,7 +40,7 @@ export default function EditContact() {
         }
 
         fetchContact();
-    }, [id]);
+    }, [id, auth.currentUser, currentUser]);
 
     const handleChange = (e) => {
         setContact({ ...contact, [e.target.name]: e.target.value });
@@ -84,8 +97,8 @@ export default function EditContact() {
             <label htmlFor="categories">Categories</label>
             <input type="text" id='categories' name='categories' value={contact.categories || ''} onChange={handleChange} />
             
-            <label htmlFor="description">Description</label>
-            <input type="text" id='description' name='description' value={contact.description || ''} onChange={handleChange} />
+            <label htmlFor="notes">Notes</label>
+            <input type="text" id='notes' name='notes' value={contact.notes || ''} onChange={handleChange} />
 
             <label htmlFor="photo">Select a photo:</label>
             <input type="file" id='photo' name='photo' onChange={e => {if(e.target.files.length > 0) {setPhotoFile(e.target.files[0])}}} />

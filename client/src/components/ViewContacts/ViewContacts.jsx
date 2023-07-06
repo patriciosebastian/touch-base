@@ -1,14 +1,20 @@
 import { useEffect, useContext } from "react";
 import { ContactsContext } from "../Context/ContactsContext";
+import { Link } from "react-router-dom";
 import DeleteContact from "../DeleteContact/DeleteContact";
 import "../ViewContacts/ViewContacts.css";
+import { auth } from "../../firebase";
 
 export default function ViewContacts() {
   const {contacts, fetchContacts} = useContext(ContactsContext);
 
   // fetch contacts on component mount
   useEffect(() => {
-    fetchContacts();
+    if (auth.currentUser) {
+      fetchContacts();
+    } else {
+      console.log('User not signed in');
+    }
   }, [fetchContacts]);
   // fetchContacts will only run once, because
   //  it has no depencies in ContactsContext
@@ -29,8 +35,9 @@ export default function ViewContacts() {
                 {contact.address1} {contact.address2}, {contact.city}, {contact.state}, {contact.zip}
               </p>
               <p><strong>Categories: </strong>{contact.categories}</p>
-              <p><strong>Description: </strong>{contact.description}</p>
-              <a href={"/edit-contact/" + contact.contacts_id}>Edit Contact</a>
+              <p><strong>Notes: </strong>{contact.notes}</p>
+              <Link to={'/contacts/' + contact.contacts_id}>View Details</Link>
+              <Link to={'/edit-contact/' + contact.contacts_id}>Edit Contact</Link>
               <DeleteContact id={contact.contacts_id} />
             </div>
           ))}

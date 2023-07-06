@@ -1,14 +1,44 @@
-import React, { createContext, useState, useCallback } from "react";
+import React, { createContext, useState, useCallback, useEffect } from "react";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
 
 export const ContactsContext = createContext();
 
 export const ContactsProvider = ({ children }) => {
   const [contacts, setContacts] = useState([]);
+  const auth = getAuth();
+  const [loading, setLoading] = useState(true);
 
-  // Get all contacts
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setLoading(false);
+      } else {
+        setLoading(false);
+      }
+    });
+
+    return () => unsubscribe();
+  }, []);
+
+  // Get all user contacts
   // useCallback to memoize fetchContacts
   const fetchContacts = useCallback(async () => {
-    const response = await fetch("http://localhost:5300/contacts");
+    let idToken = '';
+    if (auth.currentUser) {
+      idToken = await auth.currentUser.getIdToken();
+    }
+
+    const response = await fetch("http://localhost:5300/contacts", {
+      headers: {
+        Authorization: `Bearer ${idToken}`
+      }
+    });
+
+    if (!response.ok) {
+      console.error('Error:', response);
+      return;
+    }
+
     const fetchedContacts = await response.json();
     setContacts(fetchedContacts);
 
@@ -20,21 +50,48 @@ export const ContactsProvider = ({ children }) => {
   }, []);
 
   // Create contact
-  const addContact = (newContact) => {
-    setContacts((prevContacts) => [...prevContacts, newContact]);
+  const addContact = async (newContact) => {
+    let idToken = '';
+    if (auth.currentUser) {
+      idToken = await auth.currentUser.getIdToken();
+    }
+
+    const response = await fetch('http://localhost:5300/contacts', {
+      method: "POST",
+      body: newContact,
+      headers: {
+        Authorization: `Bearer ${idToken}`
+      }
+    });
+
+    if (!response.ok) {
+      throw new Error('Failed to create contact');
+    }
+
+    const newContactJson = await response.json();
+    setContacts((prevContacts) => [...prevContacts, newContactJson]);
     console.log('Contact created successfully');
   };
 
   // Update contact
   const updateContact = async (contacts_id, updatedContact) => {
+    let idToken = '';
+    if (auth.currentUser) {
+      idToken = await auth.currentUser.getIdToken();
+    }
+
     const response = await fetch(`http://localhost:5300/contacts/${contacts_id}`, {
       method: "PUT",
       body: updatedContact,
+      headers: {
+        // "Content-Type": "application/json",
+        Authorization: `Bearer ${idToken}`
+      },
     });
 
     if (!response.ok) {
       throw new Error("Failed to update contact");
-    }
+    };
 
     const updatedContactJson = await response.json();
 
@@ -51,8 +108,16 @@ export const ContactsProvider = ({ children }) => {
 
   // Delete contact
   const deleteContact = async (id) => {
+    let idToken = '';
+    if (auth.currentUser) {
+      idToken = await auth.currentUser.getIdToken();
+    }
+
     const response = await fetch(`http://localhost:5300/contacts/${id}`, {
         method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${idToken}`
+        },
     });
 
     if (!response.ok) {
@@ -64,6 +129,10 @@ export const ContactsProvider = ({ children }) => {
         });
         console.log("Contact deleted successfully");
     }
+  };
+
+  if (loading) {
+    return <div>Loading...</div>;
   }
 
   return (

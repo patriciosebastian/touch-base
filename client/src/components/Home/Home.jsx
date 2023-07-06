@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import Touch_Base_Temp from "../../assets/Touch_Base_Temp.png";
 import "../Home/Home.css";
 
@@ -11,7 +12,7 @@ export default function Home () {
             Effortlessly connect and stay in touch with{" "}
             <span className="h1-gradient">Touch Base</span>
           </h1>
-          <button className="hero-section-cta">Get Started</button>
+          <Link className="hero-section-cta" to={'/sign-up'}>Get Started</Link>
         </section>
       </main>
     </div>
