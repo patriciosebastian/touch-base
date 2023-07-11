@@ -22,8 +22,8 @@ export function AuthProvider({ children }) {
     function signInWithGoogle(onSuccess) {
         signInWithPopup(auth, provider)
           .then((result) => {
-            const credential = GoogleAuthProvider.credentialFromResult(result);
-            const token = credential.accessToken;
+            // const credential = GoogleAuthProvider.credentialFromResult(result);
+            // const token = credential.accessToken;
             // The signed-in user info.
             const user = result.user;
             console.log(user); // remove later
