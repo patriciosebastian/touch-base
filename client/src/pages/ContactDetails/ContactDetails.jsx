@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { useAuth } from "../Context/AuthContext";
+import { useAuth } from "../../context/AuthContext";
 import "../ContactDetails/ContactDetails.css";
 import { getAuth } from "firebase/auth";
 
@@ -12,14 +12,14 @@ export default function ContactDetails() {
 
   useEffect(() => {
     const fetchContact = async () => {
-      let idToken = '';
+      let idToken = "";
       if (auth.currentUser) {
         idToken = await auth.currentUser.getIdToken();
       }
 
       fetch(`http://localhost:5300/contacts/${id}`, {
         headers: {
-          Authorization: `Bearer ${idToken}`
+          Authorization: `Bearer ${idToken}`,
         },
       })
         .then((response) => {
@@ -35,34 +35,52 @@ export default function ContactDetails() {
           }
         })
         .catch((error) => {
-          console.error(
-            "There has been a problem with your request:",
-            error
-          );
+          console.error("There has been a problem with your request:", error);
         });
-
     };
 
     fetchContact();
     // eslint-disable-next-line
   }, [id, auth, currentUser]);
 
-  if (!contact) return <div>Error with request. Are you sure you're in the right place?</div>;
+  if (!contact)
+    return (
+      <div>Error with request. Are you sure you're in the right place?</div>
+    );
   //   "re-routing..."
 
   return (
     <div>
       <div>
-        <img src={contact.photo_url} alt={"portrait of " + contact.first_name + " " + contact.last_name}/>
-        <h1>{contact.first_name} {contact.last_name}</h1>
-        <p><strong>Phone: </strong>{contact.phone}</p>
-        <p><strong>Email: </strong>{contact.email}</p>
+        <img
+          src={contact.photo_url}
+          alt={"portrait of " + contact.first_name + " " + contact.last_name}
+        />
+        <h1>
+          {contact.first_name} {contact.last_name}
+        </h1>
         <p>
-          <strong>Address:</strong><br />
-          {contact.address1} {contact.address2}, {contact.city}, {contact.state}, {contact.zip}
+          <strong>Phone: </strong>
+          {contact.phone}
         </p>
-        <p><strong>Categories: </strong>{contact.categories}</p>
-        <p><strong>Notes: </strong>{contact.notes}</p>
+        <p>
+          <strong>Email: </strong>
+          {contact.email}
+        </p>
+        <p>
+          <strong>Address:</strong>
+          <br />
+          {contact.address1} {contact.address2}, {contact.city}, {contact.state}
+          , {contact.zip}
+        </p>
+        <p>
+          <strong>Categories: </strong>
+          {contact.categories}
+        </p>
+        <p>
+          <strong>Notes: </strong>
+          {contact.notes}
+        </p>
       </div>
     </div>
   );
