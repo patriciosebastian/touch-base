@@ -9,13 +9,14 @@
 }
 
 .hero-section img {
-    width: 90%;
+    width: 75%;
     height: auto;
 }
 
 .hero-section h1 {
     font-size: 2rem;
     text-align: center;
+    margin-top: 2rem;
 }
 
 .hero-section h1 > .h1-gradient {
@@ -25,15 +26,31 @@
     -webkit-text-fill-color: transparent;
 }
 
-.hero-section-cta {
-    text-decoration: none;
+.cta-section {
     margin-top: .75rem;
+    width: 80%;
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.demo-cta {
+    background: var(--primary-color);
+    border-color: var(--primary-color) !important;
+}
+
+.demo-cta > a {
+    color: white;
+    background: var(--primary-color);
+    font-weight: 600;
+}
+
+.hero-section-cta {
+    background-color: white;
+    border-color: var(--primary-color) !important;
+}
+
+.hero-section-cta > a {
     color: var(--primary-color);
     background-color: white;
-    border: 1px solid;
-    border-radius: 20px;
-    border-color: var(--primary-color);
-    padding: 6px 12px;
     font-weight: 600;
-    box-shadow: -1px 2px 6px 0px #bfbfbfdb;
 }

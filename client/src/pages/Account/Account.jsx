@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import "../Account/Account.css";
 
 export default function Account() {
-  const { user, logout } = useAuth();
+  const { currentUser, logout } = useAuth();
   const navigate = useNavigate();
 
   const handleLogout = async () => {
@@ -19,7 +19,7 @@ export default function Account() {
   return (
     <div>
       <h1>Account</h1>
-      <p>User Email: {user && user.email}</p>
+      <p><strong>User Email: </strong>{currentUser && currentUser.email}</p>
       <button onClick={handleLogout}>Log Out</button>
     </div>
   );

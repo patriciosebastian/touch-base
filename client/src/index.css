@@ -1,8 +1,24 @@
 /***** Global CSS Variables *****/
 
 :root {
+  /* colors */
   --primary-color: #8c52ff;
   --secondary-color: #ffbd59;
+  --box-shadow-color: #bfbfbfdb;
+  --google-blue: #4285F4;
+  --google-alt-blue: #1669F2;
+  /* temp colors for now */
+  --light-grey: #f5f5f5;
+  --off-white: #faf0e6;
+  --navy: #001f3f;
+  --charcoal: #333333;
+
+  /* bp sizes */
+  --x-small-bp: 576px;
+  --small-bp: 576px;
+  --medium-bp: 768px;
+  --large-bp: 992px;
+  --extra-large-bp: 1200px;
 }
 
 /***** CSS Reset *****/

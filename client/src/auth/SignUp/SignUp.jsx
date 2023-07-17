@@ -2,6 +2,8 @@ import { useState } from "react";
 import { useAuth } from "../../context/AuthContext";
 import { Link, useNavigate } from "react-router-dom";
 import "../SignUp/SignUp.css";
+import Button from "../../components/Button/Button";
+import Card from "../../components/Card/Card";
 
 export default function SignUp() {
     const [email, setEmail] = useState('');
@@ -29,17 +31,17 @@ export default function SignUp() {
     }
 
   return (
-    <div>
-      <div className="sign-up-container">
-        <h1>Create Account</h1>
+    <div className="su-page-container">
+      <Card className="sign-up-card">
+        <h1 className="sign-up-h1">Create Account</h1>
         {error && <p>{error}</p>}
         <form className="sign-up-form" onSubmit={handleSubmit}>
           <input type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} />
           <input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} />
-          <button type="submit" disabled={loading}>Sign Up</button>
-          <p>Or sign in <Link to={'/sign-in'}>here.</Link></p>
+          <Button className="sign-up-button" type="submit" disabled={loading}>Sign Up</Button>
+          <p className="sign-up-form-p">Or sign in <Link to={'/sign-in'} className="sign-in-link">here</Link>.</p>
         </form>
-      </div>
+      </Card>
     </div>
   );
 }
