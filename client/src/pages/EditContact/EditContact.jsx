@@ -2,8 +2,8 @@ import { useState, useEffect, useContext } from "react";
 import { ContactsContext } from "../../context/ContactsContext";
 import { useParams } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
-import "../EditContact/EditContact.css";
 import { getAuth } from "firebase/auth";
+import "../EditContact/EditContact.css";
 
 export default function EditContact() {
   const { id } = useParams();

@@ -1,0 +1,8 @@
+.view-contacts-header {
+    padding: .5rem 0 .5rem 0;
+}
+
+.contact-container {
+    border-top: 1px solid;
+    border-top-color: black;
+}

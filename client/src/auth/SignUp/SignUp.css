@@ -39,6 +39,7 @@
     background-color: var(--primary-color);
     border-color: var(--primary-color);
     font-weight: 600;
+    width: fit-content;
 }
 
 .sign-up-form-p {

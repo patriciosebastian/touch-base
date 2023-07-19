@@ -2,8 +2,8 @@ import { useEffect, useContext } from "react";
 import { ContactsContext } from "../../context/ContactsContext";
 import { Link } from "react-router-dom";
 import DeleteContact from "../DeleteContact/DeleteContact";
-import "../ViewContacts/ViewContacts.css";
 import { auth } from "../../firebase";
+import "../ViewContacts/ViewContacts.css";
 
 export default function ViewContacts() {
   const { contacts, fetchContacts } = useContext(ContactsContext);
@@ -22,10 +22,12 @@ export default function ViewContacts() {
   return (
     <div>
       <div className="view_contacts-container">
-        <h1>Contacts</h1>
+        <div className="view-contacts-header">
+          <h1>Contacts</h1>
+        </div>
         <div className="contacts-container">
           {contacts.map((contact) => (
-            <div key={contact.contacts_id}>
+            <div key={contact.contacts_id} className="contact-container">
               <img
                 src={contact.photo_url}
                 alt={
@@ -57,8 +59,8 @@ export default function ViewContacts() {
                 <strong>Notes: </strong>
                 {contact.notes}
               </p>
-              <Link to={"/contacts/" + contact.contacts_id}>View Details</Link>
-              <Link to={"/edit-contact/" + contact.contacts_id}>
+              <Link to={"/app/contacts/" + contact.contacts_id}>View Details</Link>
+              <Link to={"/app/edit-contact/" + contact.contacts_id}>
                 Edit Contact
               </Link>
               <DeleteContact id={contact.contacts_id} />

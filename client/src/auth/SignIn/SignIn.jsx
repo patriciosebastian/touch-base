@@ -22,7 +22,7 @@ export default function SignIn() {
         setError('');
         try {
             await login(email, password);
-            navigate('/account');
+            navigate('/app');
         } catch (err) {
             setError(err.message);
             console.error(err.message);
@@ -35,7 +35,7 @@ export default function SignIn() {
   return (
     <div className="si-page-container">
       <Card className="sign-in-card">
-        <h1 className="sign-in-h1">Welcome!</h1>
+        <h1 className="sign-in-h1">Welcome Back!</h1>
         {error && <p>{error}</p>}
         <form className="sign-in-form" onSubmit={handleSubmit}>
           <input type="email" placeholder="Email" name="email" value={email} onChange={(e) => setEmail(e.target.value)} />

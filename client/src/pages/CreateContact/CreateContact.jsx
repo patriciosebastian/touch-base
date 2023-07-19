@@ -1,5 +1,6 @@
 import { useState, useContext } from "react";
 import { ContactsContext } from "../../context/ContactsContext";
+import { useNavigate } from "react-router-dom";
 import "../CreateContact/CreateContact.css";
 
 export default function CreateContact() {
@@ -17,6 +18,7 @@ export default function CreateContact() {
   const [photoFile, setPhotoFile] = useState(null);
 
   const { addContact } = useContext(ContactsContext);
+  const navigate = useNavigate();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -37,7 +39,8 @@ export default function CreateContact() {
 
     const newContact = data;
     addContact(newContact);
-    // Clear the form or redirect the user. Maybe add loading state. (Not sure what I'm doing yet).
+    // Maybe add loading state. Clear the form, give confirmation to user.
+    navigate('/app');
   };
 
   return (

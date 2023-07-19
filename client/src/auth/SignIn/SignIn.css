@@ -63,12 +63,15 @@
 }
 
 .google-sign-in-button:hover {
+    background-color: var(--google-blue);
     border-color: var(--google-blue);
-    box-shadow: 0 0 3px var(--google-alt-blue);
+    color: white;
 }
 
 .google-sign-in-button:active {
-    background-color: var(--google-blue);
+    border-color: var(--google-blue);
+    box-shadow: 0 0 6px 0 var(--google-alt-blue);
+    color: white;
 }
 
 .google-sign-in-button > svg {
