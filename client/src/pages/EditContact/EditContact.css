@@ -1,8 +1,35 @@
-#edit-contact-form {
+.edit-contact-title {
+    margin: 0.5rem 0 1rem 1.3rem;
+}
+
+.edit-contact-form {
+    width: 90%;
+    margin: 0 auto;
     display: flex;
     flex-direction: column;
 }
 
-#edit-contact-form input {
-    margin-bottom: 1rem;
+.edit-contact-form input {
+    background-color: var(--light-grey);
+    border: 0;
+    border-bottom: 1px solid;
+    border-bottom-color: lightgray;
+    border-radius: 5px;
+    margin-bottom: .75rem;
+}
+
+.edit-photo {
+    background-color: white !important;
+    border-bottom: 0 !important;
+    border-radius: 3px !important;
+}
+
+.update-and-cancel-btns {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.update-contact-btn {
+    background-color: white;
 }

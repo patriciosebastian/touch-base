@@ -1,0 +1,13 @@
+.account-header {
+    border-bottom: 1px solid lightgray;
+    padding: .5rem 0 1rem 0;
+}
+
+.user-account-info {
+    margin-top: 3rem;
+    margin-left: 2.5rem;
+}
+
+.account-page-logout-btn {
+    margin-top: 1rem;
+}

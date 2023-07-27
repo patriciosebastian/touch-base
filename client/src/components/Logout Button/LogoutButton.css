@@ -1,0 +1,8 @@
+.logout-btn {
+    text-decoration: none;
+    /* border: 1px solid; */
+    border: 0;
+    border-radius: 20px;
+    padding: 5px 10px;
+    box-shadow: -1px 2px 6px 0px var(--box-shadow-color);
+}

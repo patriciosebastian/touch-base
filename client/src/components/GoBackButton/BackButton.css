@@ -1,0 +1,7 @@
+.back-btn {
+    border: 0;
+    text-decoration: underline;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}

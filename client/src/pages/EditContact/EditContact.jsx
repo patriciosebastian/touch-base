@@ -3,7 +3,8 @@ import { ContactsContext } from "../../context/ContactsContext";
 import { useParams } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import { getAuth } from "firebase/auth";
-import "../EditContact/EditContact.css";
+import Button from "../../components/Button/Button";
+import "./EditContact.css";
 
 export default function EditContact() {
   const { id } = useParams();
@@ -65,8 +66,9 @@ export default function EditContact() {
 
   return (
     <div>
-      <h1>Edit Contact</h1>
+      <h1 className="edit-contact-title">Edit Contact</h1>
       <form
+        className="edit-contact-form"
         id="edit-contact-form"
         encType="multipart/form-data"
         onSubmit={handleSubmit}
@@ -173,6 +175,7 @@ export default function EditContact() {
 
         <label htmlFor="photo">Select a photo:</label>
         <input
+          className="edit-photo"
           type="file"
           id="photo"
           name="photo"
@@ -183,7 +186,9 @@ export default function EditContact() {
           }}
         />
 
-        <button type="submit">Update Contact</button>
+        <div className="update-and-cancel-btns">
+          <Button className="update-contact-btn" type="submit">Update Contact</Button>
+        </div>
       </form>
     </div>
   );

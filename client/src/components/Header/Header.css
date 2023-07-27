@@ -1,0 +1,27 @@
+.header-container {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.header-controls {
+    width: 25%;
+    height: 3rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.header-controls a {
+    cursor: default;
+}
+
+.header-controls a > svg {
+    width: 2em;
+    height: 2em;
+    color: black;
+}
+
+.flex-end {
+    margin-left: auto !important;
+}

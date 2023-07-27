@@ -3,7 +3,10 @@
 :root {
   /* colors */
   --primary-color: #8c52ff;
+  --primary-color-light: rgb(140, 82, 255, 0.5);
   --secondary-color: #ffbd59;
+  --secondary-color-light: rgba(255, 189, 89, 0.5);
+  --red-color: #C82333;
   --box-shadow-color: #bfbfbfdb;
   --google-blue: #4285F4;
   --google-alt-blue: #1669F2;
@@ -38,7 +41,7 @@ html, body {
 body {
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
-  font-family: 'Poppins', sans-serif;
+  font-family: 'Be Vietnam Pro', sans-serif;
 }
 
 img, picture, video, canvas, svg {
@@ -52,4 +55,9 @@ input, button, textarea, select {
 
 p, h1, h2, h3, h4, h5, h6 {
   overflow-wrap: break-word;
+}
+
+a:visited {
+  text-decoration: none;
+  color: black;
 }

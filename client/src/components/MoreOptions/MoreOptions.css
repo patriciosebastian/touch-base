@@ -1,0 +1,18 @@
+.more-options-container .hidden {
+    display: none;
+}
+
+.more-options-icon {
+    width: 1.5rem;
+    height: 1.5rem;
+}
+
+.more-options-ul li {
+    list-style: none;
+}
+
+.more-options-ul a {
+    text-decoration: none;
+    color: black;
+    cursor: default;
+}

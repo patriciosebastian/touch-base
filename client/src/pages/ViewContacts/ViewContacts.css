@@ -1,8 +1,118 @@
 .view-contacts-header {
-    padding: .5rem 0 .5rem 0;
+    padding: .5rem 0 1rem 0;
+}
+
+/* .header-content-container {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.header-controls {
+    width: 25%;
+    height: 3rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.header-controls a {
+    cursor: default;
+}
+
+.header-controls a > svg {
+    width: 2em;
+    height: 2em;
+    color: black;
+} */
+
+.search-control {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.contact-search {
+    width: 81%;
+    border: 1px;
+    border-radius: 5px;
+    background-color: var(--light-grey);
+}
+
+.contact-search:focus {
+    /* outline: 0; */
+    outline-color: var(--secondary-color-light);
 }
 
 .contact-container {
     border-top: 1px solid;
-    border-top-color: black;
+    border-top-color: lightgray;
+    width: 100%;
+    padding: 0 2.5rem;
+    margin-bottom: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.contact-container:last-child {
+    border-bottom: 1px solid;
+    border-bottom-color: lightgray;
+    padding-bottom: 1rem;
+}
+
+.contact-container h1 {
+    font-size: 1.3rem;
+}
+
+.contact-container p {
+    font-size: 0.9em;
+}
+
+.contact-card-control-left {
+    padding-top: 1rem;
+    flex-shrink: 20;
+}
+
+.contact-card-control-right {
+    width: 25%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.vc-more-options ul {
+    left: 50%;
+    right: 17%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 10px 15px;
+}
+
+.vc-more-options a {
+    width: 100%;
+    border-bottom: 1px solid;
+}
+
+.vc-more-options a:nth-child(2) {
+    padding: 1px 0;
+}
+
+.more-options-ul svg {
+    width: 100%;
+    height: 1.3rem;
+}
+
+.more-options-ul span {
+    width: 100%;
+    padding-top: 3px;
+    color: var(--red-color);
+}
+
+.contact-card-control-right img {
+    width: 80%;
+    border-radius: 100%;
 }

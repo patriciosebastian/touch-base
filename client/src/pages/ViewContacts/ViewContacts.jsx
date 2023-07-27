@@ -1,9 +1,22 @@
 import { useEffect, useContext } from "react";
 import { ContactsContext } from "../../context/ContactsContext";
 import { Link } from "react-router-dom";
-import DeleteContact from "../DeleteContact/DeleteContact";
 import { auth } from "../../firebase";
+import { LuEye } from 'react-icons/lu';
+import { LuEdit3 } from 'react-icons/lu';
+import DeleteContact from "../DeleteContact/DeleteContact";
+import Header from "../../components/Header/Header";
+import MoreOptions from "../../components/MoreOptions/MoreOptions";
 import "../ViewContacts/ViewContacts.css";
+
+const formatPhoneNumber = (phoneNumber) => {
+  const cleaned = ('' + phoneNumber).replace(/\D/g, '');
+  const match = cleaned.match(/^(\d{3})(\d{3})(\d{4})$/);
+  if (match) {
+    return '(' + match[1] + ') ' + match[2] + '-' + match[3]
+  }
+  return null;
+}
 
 export default function ViewContacts() {
   const { contacts, fetchContacts } = useContext(ContactsContext);
@@ -21,49 +34,40 @@ export default function ViewContacts() {
 
   return (
     <div>
-      <div className="view_contacts-container">
+      <div className="view-contacts-container">
         <div className="view-contacts-header">
-          <h1>Contacts</h1>
+          <Header />
+          <div className="search-control">
+            <input className="contact-search" type="search" name="contact-search" id="contact-search" placeholder="search" />
+          </div>
         </div>
         <div className="contacts-container">
           {contacts.map((contact) => (
             <div key={contact.contacts_id} className="contact-container">
-              <img
-                src={contact.photo_url}
-                alt={
-                  "portrait of " + contact.first_name + " " + contact.last_name
-                }
-              />
-              <h1>
-                {contact.first_name} {contact.last_name}
-              </h1>
-              <p>
-                <strong>Phone: </strong>
-                {contact.phone}
-              </p>
-              <p>
-                <strong>Email: </strong>
-                {contact.email}
-              </p>
-              <p>
-                <strong>Address:</strong>
-                <br />
-                {contact.address1} {contact.address2}, {contact.city},{" "}
-                {contact.state}, {contact.zip}
-              </p>
-              <p>
-                <strong>Categories: </strong>
-                {contact.categories}
-              </p>
-              <p>
-                <strong>Notes: </strong>
-                {contact.notes}
-              </p>
-              <Link to={"/app/contacts/" + contact.contacts_id}>View Details</Link>
-              <Link to={"/app/edit-contact/" + contact.contacts_id}>
-                Edit Contact
-              </Link>
-              <DeleteContact id={contact.contacts_id} />
+              <div className="contact-card-control-left">
+                <h1>
+                  {contact.first_name} {contact.last_name}
+                </h1>
+                <p>
+                  {formatPhoneNumber(contact.phone)}
+                </p>
+                <p>
+                  {contact.email}
+                </p>
+              </div>
+              <div className="contact-card-control-right">
+                <MoreOptions className="vc-more-options">
+                  <Link to={"/app/contacts/" + contact.contacts_id}><LuEye className="view-contact-icon" /></Link>
+                  <Link to={"/app/edit-contact/" + contact.contacts_id}><LuEdit3 className="edit-contact-icon" /></Link>
+                  <span><DeleteContact className="delete-contact-icon" id={contact.contacts_id} /></span>
+                </MoreOptions>
+                <img
+                  src={contact.photo_url}
+                  alt={
+                    "portrait of " + contact.first_name + " " + contact.last_name
+                  }
+                />
+              </div>
             </div>
           ))}
         </div>

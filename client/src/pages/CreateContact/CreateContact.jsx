@@ -1,7 +1,9 @@
 import { useState, useContext } from "react";
 import { ContactsContext } from "../../context/ContactsContext";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { CgClose } from "react-icons/cg";
 import "../CreateContact/CreateContact.css";
+import Button from "../../components/Button/Button";
 
 export default function CreateContact() {
   const [first_name, setFirstName] = useState("");
@@ -44,123 +46,94 @@ export default function CreateContact() {
   };
 
   return (
-    <div>
-      <h1>Create Contact</h1>
-      <form
-        id="create-contact-form"
-        encType="multipart/form-data"
-        autoComplete="on"
-        onSubmit={handleSubmit}
-      >
-        <label htmlFor="first_name">First Name</label>
-        <input
-          type="text"
-          id="first_name"
-          name="first_name"
-          value={first_name}
-          onChange={(e) => setFirstName(e.target.value)}
-          required
-        />
+    <div className="create-contact-container">
+      <div className="create-contact-header">
+        <h1>Create Contact</h1>
+        <Link to={'/app'}><CgClose /></Link>
+      </div>
+      <form className="create-contact-form" id="create-contact-form" encType="multipart/form-data" autoComplete="on" onSubmit={handleSubmit}>
 
-        <label htmlFor="last_name">Last Name</label>
-        <input
-          type="text"
-          id="last_name"
-          name="last_name"
-          value={last_name}
-          onChange={(e) => setLastName(e.target.value)}
-        />
+        {/* name */}
+        <div className="first-and-last-name-container">
+          <div className="first-name-control">
+            <label htmlFor="first_name">First Name</label>
+            <input className="first-name" type="text" id="first_name" name="first_name" value={first_name} onChange={(e) => setFirstName(e.target.value)} required />
+          </div>
 
-        <label htmlFor="email">Email</label>
-        <input
-          type="email"
-          id="email"
-          name="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
+          <div className="last-name-control">
+            <label htmlFor="last_name">Last Name</label>
+            <input className="last-name" type="text" id="last_name" name="last_name" value={last_name} onChange={(e) => setLastName(e.target.value)} />
+          </div>
+        </div>
 
-        <label htmlFor="phone">Phone</label>
-        <input
-          type="tel"
-          id="phone"
-          name="phone"
-          value={phone}
-          onChange={(e) => setPhone(e.target.value)}
-        />
+        {/* email & phone */}
+        <div className="email-and-phone-container">
+          <div className="phone-control">
+            <label htmlFor="phone">Phone</label>
+            <input className="phone" type="tel" id="phone" name="phone" value={phone} onChange={(e) => setPhone(e.target.value)} />
+          </div>
 
-        <label htmlFor="address1">Address 1</label>
-        <input
-          type="text"
-          id="address1"
-          name="address1"
-          value={address1}
-          onChange={(e) => setAddress1(e.target.value)}
-        />
+          <div className="email-control">
+            <label htmlFor="email">Email</label>
+            <input className="email" type="email" id="email" name="email" value={email} onChange={(e) => setEmail(e.target.value)} />
+          </div>
+        </div>
 
-        <label htmlFor="address2">Address 2</label>
-        <input
-          type="text"
-          id="address2"
-          name="address2"
-          value={address2}
-          onChange={(e) => setAddress2(e.target.value)}
-        />
+        {/* address */}
+        <div className="address-container">
+          <div className="address1-control">
+            <label htmlFor="address1">Address 1</label>
+            <input className="address1" type="text" id="address1" name="address1" value={address1} onChange={(e) => setAddress1(e.target.value)} />
+          </div>
 
-        <label htmlFor="city">City</label>
-        <input
-          type="text"
-          id="city"
-          name="city"
-          value={city}
-          onChange={(e) => setCity(e.target.value)}
-        />
+          <div className="address2-control">
+            <label htmlFor="address2">Address 2</label>
+            <input className="address2" type="text" id="address2" name="address2" value={address2} onChange={(e) => setAddress2(e.target.value)} />
+          </div>
+        </div>
 
-        <label htmlFor="state">State</label>
-        <input
-          type="text"
-          id="state"
-          name="state"
-          value={state}
-          onChange={(e) => setState(e.target.value)}
-        />
+        {/* city, state, zip */}
+        <div className="city-state-zip-container">
+          <div className="city-control">
+            <label htmlFor="city">City</label>
+            <input className="city" type="text" id="city" name="city" value={city} onChange={(e) => setCity(e.target.value)} />
+          </div>
 
-        <label htmlFor="zip">Zip</label>
-        <input
-          type="number"
-          id="zip"
-          name="zip"
-          value={zip}
-          onChange={(e) => setZip(e.target.value)}
-        />
+          <div className="state-control">
+            <label htmlFor="state">State</label>
+            <input className="state" type="text" id="state" name="state" value={state} onChange={(e) => setState(e.target.value)} />
+          </div>
 
-        <label htmlFor="categories">Categories</label>
-        <input
-          type="text"
-          id="categories"
-          name="categories"
-          value={categories}
-          onChange={(e) => setCategories(e.target.value)}
-        />
+          <div className="zip-control">
+            <label htmlFor="zip">Zip</label>
+            <input className="zip" type="number" id="zip" name="zip" value={zip} onChange={(e) => setZip(e.target.value)} />
+          </div>
+        </div>
 
-        <label htmlFor="notes">Notes</label>
-        <input
-          type="text"
-          id="notes"
-          name="notes"
-          value={notes}
-          onChange={(e) => setNotes(e.target.value)}
-        />
+        {/* groups and notes */}
+        <div className="categories-and-notes-container">
+          <div className="categories-control">
+            <label htmlFor="categories">Categories</label>
+            <input className="categories" type="text" id="categories" name="categories" value={categories} onChange={(e) => setCategories(e.target.value)} />
+          </div>
 
-        <label htmlFor="photo">Select a photo:</label>
-        <input
-          type="file"
-          id="photo"
-          name="photo"
-          onChange={(e) => setPhotoFile(e.target.files[0])}
-        />
+          <div className="notes-control">
+            <label htmlFor="notes">Notes</label>
+            <input className="notes" type="text" id="notes" name="notes" value={notes} onChange={(e) => setNotes(e.target.value)} />
+          </div>
+        </div>
 
-        <input type="submit" value={"Submit"} />
+        {/* photo */}
+        <div className="photo-control">
+          <label htmlFor="photo">Select a photo:</label>
+          <input className="select-photo" type="file" id="photo" name="photo" onChange={(e) => setPhotoFile(e.target.files[0])} />
+        </div>
+
+        {/* submit & cancel */}
+        <div className="submit-and-cancel-container">
+          <input className="create-contact-submit" type="submit" value={"Submit"} />
+          <Link to={'/app'}><Button className="cancel-button">Cancel</Button></Link>
+        </div>
       </form>
     </div>
   );

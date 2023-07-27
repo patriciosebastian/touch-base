@@ -1,6 +1,7 @@
 import { useContext } from "react";
 import { ContactsContext } from "../../context/ContactsContext";
 import { useNavigate } from "react-router-dom";
+import { LuTrash2 } from 'react-icons/lu';
 import "../DeleteContact/DeleteContact.css";
 
 //not sure if I want this as a button or something else
@@ -19,5 +20,6 @@ export default function DeleteContact({ id }) {
     }
   };
 
-  return <button onClick={handleDelete}>Delete Contact</button>;
+  // return <button onClick={handleDelete}>Delete Contact</button>;
+  return <LuTrash2 onClick={handleDelete}>Delete Contact</LuTrash2>;
 }
