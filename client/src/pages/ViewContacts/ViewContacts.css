@@ -33,10 +33,11 @@
 }
 
 .contact-search {
-    width: 81%;
+    width: 100%;
     border: 1px;
     border-radius: 5px;
     background-color: var(--light-grey);
+    margin: 0 5%;
 }
 
 .contact-search:focus {
@@ -48,7 +49,7 @@
     border-top: 1px solid;
     border-top-color: lightgray;
     width: 100%;
-    padding: 0 2.5rem;
+    padding: 0 5%;
     margin-bottom: 1rem;
     display: flex;
     justify-content: space-between;
@@ -82,9 +83,14 @@
     justify-content: center;
 }
 
+.vc-more-options {
+    position: relative;
+}
+
 .vc-more-options ul {
-    left: 50%;
-    right: 17%;
+    position: absolute;
+    right: 0;
+    width: 8.2306rem;
     display: flex;
     flex-direction: column;
     align-items: flex-start;

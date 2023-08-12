@@ -1,10 +1,10 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
-import "../SignIn/SignIn.css";
+import { FcGoogle } from 'react-icons/fc';
 import Card from "../../components/Card/Card";
 import Button from "../../components/Button/Button";
-import { FcGoogle } from 'react-icons/fc';
+import "../SignIn/SignIn.css";
 
 export default function SignIn() {
     const [email, setEmail] = useState('');

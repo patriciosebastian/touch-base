@@ -32,4 +32,14 @@
 
 .update-contact-btn {
     background-color: white;
+    margin-right: 5%;
+}
+
+.edit-contact-cancel-btn {
+    background-color: white;
+    color: var(--red-color);
+    border: 1px solid var(--red-color);
+    border-radius: 20px;
+    box-shadow: -1px 2px 6px 0px var(--box-shadow-color);
+    padding: 6px 12px;
 }

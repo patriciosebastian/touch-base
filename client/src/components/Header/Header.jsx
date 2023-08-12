@@ -58,7 +58,8 @@ export default function Header(props) {
 
     return (
         <div className={classes}>
-          <h1>{pageTitle}</h1>
+          {/* <h1>{pageTitle}</h1> */}
+          <h1 className='navbar-brand'>TB</h1>
           <div className="header-controls">
             {addContactIconBlock && <Link to={'create-contact'}><LuPlus /></Link>}
             <Nav className={addContactIconBlock ? '' : 'flex-end'} />

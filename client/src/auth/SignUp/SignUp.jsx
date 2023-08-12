@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { useAuth } from "../../context/AuthContext";
 import { Link, useNavigate } from "react-router-dom";
-import "../SignUp/SignUp.css";
 import Button from "../../components/Button/Button";
 import Card from "../../components/Card/Card";
+import "../SignUp/SignUp.css";
 
 export default function SignUp() {
     const [email, setEmail] = useState('');

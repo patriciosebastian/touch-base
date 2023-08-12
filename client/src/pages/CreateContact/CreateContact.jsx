@@ -2,8 +2,8 @@ import { useState, useContext } from "react";
 import { ContactsContext } from "../../context/ContactsContext";
 import { Link, useNavigate } from "react-router-dom";
 import { CgClose } from "react-icons/cg";
-import "../CreateContact/CreateContact.css";
 import Button from "../../components/Button/Button";
+import "./CreateContact.css";
 
 export default function CreateContact() {
   const [first_name, setFirstName] = useState("");

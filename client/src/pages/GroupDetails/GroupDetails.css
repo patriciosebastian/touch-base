@@ -1,0 +1,241 @@
+.group-details-header {
+    padding-top: 0.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid lightgrey;
+    margin-bottom: 1.5rem;
+}
+
+.top-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0 5% 1rem 5%;
+}
+
+.group-details-back-btn {
+    background-color: white;
+    padding: 0;
+}
+
+.delete-group-btn {
+    background-color: white;
+    border: none;
+}
+
+.group-name-and-about-text {
+    width: 90%;
+    margin: 0 auto;
+    text-align: center;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    padding: .5rem;
+    position: relative;
+    color: white;
+}
+
+.edit-group-btn {
+    position: absolute;
+    left: 22rem;
+    top: 1px;
+    color: white;
+    font-size: large;
+    z-index: 3;
+}
+
+.edit-group-btn:visited {
+    color: white;
+}
+
+.group-name-and-about-text h1, .group-name-and-about-text p {
+    position: relative;
+    z-index: 2;
+}
+
+.group-name-and-about-text::after {
+    content: "";
+    background: linear-gradient(rgba(60,60,60,0.4), rgba(60,60,60,0.4));
+    /* background: linear-gradient(rgb(238 238 238 / 50%), rgb(164 164 164 / 75%)); */
+    border-radius: 3px;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 1;
+}
+
+.group-details-container h2 {
+    text-align: center;
+    margin-top: 8%;
+}
+
+.add-contacts-to-group {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-decoration: underline;
+    color: var(--primary-color);
+    width: 31%;
+    margin: 0 auto 1rem auto;
+    cursor: pointer;
+}
+
+.add-contacts-to-group svg {
+    stroke-width: 1.3125rem;
+}
+
+.close-modal-control {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.close-modal-btn {
+    background-color: var(--classic-off-white);
+    border: none;
+    cursor: pointer;
+    padding: 0;
+}
+
+.close-modal-btn svg {
+    width: 1.5rem;
+    height: 1.5rem;
+}
+
+.add-group-contacts-modal-header {
+    border-bottom: 1px solid lightgrey;
+    margin-bottom: 1.5rem;
+}
+
+.modal-contacts-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.modal-contact-info {
+    display: flex;
+    align-items: center;
+}
+
+.group-contact-img {
+    border-radius: 20px;
+    width: 2rem;
+}
+
+.contact-added-btn {
+    background-color: var(--classic-off-white);
+    border-color: lightgrey;
+    color: var(--secondary-color);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* padding: 3px 9px; */
+    padding: 3px 23px;
+}
+
+.contact-added-btn svg {
+    stroke-width: 4px;
+}
+
+.modal-add-contact-btn {
+    background-color: var(--classic-off-white);
+    border-color: var(--primary-color-light);
+    padding: 3px 9px;
+    cursor: pointer;
+}
+
+.group-contacts-container {
+    width: 90%; 
+    margin: 0 auto;
+    height: 33rem;
+    background-color: var(--light-grey);
+    border-radius: 3px;
+    overflow-y: scroll;
+    scrollbar-width: none;
+}
+
+.group-contacts-container::-webkit-scrollbar {
+    display: none;
+}
+
+.group-contact-container {
+    border-bottom: 1px solid;
+    border-bottom-color: lightgray;
+    width: 100%;
+    padding: 0 5%; /* remove left and right padding? */
+    /* margin-bottom: 1rem; */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 1rem;
+}
+
+.group-contact-container h1 {
+    font-size: 1.3rem;
+}
+
+.group-contact-container p {
+    font-size: 0.9em;
+}
+
+.group-contact-card-control-left {
+    padding-top: 1rem;
+    flex-shrink: 20;
+}
+
+.group-contact-card-control-right {
+    width: 25%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.gd-more-options {
+    position: relative;
+}
+
+.gd-more-options ul {
+    position: absolute;
+    right: 0;
+    width: 8.5394rem;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 10px 15px;
+}
+
+.gd-more-options a {
+    width: 100%;
+    border-bottom: 1px solid;
+}
+
+.gd-more-options a:nth-child(2) {
+    padding: 1px 0;
+}
+
+.gd-more-options span {
+    cursor: pointer;
+    text-align: center;
+}
+
+.more-options-ul svg {
+    width: 100%;
+    height: 1.3rem;
+}
+
+.more-options-ul span {
+    width: 100%;
+    padding-top: 3px;
+    color: var(--red-color);
+}
+
+.group-contact-card-control-right img {
+    width: 80%;
+    border-radius: 100%;
+}

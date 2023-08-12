@@ -1,6 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { ContactsProvider } from "./context/ContactsContext";
 import { AuthProvider } from "./context/AuthContext";
+import { ContactsProvider } from "./context/ContactsContext";
+import { GroupsProvider } from "./context/GroupsContext";
 import Home from "./pages/Home/Home";
 import SignUp from "./auth/SignUp/SignUp";
 import SignIn from "./auth/SignIn/SignIn";
@@ -11,33 +12,39 @@ import ContactDetails from "./pages/ContactDetails/ContactDetails";
 import EditContact from "./pages/EditContact/EditContact";
 import PrivateRoutes from "./auth/PrivateRoutes";
 import Nav from "./components/Nav/Nav";
-import Groups from "./pages/Groups/Groups";
 import Favorites from "./pages/Favorites/Favorites";
-// import MainLayout from "./components/MainLayout/MainLayout";
+import ViewGroups from "./pages/ViewGroups/ViewGroups";
+import CreateGroup from "./pages/CreateGroup/CreateGroup";
+import GroupDetails from "./pages/GroupDetails/GroupDetails";
+import EditGroup from "./pages/EditGroup/EditGroup";
 
 function App() {
   return (
     <AuthProvider>
       <ContactsProvider>
-        <Router>
-          {/* <Nav /> */}
-          <Routes>
-            <Route element={<Nav />}>
-              <Route exact path="/" element={<Home />} />
-              <Route path="/sign-up" element={<SignUp />} />
-              <Route path="/sign-in" element={<SignIn />} />
-            </Route>
-            <Route path="/app" element={<PrivateRoutes />}>
-              <Route path="/app" element={<ViewContacts />} />
-              <Route path="/app/account" element={<Account />} />
-              <Route path="/app/create-contact" element={<CreateContact />} />
-              <Route path="/app/contacts/:id" element={<ContactDetails />} />
-              <Route path="/app/edit-contact/:id" element={<EditContact />} /> {/* Should I make this a modal? */}
-              <Route path="/app/groups" element={<Groups />} />
-              <Route path="/app/favorites" element={<Favorites />} />
-            </Route>
-          </Routes>
-        </Router>
+        <GroupsProvider>
+          <Router>
+            <Routes>
+              <Route element={<Nav />}>
+                <Route exact path="/" element={<Home />} />
+                <Route path="/sign-up" element={<SignUp />} />
+                <Route path="/sign-in" element={<SignIn />} />
+              </Route>
+              <Route path="/app" element={<PrivateRoutes />}>
+                <Route path="/app" element={<ViewContacts />} />
+                <Route path="/app/account" element={<Account />} />
+                <Route path="/app/create-contact" element={<CreateContact />} />
+                <Route path="/app/contacts/:id" element={<ContactDetails />} />
+                <Route path="/app/edit-contact/:id" element={<EditContact />} />
+                <Route path="/app/favorites" element={<Favorites />} />
+                <Route path="/app/groups" element={<ViewGroups />} />
+                <Route path="/app/groups/create-group" element={<CreateGroup />} />
+                <Route path="/app/groups/:groupId" element={<GroupDetails />} />
+                <Route path="/app/groups/edit-group/:groupId" element={<EditGroup />} />
+              </Route>
+            </Routes>
+          </Router>
+        </GroupsProvider>
       </ContactsProvider>
     </AuthProvider>
   );

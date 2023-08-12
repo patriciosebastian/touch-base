@@ -32,6 +32,28 @@ ALTER TABLE contacts
 RENAME COLUMN description TO notes;
 
 
--- Todo: Create a User table
--- In user table, make certain fields required with NOT NULL constraints/CHECK costraints
 -- Validate on the frontend...on frontend, I would collect values of 'first_name' & 'last_name' and send them to my backend API
+
+CREATE TABLE groups (
+    group_id SERIAL PRIMARY KEY,
+    user_id VARCHAR(255) NOT NULL,
+    group_name VARCHAR(255) NOT NULL,
+    cover_picture TEXT,
+    about_text TEXT
+);
+
+CREATE TABLE group_contacts(
+    group_id INT REFERENCES groups(group_id),
+    contact_id INT REFERENCES contacts(contacts_id),
+    PRIMARY KEY (group_id, contact_id)
+);
+
+ALTER TABLE group_contacts
+RENAME COLUMN contact_id TO contacts_id;
+
+ALTER TABLE group_contacts
+DROP CONSTRAINT group_contacts_group_id_fkey;
+
+ALTER TABLE group_contacts
+ADD CONSTRAINT group_contacts_group_id_fkey FOREIGN KEY (group_id)
+REFERENCES groups(group_id) ON DELETE CASCADE;

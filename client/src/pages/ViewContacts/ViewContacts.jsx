@@ -2,6 +2,7 @@ import { useEffect, useContext } from "react";
 import { ContactsContext } from "../../context/ContactsContext";
 import { Link } from "react-router-dom";
 import { auth } from "../../firebase";
+import { useAuth } from "../../context/AuthContext";
 import { LuEye } from 'react-icons/lu';
 import { LuEdit3 } from 'react-icons/lu';
 import DeleteContact from "../DeleteContact/DeleteContact";
@@ -16,19 +17,20 @@ const formatPhoneNumber = (phoneNumber) => {
     return '(' + match[1] + ') ' + match[2] + '-' + match[3]
   }
   return null;
-}
+} // can I move this inside of ViewContacts()?
 
 export default function ViewContacts() {
   const { contacts, fetchContacts } = useContext(ContactsContext);
+  const { idToken, authLoading } = useAuth();
 
   // fetch contacts on component mount
   useEffect(() => {
-    if (auth.currentUser) {
+    if (auth.currentUser && idToken && !authLoading) {
       fetchContacts();
-    } else {
+    } else if (!authLoading) {
       console.log("User not signed in");
     }
-  }, [fetchContacts]);
+  }, [fetchContacts, idToken, authLoading]);
   // fetchContacts will only run once, because
   //  it has no depencies in ContactsContext
 
@@ -38,6 +40,7 @@ export default function ViewContacts() {
         <div className="view-contacts-header">
           <Header />
           <div className="search-control">
+            {/* move search control out of header. place below a new h2 'Contacts'. Reconsider position of add contact icon */}
             <input className="contact-search" type="search" name="contact-search" id="contact-search" placeholder="search" />
           </div>
         </div>
@@ -59,6 +62,7 @@ export default function ViewContacts() {
                 <MoreOptions className="vc-more-options">
                   <Link to={"/app/contacts/" + contact.contacts_id}><LuEye className="view-contact-icon" /></Link>
                   <Link to={"/app/edit-contact/" + contact.contacts_id}><LuEdit3 className="edit-contact-icon" /></Link>
+                  
                   <span><DeleteContact className="delete-contact-icon" id={contact.contacts_id} /></span>
                 </MoreOptions>
                 <img

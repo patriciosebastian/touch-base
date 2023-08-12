@@ -1,6 +1,6 @@
 import { useState, useEffect, useContext } from "react";
 import { ContactsContext } from "../../context/ContactsContext";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import { getAuth } from "firebase/auth";
 import Button from "../../components/Button/Button";
@@ -13,6 +13,7 @@ export default function EditContact() {
   const [photoFile, setPhotoFile] = useState(null);
   const { currentUser } = useAuth;
   const auth = getAuth();
+  const navigate = useNavigate();
 
   // Get most up to date info for the contact,
   // monitor state of contact based on id
@@ -60,6 +61,7 @@ export default function EditContact() {
     }
 
     await updateContact(contact.contacts_id, data);
+    navigate(-1);
     // give confirmation to user that contact was updated.
     // route user back to previous navigation.
   };
@@ -188,6 +190,7 @@ export default function EditContact() {
 
         <div className="update-and-cancel-btns">
           <Button className="update-contact-btn" type="submit">Update Contact</Button>
+          <button className="edit-contact-cancel-btn" type="button" onClick={() => {navigate(-1)}}>Cancel</button>
         </div>
       </form>
     </div>

@@ -17,14 +17,6 @@ export default function Nav(props) {
           <div>
             <LuMenu className="mobile-nav-menu-icon" onClick={() => setMobileNavOpen(!mobileNavOpen)} />
           </div>
-          {/* <ul className={`mobile-nav-ul ${mobileNavOpen ? '' : 'hidden'}`}>
-            <li><Link to={'/app'}>Contacts</Link></li>
-            <li><Link to={'/app/groups'}>Groups</Link></li>
-            <li><Link to={'/app/favorites'}>Favorites</Link></li>
-            <li><Link to={'/app/account'}>Account</Link></li>
-            <br />
-            <button>Log Out</button>
-          </ul> */}
           <Dropdown className={`mobile-nav-ul ${mobileNavOpen ? '' : 'hidden'}`}>
             <li><Link to={'/app'}>Contacts</Link></li>
             <li><Link to={'/app/groups'}>Groups</Link></li>

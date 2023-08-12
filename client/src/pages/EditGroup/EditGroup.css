@@ -1,0 +1,46 @@
+.edit-group-title {
+    margin: 0.5rem 0 1rem 1.3rem;
+}
+
+.edit-group-form {
+    width: 90%;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+}
+
+.edit-group-form input {
+    background-color: var(--light-grey);
+    border: 0;
+    border-bottom: 1px solid;
+    border-bottom-color: lightgray;
+    border-radius: 5px;
+    margin-bottom: .75rem;
+}
+
+.edit-cover-picture {
+    background-color: white !important;
+    border-bottom: 0 !important;
+    border-radius: 3px !important;
+}
+
+.group-update-and-cancel-btns {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    margin-top: 1rem;
+}
+
+.update-group-btn {
+    background-color: white;
+    margin-right: 5%;
+}
+
+.edit-group-cancel-btn {
+    background-color: white;
+    color: var(--red-color);
+    border: 1px solid var(--red-color);
+    border-radius: 20px;
+    box-shadow: -1px 2px 6px 0px var(--box-shadow-color);
+    padding: 6px 12px;
+}

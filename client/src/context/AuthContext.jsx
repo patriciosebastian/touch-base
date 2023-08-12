@@ -13,6 +13,8 @@ export const AuthContext = createContext();
 
 export function AuthProvider({ children }) {
   const [currentUser, setCurrentUser] = useState({});
+  const [idToken, setIdToken] = useState('');
+  const [authLoading, setAuthLoading] = useState(true);
 
   const signup = (email, password) => {
     return createUserWithEmailAndPassword(auth, email, password);
@@ -54,6 +56,15 @@ export function AuthProvider({ children }) {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       // console.log(currentUser);
       setCurrentUser(currentUser);
+      if (currentUser) {
+        //force refresh token if its expired
+        currentUser.getIdToken(true).then((idToken) => {
+          setIdToken(idToken);
+          setAuthLoading(false);
+        });
+      } else {
+        setAuthLoading(false);
+      }
     });
     return () => {
       unsubscribe();
@@ -62,7 +73,7 @@ export function AuthProvider({ children }) {
 
   return (
     <AuthContext.Provider
-      value={{ currentUser, signup, login, logout, signInWithGoogle }}
+      value={{ currentUser, idToken, authLoading, signup, login, logout, signInWithGoogle }}
     >
       {children}
     </AuthContext.Provider>

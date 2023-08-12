@@ -10,9 +10,13 @@
   --box-shadow-color: #bfbfbfdb;
   --google-blue: #4285F4;
   --google-alt-blue: #1669F2;
-  /* temp colors for now */
   --light-grey: #f5f5f5;
-  --off-white: #faf0e6;
+  /* temp colors for now */
+  --classic-off-white: #fdfdfd;
+  --warm-off-white: #faf0e6;
+  --cream: #fffdd0;
+  --ivory: #fffff0;
+  --orange-off-white: #faf0e6;
   --navy: #001f3f;
   --charcoal: #333333;
 
@@ -42,6 +46,7 @@ body {
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
   font-family: 'Be Vietnam Pro', sans-serif;
+  background-color: var(--classic-off-white);
 }
 
 img, picture, video, canvas, svg {
