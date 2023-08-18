@@ -1,10 +1,11 @@
 import { useParams, Link, useNavigate } from 'react-router-dom';
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useState, useMemo } from 'react';
 import { GroupsContext } from '../../context/GroupsContext';
 import { ContactsContext } from '../../context/ContactsContext';
 import { auth } from '../../firebase';
 import { useAuth } from '../../context/AuthContext';
-import { LuEye, LuEdit3, LuTrash2, LuCheck } from 'react-icons/lu';
+import { sortContacts, formatPhoneNumber } from '../../utils/utils';
+import { LuEye, LuEdit3, LuTrash2, LuCheck, LuMail } from 'react-icons/lu';
 import { PiPlusThin } from 'react-icons/pi';
 import { CgClose } from 'react-icons/cg';
 import Header from '../../components/Header/Header';
@@ -17,8 +18,11 @@ import './GroupDetails.css';
 export default function GroupDetails() {
     const [group, setGroup] = useState({});
     const [groupContacts, setGroupContacts] = useState([]);
-    const [isModalOpen, setIsModalOpen] = useState(false);
-    const { getGroup, deleteContactFromGroup, deleteGroup, addContactToGroup } = useContext(GroupsContext);
+    const [isAddContactsModalOpen, setIsAddContactsModalOpen] = useState(false);
+    const [isEmailGroupModalOpen, setIsEmailGroupModalOpen] = useState(false);
+    const [subject, setSubject] = useState('');
+    const [message, setMessage] = useState('');
+    const { getGroup, deleteContactFromGroup, deleteGroup, addContactToGroup, emailGroup } = useContext(GroupsContext);
     const { contacts, fetchContacts } = useContext(ContactsContext);
     const { groupId } = useParams();
     const { idToken, authLoading } = useAuth();
@@ -59,14 +63,9 @@ export default function GroupDetails() {
       // eslint-disable-next-line
     }, [idToken, authLoading]);
 
-    const formatPhoneNumber = (phoneNumber) => {
-      const cleaned = ("" + phoneNumber).replace(/\D/g, "");
-      const match = cleaned.match(/^(\d{3})(\d{3})(\d{4})$/);
-      if (match) {
-        return "(" + match[1] + ") " + match[2] + "-" + match[3];
-      }
-      return null;
-    };
+    const sortedContacts = useMemo(() => {
+      return sortContacts(groupContacts);
+    }, [groupContacts]);
 
     const deleteUserGroup = async () => {
       if (window.confirm(`Are you sure you want to delete "${group.group_name}"?`)) {
@@ -116,6 +115,25 @@ export default function GroupDetails() {
       }
     };
 
+    const handleIsEmailGroupModalOpen = () => {
+      setSubject('');
+      setMessage('');
+      setIsEmailGroupModalOpen(true);
+    };
+
+    const sendEmail = async (groupId, subject, message) => {
+      try {
+        await emailGroup(groupId, subject, message);
+        setSubject('');
+        setMessage('');
+  
+        console.log('Email sent successfully');
+      } catch (err) {
+        console.error(err);
+        console.log('Failed to send email to group');
+      }
+    };
+
   return (
     <div className="group-details-container">
       <Header className="group-details-header" />
@@ -129,11 +147,14 @@ export default function GroupDetails() {
         <p>{group.about_text}</p>
       </div>
       <h2>Contacts in Group</h2>
-      <span className="add-contacts-to-group" onClick={() => setIsModalOpen(true)}>Add contacts&nbsp;<PiPlusThin /></span>
-      {isModalOpen && (
-        <Modal>
+      <div className="center-controls">
+        <span className="add-contacts-to-group" onClick={() => setIsAddContactsModalOpen(true)}>Add contacts&nbsp;<PiPlusThin /></span>
+        <span className="gd-email-group" onClick={() => handleIsEmailGroupModalOpen()}>Email Group&nbsp;<LuMail className="email-contact-icon"></LuMail></span>
+      </div>
+      {isAddContactsModalOpen && (
+        <Modal className="group-details-modal">
           <div className="close-modal-control">
-            <button className="close-modal-btn" onClick={() => setIsModalOpen(false)}><CgClose /></button>
+            <button className="close-modal-btn" onClick={() => setIsAddContactsModalOpen(false)}><CgClose /></button>
           </div>
           <h2 className="add-group-contacts-modal-header">Choose Contacts</h2>
           {contacts && contacts.map(contact => (
@@ -151,8 +172,21 @@ export default function GroupDetails() {
           ))}
         </Modal>
       )}
+      {isEmailGroupModalOpen && (
+        <Modal className="email-group-modal">
+          <div className="close-modal-control">
+            <button className="close-modal-btn" onClick={() => setIsEmailGroupModalOpen(false)}><CgClose /></button>
+          </div>
+          <h2 className="email-group-modal-header">Email {group.group_name}</h2>
+          <div className="gd-email-container">
+            <input className="email-group-subject" type="text" placeholder="Subject" name="subject" id="subject" value={subject} onChange={(e) => setSubject(e.target.value)} />
+            <textarea className="email-group-textarea" placeholder="Message" name="message" id="message" value={message} onChange={(e) => setMessage(e.target.value)}></textarea>
+            <Button className="send-group-email-btn" onClick={() => sendEmail(group.group_id, subject, message)}>Send Email</Button>
+          </div>
+        </Modal>
+      )}
       <div className="group-contacts-container">
-        {groupContacts && groupContacts.map((contact) => (
+        {groupContacts && sortedContacts.map((contact) => (
           <div key={contact.contacts_id} className="group-contact-container">
             <div className="group-contact-card-control-left">
               <h1>
@@ -168,9 +202,9 @@ export default function GroupDetails() {
             <div className="group-contact-card-control-right">
               <MoreOptions className="gd-more-options">
                 <Link to={"/app/contacts/" + contact.contacts_id}><LuEye className="view-contact-icon" /></Link>
+                {/* <span className="gd-email-group" onClick={() => handleModalAndContact(contact.contacts_id)}><LuMail className="email-group-icon"></LuMail></span> */}
                 <Link to={"/app/edit-contact/" + contact.contacts_id}><LuEdit3 className="edit-contact-icon" /></Link>
-                {/* <span><DeleteContact className="delete-contact-icon" id={contact.contacts_id} /></span> */}
-                <span onClick={() => removeContact(group.group_id, contact.contacts_id)}>Delete from group</span>
+                <span className="delete-contact-from-group" onClick={() => removeContact(group.group_id, contact.contacts_id)}>Delete from group</span>
               </MoreOptions>
               <img
                 src={contact.photo_url}

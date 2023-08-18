@@ -1,7 +1,7 @@
 import { useState, useEffect, useContext } from "react";
 import { ContactsContext } from "../../context/ContactsContext";
 import { useNavigate, useParams } from "react-router-dom";
-import { useAuth } from "../../context/AuthContext";
+// import { useAuth } from "../../context/AuthContext";
 import { getAuth } from "firebase/auth";
 import Button from "../../components/Button/Button";
 import "./EditContact.css";
@@ -11,7 +11,7 @@ export default function EditContact() {
   const { updateContact } = useContext(ContactsContext);
   const [contact, setContact] = useState({});
   const [photoFile, setPhotoFile] = useState(null);
-  const { currentUser } = useAuth;
+  // const { currentUser } = useAuth;
   const auth = getAuth();
   const navigate = useNavigate();
 
@@ -34,7 +34,7 @@ export default function EditContact() {
       setPhotoFile(data.photoFile);
       if (response.ok) {
         // console.log("Contact fetched successfully")
-        currentUser ? console.log(data) : console.log(null);
+        auth.currentUser ? console.log(data) : console.log(null);
       } else {
         console.error("Error:", response);
         // display message and re-route user.
@@ -42,7 +42,7 @@ export default function EditContact() {
     };
 
     fetchContact();
-  }, [id, auth.currentUser, currentUser]);
+  }, [id, auth.currentUser]);
 
   const handleChange = (e) => {
     setContact({ ...contact, [e.target.name]: e.target.value });

@@ -1,0 +1,12 @@
+.searchbar {
+    width: 100%;
+    border: 1px;
+    border-radius: 5px;
+    background-color: var(--light-grey);
+    margin: 0 5%;
+}
+
+.searchbar:focus {
+    background-color: var(--class-off-white);
+    outline-color: var(--secondary-color);
+}

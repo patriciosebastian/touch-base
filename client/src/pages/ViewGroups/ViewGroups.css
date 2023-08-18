@@ -1,9 +1,9 @@
 .view-groups-header {
+    border-bottom:1px solid lightgrey;
     padding-top: 0.5rem;
     padding-bottom: 1rem;
     /* padding left and right is set in 
     Header component */
-    border-bottom:1px solid lightgrey;
 }
 
 .groups-container {
@@ -17,12 +17,8 @@
 
 .display-groups-container {
     /* height: 90vh; */
-    border-top: 1px solid var(--light-grey);
-    border-left: 1px solid var(--light-grey);
-    /* display: flex;
-    flex-wrap: wrap;
-    justify-content: space-evenly;
-    align-content: flex-start; */
+    border-top: 3px solid var(--light-grey);
+    border-left: 3px solid var(--light-grey);
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(40%, 1fr));
     gap: 24px;
@@ -32,8 +28,7 @@
 .group-card {
     /* width: 40%; */
     width: auto;
-    /* height: fit-content; */
-    height: auto;
+    height: 14.5rem;
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;

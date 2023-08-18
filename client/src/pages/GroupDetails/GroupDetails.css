@@ -71,14 +71,28 @@
     margin-top: 8%;
 }
 
+.center-controls {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto 1rem 0;
+}
+
 .add-contacts-to-group {
     display: flex;
     justify-content: center;
     align-items: center;
     text-decoration: underline;
     color: var(--primary-color);
-    width: 31%;
-    margin: 0 auto 1rem auto;
+    cursor: pointer;
+    padding-right: 1rem;
+}
+
+.gd-email-group {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-decoration: underline;
     cursor: pointer;
 }
 
@@ -124,16 +138,18 @@
 .group-contact-img {
     border-radius: 20px;
     width: 2rem;
+    height: 2rem;
+    object-fit: cover;
+    object-position: center;
 }
 
 .contact-added-btn {
     background-color: var(--classic-off-white);
-    border-color: lightgrey;
+    border-color: var(--secondary-color);
     color: var(--secondary-color);
     display: flex;
     justify-content: center;
     align-items: center;
-    /* padding: 3px 9px; */
     padding: 3px 23px;
 }
 
@@ -146,6 +162,36 @@
     border-color: var(--primary-color-light);
     padding: 3px 9px;
     cursor: pointer;
+}
+
+.email-group-modal-header {
+    border-bottom: 1px solid lightgrey;
+    margin-bottom: 1.5rem;
+}
+
+.email-group-subject, .email-group-textarea {
+    border: 1px solid;
+    border-radius: 3px;
+    margin-bottom: 1rem;
+    padding: 4px 6px;
+}
+
+.email-group-subject:focus-visible, .email-group-textarea:focus-visible {
+    border: 2px solid;
+    border-color: var(--secondary-color);
+    outline: var(--secondary-color);
+}
+
+.email-group-textarea {
+    width: 100%;
+    height: 12rem;
+}
+
+.send-group-email-btn {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+    color: white;
+    font-weight: bold;
 }
 
 .group-contacts-container {
@@ -215,8 +261,9 @@
     border-bottom: 1px solid;
 }
 
+/* give element a className & update selector here after adding new email icon */
 .gd-more-options a:nth-child(2) {
-    padding: 1px 0;
+    padding: 2px 0;
 }
 
 .gd-more-options span {
@@ -229,7 +276,7 @@
     height: 1.3rem;
 }
 
-.more-options-ul span {
+.delete-contact-from-group {
     width: 100%;
     padding-top: 3px;
     color: var(--red-color);
@@ -237,5 +284,8 @@
 
 .group-contact-card-control-right img {
     width: 80%;
+    height: 4.489rem;
     border-radius: 100%;
+    object-fit: cover;
+    object-position: center;
 }

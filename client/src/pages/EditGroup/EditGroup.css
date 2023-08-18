@@ -33,6 +33,7 @@
 
 .update-group-btn {
     background-color: white;
+    border-color: var(--primary-color);
     margin-right: 5%;
 }
 

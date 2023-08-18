@@ -3,9 +3,8 @@ import { useParams } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import { getAuth } from "firebase/auth";
 import { ContactsContext } from "../../context/ContactsContext";
-import { LuPhone } from "react-icons/lu";
-import { LuMail } from "react-icons/lu";
-import { LuHome } from "react-icons/lu";
+import { formatPhoneNumber } from "../../utils/utils";
+import { LuPhone, LuMail, LuHome } from "react-icons/lu";
 import { ReactComponent as GroupIcon } from "../../assets/Group.svg";
 import Header from "../../components/Header/Header";
 import Card from "../../components/Card/Card";
@@ -48,7 +47,7 @@ export default function ContactDetails() {
             alt={"portrait of " + contact.first_name + " " + contact.last_name}
           />
           <h1 className="contact-details-name">{contact.first_name} {contact.last_name}</h1>
-          <p className="contact-details-phone"><LuPhone />{contact.phone}</p>
+          <p className="contact-details-phone"><LuPhone />{formatPhoneNumber(contact.phone)}</p>
           <p className="contact-details-email"><LuMail />{contact.email}</p>
           <p className="contact-details-address"><LuHome />{contact.address1} {contact.address2}, {contact.city}, {contact.state}, {contact.zip}</p>
           <p className="contact-details-group"><GroupIcon />{contact.categories}</p>

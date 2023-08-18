@@ -1,6 +1,7 @@
 require('dotenv').config();
 const express = require("express");
 const app = express();
+// const router = express.Router();
 const cors = require("cors");
 const pool = require("./db");
 const multer = require("multer");
@@ -8,6 +9,7 @@ const { CloudinaryStorage } = require("multer-storage-cloudinary");
 const cloudinary = require("cloudinary").v2;
 var admin = require('firebase-admin');
 var serviceAccount = require('./serviceAccountKey.json');
+const sgMail = require('@sendgrid/mail');
 
 // Middleware
 
@@ -35,6 +37,9 @@ const storage = new CloudinaryStorage({
 
 const parser = multer({ storage: storage });
 
+sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+
+// Authentication
 // verify Id token, attach decoded token to req
 const verifyToken = async (req, res, next) => {
     const authorizationHeader = req.headers.authorization || '';
@@ -69,7 +74,6 @@ const verifyToken = async (req, res, next) => {
 // ======== CONTACTS ROUTES ======== //
 
 // Create a contact
-
 app.post("/contacts", verifyToken, parser.single("photo"), async (req, res) => {
     try {
         const { first_name, last_name, email, phone, address1, address2, city, state, zip, categories, notes } = req.body;
@@ -105,10 +109,9 @@ app.post("/contacts", verifyToken, parser.single("photo"), async (req, res) => {
 });
 
 // Get all contacts
-
 app.get("/contacts", verifyToken, async (req, res) => {
     try {
-        const { rows } = await pool.query('SELECT * FROM contacts WHERE user_id = $1', [req.user.uid]);
+        const { rows } = await pool.query('SELECT * FROM contacts WHERE user_id = $1 ORDER BY first_name ASC, last_name ASC', [req.user.uid]);
         res.send(rows);
     } catch (err) {
         console.error(err.message);
@@ -125,7 +128,6 @@ app.get("/contacts", verifyToken, async (req, res) => {
 });
 
 // Get a contact
-
 app.get("/contacts/:id", verifyToken, async (req, res) => {
     try {
         const { id } = req.params;
@@ -144,7 +146,6 @@ app.get("/contacts/:id", verifyToken, async (req, res) => {
 });
 
 // Update a contact
-
 app.put("/contacts/:id", verifyToken, parser.single("photo"), async (req, res) => {
     try {
         const { id } = req. params;
@@ -179,7 +180,6 @@ app.put("/contacts/:id", verifyToken, parser.single("photo"), async (req, res) =
 });
 
 // Delete a contact
-
 app.delete("/contacts/:id", verifyToken, async (req, res) => {
     try {
         const { id } = req.params;
@@ -212,7 +212,6 @@ app.delete("/contacts/:id", verifyToken, async (req, res) => {
 // ======== GROUPS ROUTES ======== //
 
 // Create a group
-
 app.post("/app/groups", verifyToken, parser.single("cover_picture"), async (req, res) => {
     try {
         const { group_name, about_text } = req.body;
@@ -237,7 +236,6 @@ app.post("/app/groups", verifyToken, parser.single("cover_picture"), async (req,
 });
 
 // Add a contact to a group
-
 app.post('/app/groups/:groupId/contacts/:contactId', verifyToken, async (req, res) => {
     try {
         const groupId = req.params.groupId;
@@ -286,7 +284,6 @@ app.post('/app/groups/:groupId/contacts/:contactId', verifyToken, async (req, re
 });
 
 // Get all groups
-
 app.get("/app/groups", verifyToken, async (req, res) => {
     try {
         const { uid } = req.user;
@@ -323,7 +320,6 @@ app.get("/app/groups", verifyToken, async (req, res) => {
 });
 
 // Get a group
-
 app.get("/app/groups/:groupId", verifyToken, async (req, res) => {
     try {
         const groupId = req.params.groupId;
@@ -361,7 +357,6 @@ app.get("/app/groups/:groupId", verifyToken, async (req, res) => {
 });
 
 // Update a group
-
 app.put("/app/groups/:groupId", verifyToken, parser.single("cover_picture"), async (req, res) => {
     try {
         const groupId = req.params.groupId;
@@ -427,7 +422,6 @@ app.put("/app/groups/:groupId", verifyToken, parser.single("cover_picture"), asy
 });
 
 // Delete a group
-
 app.delete("/app/groups/:id", verifyToken, async (req, res) => {
     try {
         const { id } = req.params;
@@ -448,7 +442,6 @@ app.delete("/app/groups/:id", verifyToken, async (req, res) => {
 });
 
 // Delete a contact from a group
-
 app.delete('/app/groups/:groupId/contacts/:contactId', verifyToken, async (req, res) => {
     try {
         const groupId = req.params.groupId;
@@ -495,6 +488,88 @@ app.delete('/app/groups/:groupId/contacts/:contactId', verifyToken, async (req, 
     } catch (err) {
         console.error(err.message);
         res.status(500).json({ error: "Server error" });
+    }
+});
+
+// ======== EMAIL ROUTES ======== //
+
+// Send email to individual contact
+app.post('/app/contacts/:contactId/email', verifyToken, async (req, res) => {
+    const { subject, message } = req.body;
+    const contactId = req.params.contactId;
+    const fromEmail = process.env.SENDGRID_FROM_EMAIL;
+
+    // fetch the contacts email
+    try {
+        const result = await pool.query('SELECT email FROM contacts WHERE contacts_id = $1', [contactId]);
+
+        if (result.rows.length === 0) {
+            return res.status(404).send('Contact not found');
+        }
+        
+        // grab contacts email & construct the email
+        const contactEmail = result.rows[0].email;
+        const msg = {
+            to: contactEmail,
+            from: fromEmail,
+            subject: subject,
+            text: message,
+        };
+
+        // send it!
+        try {
+            await sgMail.send(msg);
+            res.status(200).send('Email sent successfully');
+        } catch (err) {
+            res.status(500).send('Failed to send email');
+            console.error(err.message);
+        }
+    } catch (err) {
+        res.status(500).send('Server error while fetching contact email');
+        console.error(err.message);
+    }
+});
+
+// Send email to a group
+app.post('/app/groups/:groupId/email', async (req, res) => {
+    const { subject, message } = req.body;
+    const groupId = req.params.groupId;
+    const fromEmail = process.env.SENDGRID_FROM_EMAIL;
+
+    // fetch the emails associated to the group
+    try {
+        const result = await pool.query(`
+            SELECT contacts.email
+            FROM contacts
+            JOIN group_contacts ON contacts.contacts_id = group_contacts.contacts_id
+            WHERE group_contacts.group_id = $1
+        `, [groupId]);
+        console.log(result);
+
+        if (result.rows.length === 0) {
+            return res.status(404).send('No contacts found in this group');
+        }
+        
+        // grab emails & construct the email
+        const contactEmails = result.rows.map(row => row.email);
+        const msg = {
+            to: contactEmails,
+            from: fromEmail,
+            subject: subject,
+            text: message,
+        };
+
+        // send it!
+        try {
+            await sgMail.send(msg);
+            res.status(200).send('Email sent successfully');
+        } catch (err) {
+            res.status(500).send('Failed to send email');
+            console.error(err.message);
+        }
+    } catch (err) {
+        res.status(500).send('Server error while fetching contact emails');
+        console.error(err.message);
     }
 });
 

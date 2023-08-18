@@ -79,6 +79,7 @@ export const ContactsProvider = ({ children }) => {
 
   // Update contact
   const updateContact = async (contacts_id, updatedContact) => {
+    console.log(updatedContact);
     const response = await fetch(`http://localhost:5300/contacts/${contacts_id}`, {
       method: "PUT",
       body: updatedContact,
@@ -87,6 +88,7 @@ export const ContactsProvider = ({ children }) => {
         Authorization: `Bearer ${idToken}`
       },
     });
+    console.log(updatedContact);
 
     if (!response.ok) {
       throw new Error("Failed to update contact");
@@ -95,12 +97,14 @@ export const ContactsProvider = ({ children }) => {
     const updatedContactJson = await response.json();
 
     if (response.ok) {
+      console.log(updatedContact);
       setContacts((prevContacts) => {
         return prevContacts.map((contact) =>
           contact.contacts_id === contacts_id ? updatedContactJson : contact
         );
       });
       console.log("Contact updated successfully");
+      // return setLoading(false);
       // Confirm to user that update was successful. Exit.
     }
   };
@@ -125,13 +129,31 @@ export const ContactsProvider = ({ children }) => {
     }
   };
 
+  // Email indiviual contact
+  const emailContact = async (contacts_id, subject, message) => {
+    const response = await fetch(`http://localhost:5300/app/contacts/${contacts_id}/email`, {
+      method: "POST",
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${idToken}`
+      },
+      body: JSON.stringify({ subject, message }),
+    });
+
+    if (!response.ok) {
+      throw new Error('Failed to email contact');
+    }
+
+    console.log("Email sent successfully");
+  };
+
   if (loading) {
     return <div>Loading...</div>;
   }
 
   return (
     <ContactsContext.Provider
-      value={{ contacts, fetchContacts, fetchAContact, addContact, updateContact, deleteContact }}
+      value={{ contacts, fetchContacts, fetchAContact, addContact, updateContact, deleteContact, emailContact }}
     >
       {children}
     </ContactsContext.Provider>

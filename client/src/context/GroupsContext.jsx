@@ -173,8 +173,26 @@ export const GroupsProvider = ({ children }) => {
     return updatedGroup;
   };
 
+  // Email group
+  const emailGroup = async (group_id, subject, message) => {
+    const response = await fetch(`http://localhost:5300/app/groups/${group_id}/email`, {
+      method: "POST",
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${idToken}`
+      },
+      body: JSON.stringify({ subject, message }),
+    });
+
+    if (!response.ok) {
+      throw new Error('Failed to email group');
+    }
+
+    console.log("Email sent successfully");
+  };
+
   return (
-    <GroupsContext.Provider value={{ groups, addGroup, addContactToGroup, fetchGroups, getGroup, updateGroup, deleteGroup, deleteContactFromGroup }}>
+    <GroupsContext.Provider value={{ groups, addGroup, addContactToGroup, fetchGroups, getGroup, updateGroup, deleteGroup, deleteContactFromGroup, emailGroup }}>
       {children}
     </GroupsContext.Provider>
   );
