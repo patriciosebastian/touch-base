@@ -2,8 +2,6 @@
     border-bottom:1px solid lightgrey;
     padding-top: 0.5rem;
     padding-bottom: 1rem;
-    /* padding left and right is set in 
-    Header component */
 }
 
 .groups-container {
@@ -16,17 +14,15 @@
 }
 
 .display-groups-container {
-    /* height: 90vh; */
-    border-top: 3px solid var(--light-grey);
-    border-left: 3px solid var(--light-grey);
+    background-color: var(--light-grey);
+    border-radius: 3px;
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(40%, 1fr));
-    gap: 24px;
-    padding: 1.5rem 24px 0 24px;
+    gap: 16px;
+    padding: 1.125rem;
 }
 
 .group-card {
-    /* width: 40%; */
     width: auto;
     height: 14.5rem;
     background-size: cover;
@@ -38,8 +34,8 @@
 
 .group-card::after {
     content: "";
-    background: linear-gradient(rgba(60,60,60,0.4), rgba(60,60,60,0.4));
-    /* background: linear-gradient(rgb(238 238 238 / 50%), rgb(164 164 164 / 75%)); */
+    background: linear-gradient(rgb(117 116 116 / 40%), rgba(60,60,60,0.7));
+    border-radius: 3px;
     position: absolute;
     top: 0;
     right: 0;
@@ -51,7 +47,7 @@
 .group-details-link {
     text-decoration: none;
     color: white;
-    cursor: default;
+    cursor: pointer;
 }
 
 .group-details-link:visited {
@@ -64,13 +60,9 @@
 }
 
 .add-group-icon-container {
-    /* width: 40%; */
-    /* height: 23.5%; */
     display: flex;
     justify-content: center;
     align-items: center;
-    /* margin-left: auto; */
-    /* margin-right: auto; */
 }
 
 .add-group-link, .add-group-icon {
@@ -81,4 +73,5 @@
 
 .add-group-icon {
     color: lightgrey;
+    cursor: pointer;
 }

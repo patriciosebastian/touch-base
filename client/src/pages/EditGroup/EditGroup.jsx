@@ -8,7 +8,6 @@ import "./EditGroup.css";
 export default function EditContact() {
     const { getGroup, updateGroup } = useContext(GroupsContext);
     const { groupId } = useParams();
-    const [group, setGroup] = useState("");
     const [group_name, setGroupName] = useState("");
     const [about_text, setAboutText] = useState("");
     const [cover_picture, setCoverPicture] = useState(null);
@@ -21,7 +20,6 @@ export default function EditContact() {
       if (auth.currentUser) {
           await getGroup(groupId)
               .then((res) => {
-                setGroup(res);
                 setGroupName(res.group_name);
                 setAboutText(res.about_text);
               });

@@ -39,10 +39,16 @@ export default function ViewContacts() {
 
   // search query results
   useEffect(() => {
-    const results = contacts.filter(contact => 
-      contact.first_name.toLowerCase().includes(searchQuery.toLowerCase()) || 
-      contact.last_name.toLowerCase().includes(searchQuery.toLowerCase())
-    );
+    const results = contacts.filter((contact) => {
+      // convert query to lowercase for case-insensitive search
+      const lowerCaseQuery = searchQuery.toLowerCase();
+
+      // check if first name or last name starts with search query
+      return (
+        contact.first_name.toLowerCase().startsWith(lowerCaseQuery) ||
+        contact.last_name.toLowerCase().startsWith(lowerCaseQuery)
+      );
+    });
 
     setFilteredContacts(results);
   }, [searchQuery, contacts]);
