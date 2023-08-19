@@ -32,16 +32,20 @@
 }
 
 .update-group-btn {
-    background-color: white;
+    background-color: var(--primary-color);
     border-color: var(--primary-color);
+    color: var(--classic-off-white);
+    cursor: pointer;
+    font-weight: bold;
     margin-right: 5%;
 }
 
 .edit-group-cancel-btn {
-    background-color: white;
-    color: var(--red-color);
+    background-color: var(--classic-off-white);
     border: 1px solid var(--red-color);
     border-radius: 20px;
     box-shadow: -1px 2px 6px 0px var(--box-shadow-color);
+    color: var(--red-color);
+    cursor: pointer;
     padding: 6px 12px;
 }

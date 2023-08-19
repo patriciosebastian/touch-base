@@ -20,6 +20,7 @@
 .delete-group-btn {
     background-color: white;
     border: none;
+    cursor: pointer;
 }
 
 .group-name-and-about-text {
@@ -164,6 +165,13 @@
     cursor: pointer;
 }
 
+.modal-add-contact-btn:hover {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+    color: var(--classic-off-white);
+    font-weight: bold;
+}
+
 .email-group-modal-header {
     border-bottom: 1px solid lightgrey;
     margin-bottom: 1.5rem;
@@ -190,8 +198,12 @@
 .send-group-email-btn {
     background-color: var(--primary-color);
     border-color: var(--primary-color);
-    color: white;
+    color: var(--classic-off-white);
     font-weight: bold;
+}
+
+.send-group-email-btn:hover {
+    cursor: pointer;
 }
 
 .group-contacts-container {

@@ -1,5 +1,5 @@
+import { useContext, useEffect, useState, useMemo, useRef } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
-import { useContext, useEffect, useState, useMemo } from 'react';
 import { GroupsContext } from '../../context/GroupsContext';
 import { ContactsContext } from '../../context/ContactsContext';
 import { auth } from '../../firebase';
@@ -8,6 +8,7 @@ import { sortContacts, formatPhoneNumber } from '../../utils/utils';
 import { LuEye, LuEdit3, LuTrash2, LuCheck, LuMail } from 'react-icons/lu';
 import { PiPlusThin } from 'react-icons/pi';
 import { CgClose } from 'react-icons/cg';
+import useOutsideClick from '../../hooks/useOutsideClick';
 import Header from '../../components/Header/Header';
 import MoreOptions from '../../components/MoreOptions/MoreOptions';
 import BackButton from '../../components/BackButton/BackButton';
@@ -27,6 +28,7 @@ export default function GroupDetails() {
     const { groupId } = useParams();
     const { idToken, authLoading } = useAuth();
     const navigate = useNavigate();
+    const addContactsModalRef = useRef(null);
 
     useEffect(() => {
       const fetchGroup = async () => {
@@ -66,6 +68,8 @@ export default function GroupDetails() {
     const sortedContacts = useMemo(() => {
       return sortContacts(groupContacts);
     }, [groupContacts]);
+
+    useOutsideClick(addContactsModalRef, () => setIsAddContactsModalOpen(false));
 
     const deleteUserGroup = async () => {
       if (window.confirm(`Are you sure you want to delete "${group.group_name}"?`)) {
@@ -148,7 +152,7 @@ export default function GroupDetails() {
       </div>
       <h2>Contacts in Group</h2>
       <div className="center-controls">
-        <span className="add-contacts-to-group" onClick={() => setIsAddContactsModalOpen(true)}>Add contacts&nbsp;<PiPlusThin /></span>
+        <span className="add-contacts-to-group" onClick={() => setIsAddContactsModalOpen(true)} ref={addContactsModalRef}>Add contacts&nbsp;<PiPlusThin /></span>
         <span className="gd-email-group" onClick={() => handleIsEmailGroupModalOpen()}>Email Group&nbsp;<LuMail className="email-contact-icon"></LuMail></span>
       </div>
       {isAddContactsModalOpen && (
@@ -173,7 +177,7 @@ export default function GroupDetails() {
         </Modal>
       )}
       {isEmailGroupModalOpen && (
-        <Modal className="email-group-modal">
+        <Modal className="email-group-modal" closeModal={() => setIsEmailGroupModalOpen(false)}>
           <div className="close-modal-control">
             <button className="close-modal-btn" onClick={() => setIsEmailGroupModalOpen(false)}><CgClose /></button>
           </div>

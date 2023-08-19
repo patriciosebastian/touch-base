@@ -55,12 +55,6 @@
     align-items: center;
 }
 
-/* .contact-container:first-child {
-    border-top: 1px solid;
-    border-top-color: lightgray;
-    padding-bottom: 1rem;
-} */
-
 .contact-container h1 {
     font-size: 1.3rem;
 }
@@ -109,6 +103,7 @@
 .vc-email-contact {
     width: 100%;
     border-bottom: 1px solid;
+    cursor: pointer;
 }
 
 .more-options-ul svg {
@@ -120,6 +115,7 @@
     width: 100%;
     padding-top: 3px;
     color: var(--red-color);
+    cursor: pointer;
 }
 
 .contact-card-control-right img {
@@ -135,15 +131,15 @@
     margin-bottom: 1.5rem;
 }
 
-.email-contact-subject {
-    /* margin-bottom: 1rem; */
-}
-
 .email-contact-subject, .email-contact-textarea {
     border: 1px solid;
     border-radius: 3px;
     margin-bottom: 1rem;
     padding: 4px 6px;
+}
+
+.email-contact-subject:focus, .email-contact-textarea:focus {
+    outline-color: var(--secondary-color);
 }
 
 .email-contact-textarea {
@@ -155,5 +151,6 @@
     background-color: var(--primary-color);
     border-color: var(--primary-color);
     color: white;
+    cursor: pointer;
     font-weight: bold;
 }

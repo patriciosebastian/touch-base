@@ -18,17 +18,3 @@ export const formatPhoneNumber = (phoneNumber) => {
   }
   return null;
 };
-
-// click outside to close
-export const clickOutsideToClose = (targetElement, callback) => {
-  function handleClickOutside(e) {
-    if (!targetElement.contains(e.target)) {
-      callback();
-    }
-  }
-  document.addEventListener('mousedown', handleClickOutside);
-
-  return () => {
-    document.removeEventListener('mousedown', handleClickOutside);
-  };
-}

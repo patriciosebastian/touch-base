@@ -20,10 +20,6 @@
     align-items: center;
 }
 
-.header-controls a {
-    cursor: default;
-}
-
 .header-controls a > svg {
     width: 2em;
     height: 2em;

@@ -1,15 +1,14 @@
 .create-contact-header {
+    width: 90%;
+    margin: .5rem auto 1rem auto;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin: .5rem 0 1rem 0;
-    border-bottom: 1px solid lightgray;
-    padding: 0 5% 1rem 5%;
 }
 
 .create-contact-header a {
     color: black;
-    cursor: default;
+    cursor: pointer;
 }
 
 .create-contact-header svg {
@@ -122,8 +121,9 @@
 }
 
 .select-photo {
-    background-color: white !important;
+    background-color: var(--classic-off-white) !important;
     border-bottom: 0 !important;
+    width: 75%;
 }
 
 .submit-and-cancel-container {
@@ -133,21 +133,22 @@
 }
 
 .create-contact-submit {
-    /* color: black;
-    border-bottom: 0 !important; */
     text-decoration: none;
+    background-color: var(--primary-color) !important;
     border: 1px solid !important;
-    border-radius: 20px !important;
-    background-color: white !important;
     border-color: var(--primary-color) !important;
-    color: black;
-    padding: 6px 12px;
+    border-radius: 20px !important;
     box-shadow: -1px 2px 6px 0px var(--box-shadow-color);
+    color: var(--classic-off-white);
+    cursor: pointer;
+    font-weight: bold;
     margin-right: 5%;
+    padding: 6px 12px;
 }
 
 .cancel-button {
-    background-color: white;
-    color: var(--red-color);
+    background-color: var(--classic-off-white);
     border: 1px solid var(--red-color);
+    color: var(--red-color);
+    cursor: pointer;
 }

@@ -1,7 +1,6 @@
 import { useState, useEffect, useContext } from "react";
-import { ContactsContext } from "../../context/ContactsContext";
 import { useNavigate, useParams } from "react-router-dom";
-// import { useAuth } from "../../context/AuthContext";
+import { ContactsContext } from "../../context/ContactsContext";
 import { getAuth } from "firebase/auth";
 import Button from "../../components/Button/Button";
 import "./EditContact.css";
@@ -11,7 +10,6 @@ export default function EditContact() {
   const { updateContact } = useContext(ContactsContext);
   const [contact, setContact] = useState({});
   const [photoFile, setPhotoFile] = useState(null);
-  // const { currentUser } = useAuth;
   const auth = getAuth();
   const navigate = useNavigate();
 

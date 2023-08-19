@@ -1,6 +1,6 @@
 import { useState, useContext } from "react";
-import { ContactsContext } from "../../context/ContactsContext";
 import { Link, useNavigate } from "react-router-dom";
+import { ContactsContext } from "../../context/ContactsContext";
 import { CgClose } from "react-icons/cg";
 import Button from "../../components/Button/Button";
 import "./CreateContact.css";
@@ -18,7 +18,6 @@ export default function CreateContact() {
   const [categories, setCategories] = useState("");
   const [notes, setNotes] = useState("");
   const [photoFile, setPhotoFile] = useState(null);
-
   const { addContact } = useContext(ContactsContext);
   const navigate = useNavigate();
 
@@ -41,7 +40,7 @@ export default function CreateContact() {
 
     const newContact = data;
     addContact(newContact);
-    // Maybe add loading state. Clear the form, give confirmation to user.
+    // add loading state. Clear the form, give confirmation to user.
     navigate('/app');
   };
 
