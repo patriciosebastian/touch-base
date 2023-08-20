@@ -1,7 +1,7 @@
 import { useState, useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { GroupsContext } from '../../context/GroupsContext';
-import Header from "../../components/Navbar/Navbar";
+import Navbar from '../../components/Navbar/Navbar';
 import Button from '../../components/Button/Button';
 import './CreateGroup.css';
 
@@ -21,7 +21,7 @@ export default function CreateGroup() {
 
   return (
     <div>
-        <Header className="create-group-header" />
+        <Navbar className="create-group-header" />
         <div className="create-group-container">
             <h1>Create Group</h1>
             <form className="create-group-form" id="create-group-form" encType="multipart/form-data" onSubmit={handleSubmit}>

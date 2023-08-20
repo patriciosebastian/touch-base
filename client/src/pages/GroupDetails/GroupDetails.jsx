@@ -9,7 +9,7 @@ import { LuEye, LuEdit3, LuTrash2, LuCheck, LuMail } from 'react-icons/lu';
 import { PiPlusThin } from 'react-icons/pi';
 import { CgClose } from 'react-icons/cg';
 import useOutsideClick from '../../hooks/useOutsideClick';
-import Header from "../../components/Navbar/Navbar";
+import Navbar from '../../components/Navbar/Navbar';
 import MoreOptions from '../../components/MoreOptions/MoreOptions';
 import BackButton from '../../components/BackButton/BackButton';
 import Button from '../../components/Button/Button';
@@ -140,7 +140,7 @@ export default function GroupDetails() {
 
   return (
     <div className="group-details-container">
-      <Header className="group-details-header" />
+      <Navbar className="group-details-header" />
       <div className="top-controls">
         <BackButton className="group-details-back-btn" />
         <button className="delete-group-btn" onClick={() => deleteUserGroup()}><LuTrash2 className="delete-group-icon"></LuTrash2></button>

@@ -6,7 +6,7 @@ import { ContactsContext } from "../../context/ContactsContext";
 import { formatPhoneNumber } from "../../utils/utils";
 import { LuPhone, LuMail, LuHome } from "react-icons/lu";
 import { ReactComponent as GroupIcon } from "../../assets/Group.svg";
-import Header from "../../components/Navbar/Navbar";
+import Navbar from "../../components/Navbar/Navbar";
 import Card from "../../components/Card/Card";
 import BackButton from "../../components/BackButton/BackButton";
 import "./ContactDetails.css";
@@ -39,7 +39,7 @@ export default function ContactDetails() {
 
   return (
     <div>
-      <Header className="contact-details-header" />
+      <Navbar className="contact-details-header" />
       <div className="contact-details-container">
         <BackButton className="go-back-link" />
         <Card className="contact-details-card">
