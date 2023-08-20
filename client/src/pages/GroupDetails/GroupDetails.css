@@ -56,8 +56,7 @@
 
 .group-name-and-about-text::after {
     content: "";
-    background: linear-gradient(rgba(60,60,60,0.4), rgba(60,60,60,0.4));
-    /* background: linear-gradient(rgb(238 238 238 / 50%), rgb(164 164 164 / 75%)); */
+    background: var(--overlay-gradient);
     border-radius: 3px;
     position: absolute;
     top: 0;
@@ -224,8 +223,7 @@
     border-bottom: 1px solid;
     border-bottom-color: lightgray;
     width: 100%;
-    padding: 0 5%; /* remove left and right padding? */
-    /* margin-bottom: 1rem; */
+    padding: 0 5%;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -273,7 +271,6 @@
     border-bottom: 1px solid;
 }
 
-/* give element a className & update selector here after adding new email icon */
 .gd-more-options a:nth-child(2) {
     padding: 2px 0;
 }

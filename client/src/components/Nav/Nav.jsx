@@ -1,11 +1,11 @@
 import { Link, Outlet, useLocation } from "react-router-dom";
 import HamburgerMenu from "../HamburgerMenu/HamburgerMenu";
-import "../Nav/Nav.css";
+import "./Nav.css";
 
 export default function Nav(props) {
   const location = useLocation();
   const path = location.pathname;
-  const classes = 'nav-bar ' + props.className;
+  const classes = 'nav-items ' + props.className;
 
   return (
     <>

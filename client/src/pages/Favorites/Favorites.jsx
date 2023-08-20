@@ -1,5 +1,5 @@
-import Header from '../../components/Header/Header';
-import './Favorites.css';
+import Header from "../../components/Navbar/Navbar";
+import "./Favorites.css";
 
 export default function Favorites() {
   return (
@@ -7,5 +7,5 @@ export default function Favorites() {
       <Header className="favorites-header" />
       <h1 className="favorites-main-heading">Favorites</h1>
     </div>
-  )
+  );
 }

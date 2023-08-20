@@ -4,7 +4,7 @@ import { GroupsContext } from '../../context/GroupsContext';
 import { useAuth } from '../../context/AuthContext';
 import { auth } from '../../firebase';
 import { PiPlusThin } from 'react-icons/pi';
-import Header from '../../components/Header/Header';
+import Header from "../../components/Navbar/Navbar";
 import Card from '../../components/Card/Card';
 import './ViewGroups.css';
 

@@ -9,7 +9,7 @@ import { LuEye, LuEdit3, LuTrash2, LuCheck, LuMail } from 'react-icons/lu';
 import { PiPlusThin } from 'react-icons/pi';
 import { CgClose } from 'react-icons/cg';
 import useOutsideClick from '../../hooks/useOutsideClick';
-import Header from '../../components/Header/Header';
+import Header from "../../components/Navbar/Navbar";
 import MoreOptions from '../../components/MoreOptions/MoreOptions';
 import BackButton from '../../components/BackButton/BackButton';
 import Button from '../../components/Button/Button';

@@ -1,4 +1,4 @@
-.header-container {
+.navbar {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -10,22 +10,4 @@
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
-}
-
-.header-controls {
-    width: 25%;
-    height: 3rem;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.header-controls a > svg {
-    width: 2em;
-    height: 2em;
-    color: black;
-}
-
-.flex-end {
-    margin-left: auto !important;
 }

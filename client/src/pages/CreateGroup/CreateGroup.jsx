@@ -1,7 +1,7 @@
 import { useState, useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { GroupsContext } from '../../context/GroupsContext';
-import Header from '../../components/Header/Header';
+import Header from "../../components/Navbar/Navbar";
 import Button from '../../components/Button/Button';
 import './CreateGroup.css';
 

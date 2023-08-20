@@ -1,5 +1,5 @@
 import { useAuth } from "../../context/AuthContext";
-import Header from "../../components/Header/Header";
+import Header from "../../components/Navbar/Navbar";
 import LogoutButton from "../../components/Logout Button/LogoutButton";
 import "./Account.css";
 
