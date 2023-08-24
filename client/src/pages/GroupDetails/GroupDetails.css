@@ -1,15 +1,8 @@
-.group-details-header {
-    padding-top: 0.5rem;
-    padding-bottom: 1rem;
-    border-bottom: 1px solid lightgrey;
-    margin-bottom: 1.5rem;
-}
-
 .top-controls {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin: 0 5% 1rem 5%;
+    margin: 1rem 5% 1rem 5%;
 }
 
 .group-details-back-btn {

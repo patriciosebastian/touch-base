@@ -1,7 +1,6 @@
 import { useState, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { ContactsContext } from "../../context/ContactsContext";
-import { CgClose } from "react-icons/cg";
 import Button from "../../components/Button/Button";
 import "./CreateContact.css";
 
@@ -46,10 +45,7 @@ export default function CreateContact() {
 
   return (
     <div className="create-contact-container">
-      <div className="create-contact-header">
-        <h1>Create Contact</h1>
-        <Link to={'/app'}><CgClose /></Link>
-      </div>
+      <h1 className="create-contact-heading">Create Contact</h1>
       <form className="create-contact-form" id="create-contact-form" encType="multipart/form-data" autoComplete="on" onSubmit={handleSubmit}>
 
         {/* name */}

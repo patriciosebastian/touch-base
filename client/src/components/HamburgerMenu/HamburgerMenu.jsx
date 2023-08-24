@@ -14,6 +14,10 @@ export default function HamburgerMenu() {
 
   useOutsideClick(ref, () => setMobileNavOpen(false));
 
+  const handleClick = () => {
+    setMobileNavOpen(false);
+  };
+
   const handleLogout = async () => {
   try {
       await logout();
@@ -30,10 +34,10 @@ export default function HamburgerMenu() {
         <LuMenu className="mobile-nav-menu-icon" onClick={() => setMobileNavOpen(!mobileNavOpen)} />
       </div>
       <Dropdown className={`mobile-nav-ul ${mobileNavOpen ? '' : 'hidden'}`}>
-        <li><Link to={'/app'}>Contacts</Link></li>
-        <li><Link to={'/app/groups'}>Groups</Link></li>
-        <li><Link to={'/app/favorites'}>Favorites</Link></li>
-        <li><Link to={'/app/account'}>Account</Link></li>
+        <li><Link to={'/app'} onClick={() => handleClick()}>Contacts</Link></li>
+        <li><Link to={'/app/groups'} onClick={() => handleClick()}>Groups</Link></li>
+        <li><Link to={'/app/favorites'} onClick={() => handleClick()}>Favorites</Link></li>
+        <li><Link to={'/app/account'} onClick={() => handleClick()}>Account</Link></li>
         <br />
         <li className="nav-dropdown-logout" onClick={handleLogout}>Log out</li>
       </Dropdown>

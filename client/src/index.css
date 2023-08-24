@@ -11,6 +11,7 @@
   --google-blue: #4285F4;
   --google-alt-blue: #1669F2;
   --light-grey: #f5f5f5;
+  --text-gradient: -webkit-linear-gradient(left, var(--secondary-color), var(--primary-color));
   --overlay-gradient: linear-gradient(rgb(117 116 116 / 40%), rgba(60,60,60,0.7));
   /* temp colors for now */
   --classic-off-white: #fdfdfd;
@@ -22,11 +23,16 @@
   --charcoal: #333333;
 
   /* bp sizes */
-  --x-small-bp: 576px;
-  --small-bp: 576px;
-  --medium-bp: 768px;
-  --large-bp: 992px;
-  --extra-large-bp: 1200px;
+  --max-w-x-sm: 575px;
+  --min-w-sm: 576px;
+  --max-w-sm: 767px;
+  --min-w-md: 768px;
+  --max-w-md: 991px;
+  --min-w-lg: 992px;
+  --max-w-lg: 1199px;
+  --min-w-x-lg: 1200px;
+  --max-w-x-lg: 1399px;
+  --min-w-xx-lg: 1400px;
 }
 
 /***** CSS Reset *****/

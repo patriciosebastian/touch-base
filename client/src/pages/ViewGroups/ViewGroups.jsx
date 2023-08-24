@@ -4,7 +4,6 @@ import { GroupsContext } from '../../context/GroupsContext';
 import { useAuth } from '../../context/AuthContext';
 import { auth } from '../../firebase';
 import { PiPlusThin } from 'react-icons/pi';
-import Header from "../../components/Navbar/Navbar";
 import Card from '../../components/Card/Card';
 import './ViewGroups.css';
 
@@ -28,7 +27,6 @@ export default function Groups() {
   return (
     <div>
       <div className="view-groups-container">
-        <Header className="view-groups-header" />
         <div className="groups-container">
           <h1 className="groups-h1">Groups</h1>
           <div className="display-groups-container">

@@ -8,7 +8,6 @@ import { LuEye, LuEdit3, LuMail, LuPlus } from "react-icons/lu";
 import { CgClose } from "react-icons/cg";
 import useOutsideClick from "../../hooks/useOutsideClick";
 import DeleteContact from "../DeleteContact/DeleteContact";
-import Navbar from "../../components/Navbar/Navbar";
 import MoreOptions from "../../components/MoreOptions/MoreOptions";
 import Modal from "../../components/Modal/Modal";
 import Button from "../../components/Button/Button";
@@ -79,7 +78,6 @@ export default function ViewContacts() {
   return (
     <div>
       <div className="view-contacts-container">
-        <Navbar className="view-contacts-header" />
         <div className="main-heading-flex-container">
           <h1 className="view-contacts-main-heading">Contacts</h1>
           <Link to={"create-contact"}>

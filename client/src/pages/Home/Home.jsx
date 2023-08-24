@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
-import TB2 from '../../assets/Touch-Base_2.svg';
-import "../Home/Home.css";
 import Button from "../../components/Button/Button";
+import TB2 from '../../assets/Touch-Base_2.svg';
+import "./Home.css";
 
 export default function Home () {
   return (
@@ -14,11 +14,11 @@ export default function Home () {
             <span className="h1-gradient"> Touch Base</span>
           </h1>
           <div className="cta-section">
-            <Button className="demo-cta">
-              <Link>Demo Login</Link>
-            </Button>
             <Button className="hero-section-cta">
-              <Link to={'/sign-up'}>Get Started</Link>
+              <Link className="get-started-link" to={'/sign-up'}>Get Started</Link>
+            </Button>
+            <Button className="demo-cta">
+              <Link className="demo-link">Demo Login</Link>
             </Button>
           </div>
         </section>

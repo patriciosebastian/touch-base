@@ -1,6 +1,6 @@
 .hero-section {
     width: 80%;
-    height: 100vh;
+    height: 92vh;
     margin: 0 auto;
     display: flex;
     flex-wrap: wrap;
@@ -9,48 +9,107 @@
 }
 
 .hero-section img {
-    width: 75%;
+    width: calc(10rem + 10vw);
     height: auto;
 }
 
 .hero-section h1 {
-    font-size: 2rem;
+    font-size: calc(1.4rem + 0.5vw);
     text-align: center;
     margin-top: 2rem;
+    width: calc(75% + 1vw);
 }
 
 .hero-section h1 > .h1-gradient {
-    background: -webkit-linear-gradient(left, var(--secondary-color), var(--primary-color));
-    -webkit-background-clip: text;
+    background: var(--text-gradient);
     background-clip: text;
+    -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
 }
 
 .cta-section {
     margin-top: .75rem;
-    width: 80%;
-    display: flex;
-    justify-content: space-evenly;
 }
 
 .demo-cta {
-    background: var(--primary-color);
+    background-color: var(--classic-off-white);
     border-color: var(--primary-color) !important;
 }
 
-.demo-cta > a {
-    color: white;
-    background: var(--primary-color);
-    font-weight: 600;
+.demo-link {
+    color: var(--primary-color) !important;
+    font-weight: bold;
 }
 
 .hero-section-cta {
-    background-color: white;
+    background-color: var(--primary-color);
     border-color: var(--primary-color) !important;
+    display: block;
+    margin-right: .5rem;
+    margin-bottom: .5rem;
 }
 
-.hero-section-cta > a {
-    color: var(--primary-color);
-    background-color: white;
-    font-weight: 600;
+.get-started-link {
+    color: var(--classic-off-white) !important;
+    font-weight: bold;
+}
+
+/***** MEDIA QUERIES *****/
+
+@media (min-width: 369px) {
+    .cta-section {
+        display: flex;
+        justify-content: center;
+    }
+    .hero-section-cta {
+        display: auto;
+        margin-bottom: 0;
+    }
+    .hero-section h1 {
+        width: calc(75% + 11vw);
+        /* width: calc(72% + 11vw); */
+        /* width: calc(70% + 11vw); */
+    }
+}
+
+@media (min-width: 369px) and (max-width: 475px) {
+    .hero-section h1 {
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+}
+
+@media (min-width: 576px) {
+    .hero-section img {
+        max-width: 23rem;
+    }
+    .hero-section h1 {
+        width: calc(75% + 1vw);
+    }
+}
+
+@media (min-width: 768px) {
+    .hero-section h1 {
+        font-size: calc(1.5rem + 1vw);
+        max-width: 686px;
+    }
+}
+
+@media (min-width: 992px) {
+    .hero-section h1 {
+        margin-left: 10rem;
+        margin-right: 10rem;
+    }
+    .hero-section {
+        flex-direction: column;
+        flex-wrap: nowrap;
+        justify-content: center;
+        align-items: center;
+    }
+}
+
+@media (min-width: 1819px) {
+    .hero-section h1 {
+        max-width: calc(44% - 1vw);
+    }
 }
