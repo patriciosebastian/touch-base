@@ -2,10 +2,21 @@
 
 :root {
   /* colors */
-  --primary-color: #8c52ff;
-  --primary-color-light: rgb(140, 82, 255, 0.5);
-  --secondary-color: #ffbd59;
-  --secondary-color-light: rgba(255, 189, 89, 0.5);
+  --primary-color: #6E6BEE;
+  --primary-dark: #5957D1;
+  --secondary-color: #FFDAB9;
+  --classic-off-white: #FDFDFD;
+  --dark-neutral: #333333;
+  --light-neutral: #E0E0E0;
+  /* -------- */
+  --modern-purple: #6E6BEE;
+  --primary-color-2: #8c52ff;
+  --primary-color-light-2: rgb(140, 82, 255, 0.5);
+  --secondary-color-2: #ffbd59;
+  --secondary-color-light-2: rgba(255, 189, 89, 0.5);
+  --blueish-purple: #6a52ff;
+  --vibrant-orange: #ff8c52;
+  --soft-yellow: #FFFAE1;
   --red-color: #C82333;
   --box-shadow-color: #bfbfbfdb;
   --google-blue: #4285F4;
@@ -14,7 +25,6 @@
   --text-gradient: -webkit-linear-gradient(left, var(--secondary-color), var(--primary-color));
   --overlay-gradient: linear-gradient(rgb(117 116 116 / 40%), rgba(60,60,60,0.7));
   /* temp colors for now */
-  --classic-off-white: #fdfdfd;
   --warm-off-white: #faf0e6;
   --cream: #fffdd0;
   --ivory: #fffff0;

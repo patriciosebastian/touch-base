@@ -12,6 +12,9 @@ import MoreOptions from "../../components/MoreOptions/MoreOptions";
 import Modal from "../../components/Modal/Modal";
 import Button from "../../components/Button/Button";
 import SearchBar from "../../components/SearchBar/SearchBar";
+import useMedia from "../../hooks/useMedia";
+import SideNav from "../../components/SideNav/SideNav";
+import g6 from '../../assets/g6.svg';
 import "../ViewContacts/ViewContacts.css";
 
 export default function ViewContacts() {
@@ -25,6 +28,7 @@ export default function ViewContacts() {
   const [searchQuery, setSearchQuery] = useState("");
   const [filteredContacts, setFilteredContacts] = useState([]);
   const searchResultsRef = useRef(null);
+  const isDesktop = useMedia('(min-width: 1200px)');
 
   // fetch contacts
   useEffect(() => {
@@ -78,26 +82,29 @@ export default function ViewContacts() {
   return (
     <div>
       <div className="view-contacts-container">
-        <div className="main-heading-flex-container">
-          <h1 className="view-contacts-main-heading">Contacts</h1>
-          <Link to={"create-contact"}>
-            <LuPlus className="create-contact-icon" />
-          </Link>
+        <div className="top-controls-container" style={{ backgroundImage: `url(${g6})`, height: "100%", width: "100%" }}>
+          <div className="main-heading-flex-container">
+            <h1 className="view-contacts-main-heading">Contacts</h1>
+            <Link className="create-contact-link" to={"create-contact"}>
+              <LuPlus className="create-contact-icon" />
+            </Link>
+          </div>
+          <SearchBar
+            className="view-contacts-search"
+            onChange={(e) => setSearchQuery(e.target.value)}
+          />
+          <ul className="search-results-container" ref={searchResultsRef}>
+            {searchQuery &&
+              filteredContacts.map((contact) => (
+                <li key={contact.contacts_id}>
+                  <Link to={"/app/contacts/" + contact.contacts_id}>
+                    {contact.first_name}&nbsp;{contact.last_name}
+                  </Link>
+                </li>
+              ))}
+          </ul>
         </div>
-        <SearchBar
-          className="view-contacts-search"
-          onChange={(e) => setSearchQuery(e.target.value)}
-        />
-        <ul className="search-results-container" ref={searchResultsRef}>
-          {searchQuery &&
-            filteredContacts.map((contact) => (
-              <li key={contact.contacts_id}>
-                <Link to={"/app/contacts/" + contact.contacts_id}>
-                  {contact.first_name}&nbsp;{contact.last_name}
-                </Link>
-              </li>
-            ))}
-        </ul>
+        {isDesktop && <SideNav className="view-contacts-side-nav" />}
         <div className="contacts-container">
           {contacts.map((contact) => (
             <div key={contact.contacts_id} className="contact-container">

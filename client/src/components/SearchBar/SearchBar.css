@@ -7,6 +7,8 @@
 }
 
 .searchbar:focus {
-    background-color: var(--class-off-white);
-    outline-color: var(--secondary-color);
+    background-color: var(--classic-off-white);
+    outline-color: var(--primary-dark);
+    outline-style: solid;
+    outline-width: 2px;
 }

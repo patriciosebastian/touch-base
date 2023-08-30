@@ -20,8 +20,8 @@
 
 .mobile-nav-ul {
     top: 3.2rem;
-    left: 54%;
-    right: 6%;
+    left: calc(54% + 1vw);
+    right: calc(6% - 0.5vw);
 }
 
 .mobile-nav-ul li {
@@ -36,4 +36,22 @@
 .nav-dropdown-logout {
     cursor: pointer;
     width: 50%;
+}
+
+/***** MEDIA QUERIES *****/
+
+/* XX SMALL */
+@media (max-width: 279px) {
+    .mobile-nav-ul {
+        padding-left: 0;
+        padding-right: 0;
+    }
+}
+
+@media (min-width: 280px) {
+    .mobile-nav-ul {
+        left: auto;
+        width: 40.5%;
+        max-width: 280px;
+    }
 }

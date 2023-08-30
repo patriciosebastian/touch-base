@@ -1,15 +1,17 @@
 .navbar {
+    background: linear-gradient(90deg, var(--primary-dark), var(--primary-color));
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border-bottom:1px solid lightgrey;
     padding: 0.5rem 5% 1rem 5%;
-    /* width 90% margin-left/right auto ? */
 }
 
 .navbar-brand {
     background: -webkit-linear-gradient(left, var(--secondary-color), var(--primary-color));
-    -webkit-background-clip: text;
     background-clip: text;
+    -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
+    cursor: default;
+    filter: brightness(1.15);
 }
