@@ -10,9 +10,6 @@
 .display-groups-container {
     background-color: var(--light-grey);
     border-radius: 3px;
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(40%, 1fr));
-    gap: 24px;
     padding: 1.125rem;
 }
 
@@ -23,8 +20,13 @@
     background-position: center;
     background-repeat: no-repeat;
     border-radius: 3px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 1.5rem;
     padding: 1.5rem 1.3rem 2.5rem 1.3rem;
     position: relative;
+    text-align: center;
 }
 
 .group-card::after {
@@ -41,12 +43,12 @@
 
 .group-details-link {
     text-decoration: none;
-    color: white;
+    color: var(--classic-off-white);
     cursor: pointer;
 }
 
 .group-details-link:visited {
-    color: white;
+    color: var(--classic-off-white);
 }
 
 .group-card h2, .group-card p {
@@ -58,6 +60,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    height: 14.5rem;
 }
 
 .add-group-link, .add-group-icon {
@@ -69,4 +72,71 @@
 .add-group-icon {
     color: lightgrey;
     cursor: pointer;
+}
+
+/***** MEDIA QUERIES *****/
+
+/* SMALL */
+@media (max-width: 767px) {
+    .groups-container {
+        max-width: 576px;
+    }
+}
+
+/* MEDIUM */
+@media (min-width: 768px) {
+    .groups-container {
+        width: 75%;
+        margin: 0 auto;
+    }
+    .display-groups-container {
+        background-color: var(--light-grey);
+        border-radius: 3px;
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(40%, 1fr));
+        gap: 24px;
+        padding: 1.125rem;
+    }
+    .group-card {
+        margin-bottom: 0;
+    }
+}
+
+@media (max-width: 1199px) {
+    .groups-container {
+        max-width: 770px;
+    }
+}
+
+/* LARGE */
+@media (min-width: 1200px) {
+    .groups-container {
+        width: 45%;
+    }
+    .view-groups-side-nav {
+        background-color: var(--light-grey);
+        border: 1px solid var(--light-neutral);
+        border-radius: 0;
+        color: var(--dark-neutral);
+        font-weight: 600;
+        width: 13.75%;
+        height: 21rem;
+        top: 9.6rem;
+        left: 6.875%;
+        list-style: none;
+        padding-top: 1.9rem;
+        position: absolute;
+        box-shadow: none;
+    }
+    .view-groups-side-nav a {
+        color: var(--dark-neutral);
+        font-weight: 600;
+        text-decoration: none;
+    }
+    .view-groups-side-nav a:visited {
+        color: var(--dark-neutral);
+    }
+    .view-groups-side-nav .nav-dropdown-logout {
+        width: 58%;
+    }
 }

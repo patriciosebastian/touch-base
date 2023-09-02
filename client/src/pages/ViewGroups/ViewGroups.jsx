@@ -5,11 +5,14 @@ import { useAuth } from '../../context/AuthContext';
 import { auth } from '../../firebase';
 import { PiPlusThin } from 'react-icons/pi';
 import Card from '../../components/Card/Card';
+import useMedia from '../../hooks/useMedia';
+import SideNav from '../../components/SideNav/SideNav';
 import './ViewGroups.css';
 
 export default function Groups() {
   const { groups, fetchGroups } = useContext(GroupsContext);
   const { idToken, authLoading } = useAuth();
+  const isDesktop = useMedia('(min-width: 1200px)');
 
   useEffect(() => {
     if (auth.currentUser && idToken && !authLoading) {
@@ -49,6 +52,7 @@ export default function Groups() {
             </div>
           </div>
         </div>
+        {isDesktop && <SideNav className="view-groups-side-nav" />}
       </div>
     </div>
   );

@@ -1,5 +1,5 @@
 .edit-group-title {
-    margin: 1rem 0 1rem 1.3rem;
+    margin: 1rem 0 1rem 5%;
 }
 
 .edit-group-form {
@@ -9,6 +9,11 @@
     flex-direction: column;
 }
 
+.edit-group-form label {
+    font-weight: 600;
+    max-width: 345.6px;
+}
+
 .edit-group-form input {
     background-color: var(--light-grey);
     border: 0;
@@ -16,18 +21,16 @@
     border-bottom-color: lightgray;
     border-radius: 5px;
     margin-bottom: .75rem;
+    max-width: 345.6px;
 }
 
 .edit-cover-picture {
-    background-color: white !important;
+    background-color: var(--classic-off-white) !important;
     border-bottom: 0 !important;
     border-radius: 3px !important;
 }
 
 .group-update-and-cancel-btns {
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
     margin-top: 1rem;
 }
 
@@ -36,8 +39,9 @@
     border-color: var(--primary-color);
     color: var(--classic-off-white);
     cursor: pointer;
+    display: block;
     font-weight: bold;
-    margin-right: 5%;
+    margin-bottom: 0.75rem;
 }
 
 .edit-group-cancel-btn {
@@ -47,5 +51,25 @@
     box-shadow: -1px 2px 6px 0px var(--box-shadow-color);
     color: var(--red-color);
     cursor: pointer;
+    font-weight: 500;
     padding: 6px 12px;
+}
+
+/***** MEDIA QUERIES *****/
+
+/* MEDIUM */
+@media (min-width: 768px) {
+    .edit-group-form label {
+        width: 50%;
+        max-width: 400px;
+    }
+    .edit-group-form input {
+        width: 50%;
+        max-width: 400px;
+    }
+    .update-group-btn {
+        display: inline-block;
+        margin-right: 5%;
+        margin-bottom: 0;
+    }
 }

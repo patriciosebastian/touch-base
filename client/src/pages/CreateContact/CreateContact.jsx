@@ -14,7 +14,6 @@ export default function CreateContact() {
   const [city, setCity] = useState("");
   const [state, setState] = useState("");
   const [zip, setZip] = useState("");
-  const [categories, setCategories] = useState("");
   const [notes, setNotes] = useState("");
   const [photoFile, setPhotoFile] = useState(null);
   const { addContact } = useContext(ContactsContext);
@@ -33,7 +32,6 @@ export default function CreateContact() {
     data.append("city", city);
     data.append("state", state);
     data.append("zip", zip);
-    data.append("categories", categories);
     data.append("notes", notes);
     data.append("photo", photoFile);
 
@@ -105,13 +103,8 @@ export default function CreateContact() {
           </div>
         </div>
 
-        {/* groups and notes */}
+        {/* notes */}
         <div className="categories-and-notes-container">
-          <div className="categories-control">
-            <label htmlFor="categories">Categories</label>
-            <input className="categories" type="text" id="categories" name="categories" value={categories} onChange={(e) => setCategories(e.target.value)} />
-          </div>
-
           <div className="notes-control">
             <label htmlFor="notes">Notes</label>
             <input className="notes" type="text" id="notes" name="notes" value={notes} onChange={(e) => setNotes(e.target.value)} />

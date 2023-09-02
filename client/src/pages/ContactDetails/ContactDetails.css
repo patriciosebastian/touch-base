@@ -1,11 +1,17 @@
+.contact-details-container {
+    width: 65%;
+    margin: 0 auto;
+}
+
 .go-back-link {
     margin-top: 1rem;
-    margin-left: 2rem;
-    background-color: white;
+    background-color: var(--classic-off-white);
+    padding-left: 0;
 }
 
 .contact-details-card {
     margin: 1rem auto 0 auto;
+    width: auto;
 }
 
 .contact-details-image {
@@ -22,28 +28,69 @@
     margin: 1rem 0 .5rem 0;
 }
 
+.contact-details-phone, .contact-details-email, .contact-details-address, .contact-details-group {
+    border-bottom: 1px solid lightgrey;
+    margin-bottom: 1rem;
+    padding-bottom: 1rem;
+}
+
 .contact-details-phone, .contact-details-email, .contact-details-group {
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
+    text-align: center;
 }
 
 .contact-details-address {
-    display: flex;
-    justify-content: flex-start;
-    align-items: baseline;
+    text-align: center;
 }
 
 .contact-details-address svg {
     width: 1.1875rem;
-    height: 1rem;
+    height: 1.1875rem;
 }
 
 p svg {
-    margin-right: .5rem;
     color: var(--primary-color);
+    margin: 0 auto;
+    width: 1.2rem;
+    height: 1.2rem;
+}
+
+.contact-details-notes {
+    text-align: center;
 }
 
 .notes-field {
     text-decoration: underline;
+}
+
+/***** MEDIA QUERIES *****/
+
+/* MEDIUM */
+@media (min-width: 768px) {
+    .contact-details-container {
+        max-width: 700px;
+    }
+    .go-back-link {
+        padding-left: 0;
+    }
+    .contact-details-phone, .contact-details-email, .contact-details-address, .contact-details-group {
+        border-bottom: 0;
+        margin-bottom: 0;
+        padding-bottom: 0;
+    }
+    .contact-details-phone, .contact-details-email, .contact-details-group {
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+    }
+    .contact-details-address {
+        display: flex;
+        justify-content: flex-start;
+        align-items: baseline;
+    }
+    p svg {
+        margin: 0 .5rem 0 0;
+    }
+    .contact-details-notes {
+        text-align: left;
+    }
 }
