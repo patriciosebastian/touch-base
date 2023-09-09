@@ -3,38 +3,70 @@ import { useParams } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import { getAuth } from "firebase/auth";
 import { ContactsContext } from "../../context/ContactsContext";
+import { GroupsContext } from "../../context/GroupsContext";
 import { formatPhoneNumber } from "../../utils/utils";
 import { LuPhone, LuMail, LuHome } from "react-icons/lu";
 import { ReactComponent as GroupIcon } from "../../assets/Group.svg";
 import Card from "../../components/Card/Card";
 import BackButton from "../../components/BackButton/BackButton";
+import LoadingSpinner from "../../components/LoadingSpinner/LoadingSpinner";
 import "./ContactDetails.css";
 
 export default function ContactDetails() {
   const [contact, setContact] = useState(null);
+  const [allGroups, setAllGroups] = useState([]);
+  const [loading, setLoading] = useState(true);
   const { id } = useParams();
-  const { fetchAContact } = useContext(ContactsContext);
   const { currentUser } = useAuth;
+  const { fetchAContact } = useContext(ContactsContext);
+  const { fetchGroups } = useContext(GroupsContext);
   const auth = getAuth();
 
   useEffect(() => {
-    const fetchContact = async () => {
+    const fetchContactAndGroups = async () => {
       if (auth.currentUser) {
+        setLoading(true);
         const fetchedContact = await fetchAContact(id);
         setContact(fetchedContact);
+
+        const groups = await fetchGroups();
+        setAllGroups(groups);
+        
+        setLoading(false);
       } else {
           console.error("There has been a problem with your request:");
+          setLoading(false);
       };
     }
-    fetchContact();
+    fetchContactAndGroups();
     // eslint-disable-next-line
-  }, [id, auth, currentUser]);
+  }, [id, auth, currentUser, fetchGroups]);
 
-  if (!contact)
+  // filter groups that have the contact,
+  // only when contact & all groups are available
+  const groupsWithContact =
+    contact && allGroups.length > 0
+      ? allGroups.filter((group) => {
+          return (
+            group.contacts &&
+            group.contacts.some(
+              (contactObj) => contactObj.contacts_id === contact.contacts_id
+            )
+          );
+        })
+      : [];
+
+  if (loading) {
+    return <LoadingSpinner />;
+  }
+
+  // Non-existent contact
+  if (!contact) {
+    setLoading(false);
     return (
-      <div>Error with request. Are you sure you're in the right place?</div>
+      <div>That contact couldn't be found, or there was a different error with the request. Are you sure you're in the right place?</div>
     );
-  //   "re-routing..."
+  }
 
   return (
     <div>
@@ -47,8 +79,8 @@ export default function ContactDetails() {
           <h1 className="contact-details-name">{contact.first_name} {contact.last_name}</h1>
           <p className="contact-details-phone"><LuPhone />{formatPhoneNumber(contact.phone)}</p>
           <p className="contact-details-email"><LuMail />{contact.email}</p>
-          <p className="contact-details-address"><LuHome />{contact.address1} {contact.address2}, {contact.city}, {contact.state}, {contact.zip}</p>
-          <p className="contact-details-group"><GroupIcon />{contact.categories}</p>
+          <p className="contact-details-address"><LuHome />{contact.address1}, {contact.address2 ? contact.address2 + "," : ""} {contact.city}, {contact.state}, {contact.zip}</p>
+          <p className="contact-details-group"><GroupIcon />{groupsWithContact ? groupsWithContact.map(group => group.group_name).join(', ') : ''}</p>
           <br />
           <p className="contact-details-notes"><span className="notes-field">Notes</span>:{" "} {contact.notes}</p>
         </Card>

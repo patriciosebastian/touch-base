@@ -3,6 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { ContactsContext } from "../../context/ContactsContext";
 import { getAuth } from "firebase/auth";
 import Button from "../../components/Button/Button";
+import LoadingSpinner from "../../components/LoadingSpinner/LoadingSpinner";
 import "./EditContact.css";
 
 export default function EditContact() {
@@ -10,11 +11,10 @@ export default function EditContact() {
   const { updateContact } = useContext(ContactsContext);
   const [contact, setContact] = useState({});
   const [photoFile, setPhotoFile] = useState(null);
+  const [loading, setLoading] = useState(false);
   const auth = getAuth();
   const navigate = useNavigate();
 
-  // Get most up to date info for the contact,
-  // monitor state of contact based on id
   useEffect(() => {
     const fetchContact = async () => {
       let idToken = "";
@@ -48,6 +48,7 @@ export default function EditContact() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
 
     const data = new FormData();
     Object.entries(contact).forEach(([key, value]) => {
@@ -59,138 +60,142 @@ export default function EditContact() {
     }
 
     await updateContact(contact.contacts_id, data);
+    setLoading(false);
     navigate(-1);
     // give confirmation to user that contact was updated.
-    // route user back to previous navigation.
   };
 
   return (
     <div>
-      <h1 className="edit-contact-title">Edit Contact</h1>
-      <form
-        className="edit-contact-form"
-        id="edit-contact-form"
-        encType="multipart/form-data"
-        onSubmit={handleSubmit}
-      >
-        <label htmlFor="first_name">First Name</label>
-        <input
-          type="text"
-          id="first_name"
-          name="first_name"
-          value={contact.first_name || ""}
-          onChange={handleChange}
-          required
-        />
-
-        <label htmlFor="last_name">Last Name</label>
-        <input
-          type="text"
-          id="last_name"
-          name="last_name"
-          value={contact.last_name || ""}
-          onChange={handleChange}
-        />
-
-        <label htmlFor="email">Email</label>
-        <input
-          type="email"
-          id="email"
-          name="email"
-          value={contact.email || ""}
-          onChange={handleChange}
-        />
-
-        <label htmlFor="phone">Phone</label>
-        <input
-          type="tel"
-          id="phone"
-          name="phone"
-          value={contact.phone || ""}
-          onChange={handleChange}
-        />
-
-        <label htmlFor="address1">Address 1</label>
-        <input
-          type="text"
-          id="address1"
-          name="address1"
-          value={contact.address1 || ""}
-          onChange={handleChange}
-        />
-
-        <label htmlFor="address2">Address 2</label>
-        <input
-          type="text"
-          id="address2"
-          name="address2"
-          value={contact.address2 || ""}
-          onChange={handleChange}
-        />
-
-        <label htmlFor="city">City</label>
-        <input
-          type="text"
-          id="city"
-          name="city"
-          value={contact.city || ""}
-          onChange={handleChange}
-        />
-
-        <label htmlFor="state">State</label>
-        <input
-          type="text"
-          id="state"
-          name="state"
-          value={contact.state || ""}
-          onChange={handleChange}
-        />
-
-        <label htmlFor="zip">Zip</label>
-        <input
-          type="number"
-          id="zip"
-          name="zip"
-          value={contact.zip || ""}
-          onChange={handleChange}
-        />
-
-        <label htmlFor="categories">Categories</label>
-        <input
-          type="text"
-          id="categories"
-          name="categories"
-          value={contact.categories || ""}
-          onChange={handleChange}
-        />
-
-        <label htmlFor="notes">Notes</label>
-        <input
-          type="text"
-          id="notes"
-          name="notes"
-          value={contact.notes || ""}
-          onChange={handleChange}
-        />
-
-        <label htmlFor="photo">Select a photo:</label>
-        <input
-          className="edit-photo"
-          type="file"
-          id="photo"
-          name="photo"
-          onChange={(e) => {
-            if (e.target.files.length > 0) {
-              setPhotoFile(e.target.files[0]);
-            }
-          }}
-        />
-
-        <div className="update-and-cancel-btns">
-          <Button className="update-contact-btn" type="submit">Update Contact</Button>
-          <button className="edit-contact-cancel-btn" type="button" onClick={() => {navigate(-1)}}>Cancel</button>
-        </div>
-      </form>
+      <h1 className="edit-contact-heading">Edit Contact</h1>
+      {loading ? <LoadingSpinner /> : (
+        <form
+          className="edit-contact-form"
+          id="edit-contact-form"
+          encType="multipart/form-data"
+          onSubmit={handleSubmit}
+        >
+          <label htmlFor="first_name">First Name</label>
+          <input
+            className="edit-contact-first-name"
+            type="text"
+            id="first_name"
+            name="first_name"
+            value={contact.first_name || ""}
+            onChange={handleChange}
+            required
+          />
+  
+          <label htmlFor="last_name">Last Name</label>
+          <input
+            className="edit-contact-last-name"
+            type="text"
+            id="last_name"
+            name="last_name"
+            value={contact.last_name || ""}
+            onChange={handleChange}
+          />
+  
+          <label htmlFor="email">Email</label>
+          <input
+            className="edit-contact-email"
+            type="email"
+            id="email"
+            name="email"
+            value={contact.email || ""}
+            onChange={handleChange}
+          />
+  
+          <label htmlFor="phone">Phone</label>
+          <input
+            className="edit-contact-phone"
+            type="tel"
+            id="phone"
+            name="phone"
+            value={contact.phone || ""}
+            onChange={handleChange}
+          />
+  
+          <label htmlFor="address1">Address 1</label>
+          <input
+            className="edit-contact-address1"
+            type="text"
+            id="address1"
+            name="address1"
+            value={contact.address1 || ""}
+            onChange={handleChange}
+          />
+  
+          <label htmlFor="address2">Address 2</label>
+          <input
+            className="edit-contact-address2"
+            type="text"
+            id="address2"
+            name="address2"
+            value={contact.address2 || ""}
+            onChange={handleChange}
+          />
+  
+          <label htmlFor="city">City</label>
+          <input
+            className="edit-contact-city"
+            type="text"
+            id="city"
+            name="city"
+            value={contact.city || ""}
+            onChange={handleChange}
+          />
+  
+          <label htmlFor="state">State</label>
+          <input
+            className="edit-contact-state"
+            type="text"
+            id="state"
+            name="state"
+            value={contact.state || ""}
+            onChange={handleChange}
+          />
+  
+          <label htmlFor="zip">Zip</label>
+          <input
+            className="edit-contact-zip"
+            type="number"
+            id="zip"
+            name="zip"
+            value={contact.zip || ""}
+            onChange={handleChange}
+          />
+  
+          <label htmlFor="notes">Notes</label>
+          <input
+            className="edit-contact-notes"
+            type="text"
+            id="notes"
+            name="notes"
+            value={contact.notes || ""}
+            onChange={handleChange}
+          />
+  
+          <label htmlFor="photo">Select a photo:</label>
+          <input
+            className="edit-photo"
+            type="file"
+            id="photo"
+            name="photo"
+            onChange={(e) => {
+              if (e.target.files.length > 0) {
+                setPhotoFile(e.target.files[0]);
+              }
+            }}
+          />
+  
+          <div className="update-and-cancel-btns">
+            <Button className="update-contact-btn" type="submit">Update Contact</Button>
+            <button className="edit-contact-cancel-btn" type="button" onClick={() => {navigate(-1)}}>Cancel</button>
+          </div>
+        </form>
+      )}
+      
     </div>
   );
 }

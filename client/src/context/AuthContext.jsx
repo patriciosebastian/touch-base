@@ -49,7 +49,7 @@ export function AuthProvider({ children }) {
         const credential = GoogleAuthProvider.credentialFromError(error);
         console.log("Error signing in with Google: ", credential);
       });
-  }
+  };
 
   // runs on component mount, and every time auth state changes
   useEffect(() => {

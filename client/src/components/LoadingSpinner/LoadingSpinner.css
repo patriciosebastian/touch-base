@@ -1,0 +1,14 @@
+.loading-spinner {
+    width: 60px;
+    aspect-ratio: 1;
+    background: 
+      radial-gradient(farthest-side,var(--secondary-color-2) 94%,#0000) top/8px 8px no-repeat,
+      conic-gradient(#0000 30%,var(--secondary-color-2));
+    -webkit-mask: radial-gradient(farthest-side,#0000 calc(100% - 8px),#000 0);
+    animation: l13 1s infinite linear;
+    border-radius: 50%;
+    margin: 30dvh auto 0 auto;
+  }
+  @keyframes l13{ 
+    100%{transform: rotate(1turn)}
+  }

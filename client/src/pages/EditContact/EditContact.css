@@ -1,5 +1,5 @@
-.edit-contact-title {
-    margin: 1rem 0 1rem 1.3rem;
+.edit-contact-heading {
+    margin: 1rem 0 1rem 5%;
 }
 
 .edit-contact-form {
@@ -9,26 +9,44 @@
     flex-direction: column;
 }
 
+.edit-contact-form label {
+    font-weight: 600;
+    width: fit-content;
+}
+
 .edit-contact-form input {
     background-color: var(--light-grey);
     border: 0;
     border-bottom: 1px solid;
-    border-bottom-color: lightgray;
+    border-bottom-color: lightgrey;
     border-radius: 5px;
-    margin-bottom: .75rem;
+}
+
+.edit-contact-first-name, .edit-contact-last-name, .edit-contact-address1, .edit-contact-notes {
+    max-width: 345.6px;
+}
+
+.edit-contact-last-name, .edit-contact-phone, .edit-contact-zip, .edit-contact-notes, .edit-photo {
+    margin-bottom: 1.25rem;
+}
+
+.edit-contact-email, .edit-contact-phone {
+    max-width: 200px;
+}
+
+.edit-contact-address2, .edit-contact-city {
+    max-width: 170px;
+}
+
+.edit-contact-state, .edit-contact-zip {
+    max-width: 80px;
 }
 
 .edit-photo {
-    background-color: white !important;
+    background-color: var(--classic-off-white) !important;
     border-bottom: 0 !important;
     border-radius: 3px !important;
     width: 75%;
-}
-
-.update-and-cancel-btns {
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
 }
 
 .update-contact-btn {
@@ -36,8 +54,9 @@
     border-color: var(--primary-color);
     color: var(--classic-off-white);
     cursor: pointer;
+    display: block;
     font-weight: bold;
-    margin-right: 5%;
+    margin-bottom: .75rem;
 }
 
 .edit-contact-cancel-btn {
@@ -47,5 +66,22 @@
     box-shadow: -1px 2px 6px 0px var(--box-shadow-color);
     color: var(--red-color);
     cursor: pointer;
+    font-weight: 500;
     padding: 6px 12px;
+}
+
+/***** MEDIA QUERIES *****/
+
+/* Medium */
+@media (min-width: 768px) {
+    .update-and-cancel-btns {
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+    }
+    .update-contact-btn {
+        display: inline-block;
+        margin-right: 2rem;
+        margin-bottom: 0;
+    }
 }

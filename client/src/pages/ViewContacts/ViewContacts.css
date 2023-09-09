@@ -35,9 +35,9 @@
     width: 90%;
     height: auto;
     margin: 0 5%;
-    background-color: var(--light-grey);
+    background-color: var(--classic-off-white);
     border-radius: 5px;
-    box-shadow: -1px 2px 6px 0px #bfbfbfdb;
+    box-shadow: -1px 2px 6px 0px var(--box-shadow-color);
     padding-left: 5px;
     position: absolute;
     top: 10.5rem;
@@ -57,20 +57,16 @@
     color: var(--primary-color);
 }
 
-/*
-   align left side to navbar brand?
-   and shorter?
- */
 .view-contacts-side-nav {
     background-color: var(--light-grey);
     border: 1px solid var(--light-neutral);
     border-radius: 0;
     color: var(--dark-neutral);
     font-weight: 600;
-    width: 13.75%;
-    height: 21rem;
+    width: 17.5%;
+    height: 12rem;
     top: 12.9rem;
-    left: 6.875%;
+    left: 5%;
     list-style: none;
     padding-top: 1.9rem;
     position: absolute;
@@ -101,6 +97,10 @@
     align-items: center;
 }
 
+.disabled-appearance {
+    color: lightgrey;
+}
+
 .contact-container h1 {
     font-size: calc(0.917rem + 1vw);
 }
@@ -114,6 +114,33 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
+}
+
+.delete-contact-confirmation {
+    background-color: var(--classic-off-white);
+    font-size: .8rem;
+    margin-top: .7rem;
+    text-align: center;
+}
+
+.delete-contact-btns-control {
+    padding-top: 5px;
+}
+
+.cancel-delete-contact-btn {
+    color: var(--dark-neutral);
+    margin-right: .5rem;
+}
+
+.cancel-delete-contact-btn, .confirm-delete-contact-btn {
+    background-color: var(--classic-off-white);
+    cursor: pointer;
+    font-weight: 500;
+    padding: 2px 8px;
+}
+
+.confirm-delete-contact-btn {
+    color: var(--red-color);
 }
 
 .vc-more-options {
@@ -166,6 +193,10 @@
     object-position: center;
 }
 
+.email-contact-modal .modal-content {
+    max-width: 752px;
+}
+
 .email-contact-modal-header {
     border-bottom: 1px solid lightgrey;
     margin-bottom: 1.5rem;
@@ -190,7 +221,7 @@
 .send-contact-email-btn {
     background-color: var(--primary-color);
     border-color: var(--primary-color);
-    color: white;
+    color: var(--classic-off-white);
     cursor: pointer;
     font-weight: bold;
 }
@@ -253,14 +284,16 @@
         width: 6rem;
     }
 
-    /* move more options icon location? */
-    /* build different pop up component for hamburger menu? */
+    /* TODO: move more options icon location? */
+    /* TODO: build different pop up component for hamburger menu? */
 }
 
 /* Edge Case */
 @media (min-width: 1200px) and (max-width: 1311px) {
     .contact-card-control-right {
         width: 25%;
+    } && .delete-contact-confirmation {
+        width: 204%;
     }
 }
 
@@ -290,7 +323,7 @@
         width: 75%;
     }
     .contact-container h1 {
-        font-size: 1.3rem;
+        font-size: 1.75rem;
     }
     .more-options-icon {
         width: 2rem;

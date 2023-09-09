@@ -29,6 +29,7 @@
 }
 
 .contact-details-phone, .contact-details-email, .contact-details-address, .contact-details-group {
+    /* remove border & padding at medium media query if I don't want horizontal lines on desktop */
     border-bottom: 1px solid lightgrey;
     margin-bottom: 1rem;
     padding-bottom: 1rem;
@@ -72,11 +73,6 @@ p svg {
     .go-back-link {
         padding-left: 0;
     }
-    .contact-details-phone, .contact-details-email, .contact-details-address, .contact-details-group {
-        border-bottom: 0;
-        margin-bottom: 0;
-        padding-bottom: 0;
-    }
     .contact-details-phone, .contact-details-email, .contact-details-group {
         display: flex;
         justify-content: flex-start;
@@ -85,7 +81,7 @@ p svg {
     .contact-details-address {
         display: flex;
         justify-content: flex-start;
-        align-items: baseline;
+        align-items: center;
     }
     p svg {
         margin: 0 .5rem 0 0;

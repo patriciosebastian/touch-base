@@ -9,13 +9,14 @@
 
 .create-group-form label {
     display: block;
+    font-weight: 600;
+    width: fit-content;
 }
 
 .create-group-form input {
     background-color: var(--light-grey);
     border: 0;
-    border-bottom: 1px solid;
-    border-bottom-color: lightgray;
+    border-bottom: 1px solid lightgrey;
     border-radius: 5px;
 }
 
@@ -24,10 +25,10 @@
 }
 
 .select-cover-picture {
-    background-color: white !important;
+    background-color: var(--classic-off-white) !important;
     border-bottom: 0 !important;
     margin-bottom: 2rem;
-    width: 75%;
+    display: block;
 }
 
 .create-group-submit {
@@ -39,8 +40,9 @@
     box-shadow: -1px 2px 6px 0px var(--box-shadow-color);
     color: var(--classic-off-white);
     cursor: pointer;
+    display: block;
     font-weight: bold;
-    margin-right: 5%;
+    margin-bottom: .75rem;
     padding: 6px 12px;
 }
 
@@ -49,4 +51,16 @@
     border: 1px solid var(--red-color);
     color: var(--red-color);
     cursor: pointer;
+    font-weight: 500;
+}
+
+/* MEDIA QUERIES */
+
+/* Medium */
+@media (min-width: 768px) {
+    .create-group-submit {
+        display: inline-block;
+        margin-right: 2rem;
+        margin-bottom: 0;
+    }
 }

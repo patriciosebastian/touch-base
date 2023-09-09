@@ -1,5 +1,5 @@
 import { useState, useRef } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import { LuMenu } from 'react-icons/lu';
 import Dropdown from '../Dropdown/Dropdown';
@@ -10,7 +10,6 @@ export default function HamburgerMenu() {
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
   const { logout } = useAuth();
   const ref = useRef(null);
-  const navigate = useNavigate();
 
   useOutsideClick(ref, () => setMobileNavOpen(false));
 
@@ -21,7 +20,6 @@ export default function HamburgerMenu() {
   const handleLogout = async () => {
   try {
       await logout();
-      navigate("/sign-in");
       console.log("You are logged out");
     } catch (err) {
       console.log(err.message);
@@ -36,7 +34,7 @@ export default function HamburgerMenu() {
       <Dropdown className={`mobile-nav-ul ${mobileNavOpen ? '' : 'hidden'}`}>
         <li><Link to={'/app'} onClick={() => handleClick()}>Contacts</Link></li>
         <li><Link to={'/app/groups'} onClick={() => handleClick()}>Groups</Link></li>
-        <li><Link to={'/app/favorites'} onClick={() => handleClick()}>Favorites</Link></li>
+        {/* <li><Link to={'/app/favorites'} onClick={() => handleClick()}>Favorites</Link></li> */}
         <li><Link to={'/app/account'} onClick={() => handleClick()}>Account</Link></li>
         <br />
         <li className="nav-dropdown-logout" onClick={handleLogout}>Log out</li>

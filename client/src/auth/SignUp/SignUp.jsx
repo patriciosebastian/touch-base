@@ -3,6 +3,7 @@ import { useAuth } from "../../context/AuthContext";
 import { Link, useNavigate } from "react-router-dom";
 import Button from "../../components/Button/Button";
 import Card from "../../components/Card/Card";
+import LoadingSpinner from "../../components/LoadingSpinner/LoadingSpinner";
 import "../SignUp/SignUp.css";
 
 export default function SignUp() {
@@ -20,6 +21,7 @@ export default function SignUp() {
         setError('');
         try {
             await signup(email, password);
+            setLoading(false);
             navigate('/sign-in');
         } catch (err) {
             setError(err.message);
@@ -32,16 +34,18 @@ export default function SignUp() {
 
   return (
     <div className="su-page-container">
-      <Card className="sign-up-card">
-        <h1 className="sign-up-h1">Create Account</h1>
-        {error && <p>{error}</p>}
-        <form className="sign-up-form" onSubmit={handleSubmit}>
-          <input type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} />
-          <input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} />
-          <Button className="sign-up-button" type="submit" disabled={loading}>Sign Up</Button>
-          <p className="sign-up-form-p">Or sign in <Link to={'/sign-in'} className="sign-in-link">here</Link>.</p>
-        </form>
-      </Card>
+      {loading ? <LoadingSpinner /> : (
+        <Card className="sign-up-card">
+          <h1 className="sign-up-h1">Create Account</h1>
+          {error && <p>{error}</p>}
+          <form className="sign-up-form" onSubmit={handleSubmit}>
+            <input type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} />
+            <input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} />
+            <Button className="sign-up-button" type="submit" disabled={loading}>Sign Up</Button>
+            <p className="sign-up-form-p">Or sign in <Link to={'/sign-in'} className="sign-in-link">here</Link>.</p>
+          </form>
+        </Card>
+      )}
     </div>
   );
 }

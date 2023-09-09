@@ -1,6 +1,7 @@
 import { createContext, useState, useCallback, useEffect } from "react";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { useAuth } from './AuthContext';
+import LoadingSpinner from '../components/LoadingSpinner/LoadingSpinner';
 
 export const ContactsContext = createContext();
 
@@ -148,7 +149,7 @@ export const ContactsProvider = ({ children }) => {
   };
 
   if (loading) {
-    return <div>Loading...</div>;
+    return <LoadingSpinner />;
   }
 
   return (

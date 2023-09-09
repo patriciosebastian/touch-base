@@ -16,6 +16,34 @@
     cursor: pointer;
 }
 
+.delete-group-confirmation {
+    background-color: var(--classic-off-white);
+    font-size: .9rem;
+    text-align: center;
+}
+
+.delete-group-spinner {
+    width: 25px;
+    height: 25px;
+    margin: 0 auto 0 auto !important;
+}
+
+.cancel-delete-group-btn, .confirm-delete-group-btn {
+    background-color: var(--classic-off-white);
+    cursor: pointer;
+    font-weight: 500;
+    padding: 0px 8px;
+}
+
+.cancel-delete-group-btn {
+    color: var(--dark-neutral);
+    margin-right: .5rem;
+}
+
+.confirm-delete-group-btn {
+    color: var(--red-color);
+}
+
 .group-name-and-about-text {
     width: 90%;
     margin: 0 auto;
@@ -96,9 +124,6 @@
 .group-details-modal .modal-content, .email-group-modal .modal-content {
     max-width: 752px;
 }
-/* 
-modal breaks on smaller sizes.
-*/
 
 .close-modal-control {
     display: flex;
@@ -293,6 +318,37 @@ modal breaks on smaller sizes.
     color: var(--red-color);
 }
 
+.remove-contact-confirmation {
+    font-size: .8rem;
+    margin-top: .7rem;
+    text-align: center;
+}
+
+.remove-contact-from-group-spinner {
+    width: 30px;
+    margin: 0 auto 0 auto !important;
+}
+
+.remove-contact-btns-control {
+    padding-top: 5px;
+}
+
+.cancel-remove-contact-btn {
+    color: var(--dark-neutral);
+    margin-right: .5rem;
+}
+
+.cancel-remove-contact-btn, .confirm-remove-contact-btn {
+    background-color: var(--classic-off-white);
+    cursor: pointer;
+    font-weight: 500;
+    padding: 2px 8px;
+}
+
+.confirm-remove-contact-btn {
+    color: var(--red-color);
+}
+
 .group-contact-card-control-right img {
     width: calc(5.8rem + 1vw);
     height: calc(5.8rem + 1vw);
@@ -305,6 +361,13 @@ modal breaks on smaller sizes.
 
 /* MEDIUM */
 @media (min-width: 768px) {
+    .delete-group-confirmation {
+        display: flex;
+        align-items: center;
+    }
+    .delete-group-confirmation span {
+        margin-right: .5rem;
+    }
     .group-name-and-about-text {
         height: calc(5.5rem + 2vw);
     }
@@ -343,6 +406,9 @@ modal breaks on smaller sizes.
     .group-contact-container h1 {
         font-size: calc(1rem + .5vw);
     }
+    .remove-contact-confirmation {
+        background-color: var(--classic-off-white);
+    }
 }
 
 /* Tablets */
@@ -362,6 +428,9 @@ modal breaks on smaller sizes.
     }
     .contact-card-control-right img {
         max-width: 112px;
+    }
+    .remove-contact-confirmation {
+        font-size: 1rem;
     }
 }
 

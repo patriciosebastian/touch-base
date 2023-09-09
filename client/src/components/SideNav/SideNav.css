@@ -1,0 +1,17 @@
+.side-nav a, .side-nav li {
+    display: flex;
+    align-items: center;
+}
+
+.side-nav svg {
+    color: var(--primary-color);
+    margin-right: .5rem;
+    width: 1.3rem;
+    height: 1.3rem;
+}
+
+.side-nav li:nth-child(2) svg {
+    width: 1.5rem;
+    height: 1.5rem;
+    margin-right: .3rem;
+}
