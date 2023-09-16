@@ -8,7 +8,7 @@ import './HamburgerMenu.css';
 
 export default function HamburgerMenu() {
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
-  const { logout } = useAuth();
+  const { logout, demoLogout, currentUser } = useAuth();
   const ref = useRef(null);
 
   useOutsideClick(ref, () => setMobileNavOpen(false));
@@ -18,7 +18,10 @@ export default function HamburgerMenu() {
   };
 
   const handleLogout = async () => {
-  try {
+    try {
+      if (currentUser.uid === "h8j3g6KvbsSXNBjyEysqAawGbJy2") {
+        await demoLogout();
+      }
       await logout();
       console.log("You are logged out");
     } catch (err) {

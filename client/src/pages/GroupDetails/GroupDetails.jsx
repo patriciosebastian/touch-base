@@ -13,6 +13,7 @@ import BackButton from '../../components/BackButton/BackButton';
 import Button from '../../components/Button/Button';
 import Modal from '../../components/Modal/Modal';
 import LoadingSpinner from '../../components/LoadingSpinner/LoadingSpinner';
+import AlertToast from '../../components/AlertToast/AlertToast';
 import './GroupDetails.css';
 
 export default function GroupDetails() {
@@ -30,7 +31,7 @@ export default function GroupDetails() {
     const [sendingEmail, setSendingEmail] = useState(false);
     const [loadingRemoveContact, setLoadingRemoveContact] = useState(false);
     const { getGroup, deleteContactFromGroup, deleteGroup, addContactToGroup, emailGroup } = useContext(GroupsContext);
-    const { contacts, fetchContacts } = useContext(ContactsContext);
+    const { contacts, fetchContacts, toastAlert, setToastAlert } = useContext(ContactsContext);
     const { groupId } = useParams();
     const { idToken, authLoading } = useAuth();
     const navigate = useNavigate();
@@ -95,12 +96,18 @@ export default function GroupDetails() {
         const updatedContacts = await addContactToGroup(groupId, contactId);
         // then update local contacts state
         setGroupContacts(updatedContacts.contacts || []);
-
-        alert('Contact added to group successfully');
-        // Provide feedback
+        setToastAlert({
+          visible: true,
+          message: 'Contact added to group successfully!',
+          type: 'success'
+        });
       } catch (err) {
         console.error(err);
-        alert('Failed to add contact to group');
+        setToastAlert({
+          visible: true,
+          message: 'Failed to add contact to group',
+          type: 'error'
+        });
       }
     };
 
@@ -118,10 +125,20 @@ export default function GroupDetails() {
         setShowRemoveContactConfirmation(false);
         setDisabledAppearance(false);
         setLoadingRemoveContact(false);
+        setToastAlert({
+          visible: true,
+          message: 'Deleted contact from group successfully!',
+          type: 'success'
+        });
       } catch (err) {
         console.error(err);
         alert("Failed to delete contact from group");
         setLoadingRemoveContact(false);
+        setToastAlert({
+          visible: true,
+          message: 'Failed to delete contact from group!',
+          type: 'error'
+        });
       }
     };
 
@@ -139,12 +156,22 @@ export default function GroupDetails() {
         setMessage('');
         setSendingEmail(false);
         setIsEmailGroupModalOpen(false);
+        setToastAlert({
+          visible: true,
+          message: 'Email sent successfully!',
+          type: 'success'
+        });
   
         console.log('Email sent successfully');
       } catch (err) {
         console.error(err);
         console.log('Failed to send email to group');
         setSendingEmail(false);
+        setToastAlert({
+          visible: true,
+          message: 'Failed to send email!',
+          type: 'error'
+        });
       }
     };
 
@@ -272,6 +299,7 @@ export default function GroupDetails() {
           </div>
         ))}
       </div>
+      {toastAlert.visible && <AlertToast type={toastAlert.type} message={toastAlert.message} onDismiss={() => setToastAlert(prev => ({ ...prev, visible: false }))} />}
     </div>
   );
 }

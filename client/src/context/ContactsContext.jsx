@@ -8,6 +8,11 @@ export const ContactsContext = createContext();
 export const ContactsProvider = ({ children }) => {
   const [contacts, setContacts] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [toastAlert, setToastAlert] = useState({
+    visible: false,
+    message: '',
+    type: ''
+  });
   const { idToken } = useAuth();
   const auth = getAuth();
 
@@ -154,7 +159,7 @@ export const ContactsProvider = ({ children }) => {
 
   return (
     <ContactsContext.Provider
-      value={{ contacts, fetchContacts, fetchAContact, addContact, updateContact, deleteContact, emailContact }}
+      value={{ contacts, fetchContacts, fetchAContact, addContact, updateContact, deleteContact, emailContact, toastAlert, setToastAlert }}
     >
       {children}
     </ContactsContext.Provider>

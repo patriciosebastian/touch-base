@@ -15,6 +15,15 @@ export function AuthProvider({ children }) {
   const [currentUser, setCurrentUser] = useState({});
   const [idToken, setIdToken] = useState('');
   const [authLoading, setAuthLoading] = useState(true);
+  const [demoEmail, setDemoEmail] = useState('');
+  const [demoPassword, setDemoPassword] = useState('');
+  const [isDemo, setIsDemo] = useState(false);
+
+  const demoLogin = () => {
+    setIsDemo(true);
+    setDemoEmail('demo@touchbaseapp.co');
+    setDemoPassword('demo123');
+  };
 
   const signup = (email, password) => {
     return createUserWithEmailAndPassword(auth, email, password);
@@ -26,6 +35,30 @@ export function AuthProvider({ children }) {
 
   const logout = () => {
     return signOut(auth);
+  };
+
+  const demoLogout = async () => {
+    try {
+      const response = await fetch("http://localhost:5300/demo/logout", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          user_id: currentUser.uid
+        }),
+      });
+
+      const responseData = await response.json();
+
+      if (response.status !== 200) {
+        throw new Error(responseData.error);
+      }
+
+      return signOut(auth);
+    } catch (err) {
+      console.error("Failed to log out:", err.message);
+    }
   };
 
   function signInWithGoogle(onSuccess) {
@@ -73,7 +106,7 @@ export function AuthProvider({ children }) {
 
   return (
     <AuthContext.Provider
-      value={{ currentUser, idToken, authLoading, signup, login, logout, signInWithGoogle }}
+      value={{ currentUser, idToken, authLoading, signup, login, logout, signInWithGoogle, demoEmail, demoPassword, demoLogin, isDemo, setIsDemo, demoLogout }}
     >
       {children}
     </AuthContext.Provider>

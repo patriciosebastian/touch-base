@@ -16,10 +16,14 @@ import useMedia from "../../hooks/useMedia";
 import SideNav from "../../components/SideNav/SideNav";
 import g6 from '../../assets/g6.svg';
 import LoadingSpinner from "../../components/LoadingSpinner/LoadingSpinner";
+import AlertToast from "../../components/AlertToast/AlertToast";
 import "../ViewContacts/ViewContacts.css";
 
 export default function ViewContacts() {
-  const { contacts, fetchContacts, emailContact, deleteContact } = useContext(ContactsContext);
+  const {
+    contacts, fetchContacts, emailContact, deleteContact,
+    toastAlert, setToastAlert,
+  } = useContext(ContactsContext);
   const { idToken, authLoading } = useAuth();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [subject, setSubject] = useState("");
@@ -84,23 +88,45 @@ export default function ViewContacts() {
       setSubject("");
       setMessage("");
       setSendingEmail(false);
+      setIsModalOpen(false);
+      setToastAlert({
+        visible: true,
+        message: 'Email sent successfully!',
+        type: 'success'
+      });
 
       console.log("Email sent successfully");
     } catch (err) {
       console.error(err);
       console.log("Failed to send email to contact");
       setSendingEmail(false);
+      setIsModalOpen(false);
+      setToastAlert({
+        visible: true,
+        message: 'Failed to send email!',
+        type: 'error'
+      });
     }
   };
 
   const handleDeleteContact = async (contactId) => {
     try {
       await deleteContact(contactId);
+      setToastAlert({
+        visible: true,
+        message: 'Contact deleted successfully!',
+        type: 'success'
+      });
       setDeletingContactId(null);
       setDisabledAppearance(false);
       // any other post-delete logic
     } catch (err) {
       console.error(err);
+      setToastAlert({
+        visible: true,
+        message: 'Failed to delete contact!',
+        type: 'error'
+      });
     }
   };
 
@@ -259,6 +285,7 @@ export default function ViewContacts() {
         )}
         
       </div>
+      {toastAlert.visible && <AlertToast type={toastAlert.type} message={toastAlert.message} onDismiss={() => setToastAlert(prev => ({ ...prev, visible: false }))} />}
     </div>
   );
 }

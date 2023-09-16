@@ -8,6 +8,8 @@
   --classic-off-white: #FDFDFD;
   --dark-neutral: #333333;
   --light-neutral: #E0E0E0;
+  --success-color: #8EB89F;
+  --success-text: #2F4A40;
   /* -------- */
   --modern-purple: #6E6BEE;
   --primary-color-2: #8c52ff;
@@ -18,6 +20,9 @@
   --vibrant-orange: #ff8c52;
   --soft-yellow: #FFFAE1;
   --red-color: #C82333;
+  --error-color: #D84A5F;
+  --error-text: #5A1E22;
+  --alt-error-color: #FF6B6B;
   --box-shadow-color: #bfbfbfdb;
   --google-blue: #4285F4;
   --google-alt-blue: #1669F2;

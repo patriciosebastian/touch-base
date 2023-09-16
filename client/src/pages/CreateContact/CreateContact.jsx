@@ -18,7 +18,7 @@ export default function CreateContact() {
   const [notes, setNotes] = useState("");
   const [photoFile, setPhotoFile] = useState(null);
   const [loading, setLoading] = useState(false);
-  const { addContact } = useContext(ContactsContext);
+  const { addContact, setToastAlert } = useContext(ContactsContext);
   const navigate = useNavigate();
 
   const handleSubmit = async (event) => {
@@ -39,9 +39,24 @@ export default function CreateContact() {
     data.append("photo", photoFile);
 
     const newContact = data;
-    await addContact(newContact);
-    setLoading(false);
-    navigate('/app');
+    try {
+      await addContact(newContact);
+      navigate('/app');
+      setLoading(false);
+      setToastAlert({
+        visible: true,
+        message: 'Contact created successfully!',
+        type: 'success'
+      });
+    } catch (err) {
+      console.error(err);
+      setLoading(false);
+      setToastAlert({
+        visible: true,
+        message: 'Failed to create contact',
+        type: 'error'
+      });
+    }
   };
 
   return (

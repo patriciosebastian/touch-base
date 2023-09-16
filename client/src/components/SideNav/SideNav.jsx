@@ -7,15 +7,20 @@ import Dropdown from '../Dropdown/Dropdown';
 import './SideNav.css';
 
 export default function SideNav(props) {
-    const { logout } = useAuth();
+    const { logout, demoLogout, currentUser } = useAuth();
     const classes = 'side-nav ' + props.className;
 
     const handleLogout = async () => {
         try {
+          if (currentUser.uid === "h8j3g6KvbsSXNBjyEysqAawGbJy2") {
+            await demoLogout();
+            console.log("Demo user logged out");
+          } else {
             await logout();
             console.log("You are logged out");
+          }
         } catch (err) {
-            console.log(err.message);
+          console.log(err.message);
         }
     };
 

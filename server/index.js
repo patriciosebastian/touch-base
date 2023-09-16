@@ -1,15 +1,16 @@
 require('dotenv').config();
 const express = require("express");
 const app = express();
-// const router = express.Router();
 const cors = require("cors");
 const pool = require("./db");
 const multer = require("multer");
-const { CloudinaryStorage } = require("multer-storage-cloudinary");
-const cloudinary = require("cloudinary").v2;
+const multerS3 = require('multer-s3');
+const AWS = require('aws-sdk');
 var admin = require('firebase-admin');
 var serviceAccount = require('./serviceAccountKey.json');
 const sgMail = require('@sendgrid/mail');
+const { exec } = require("child_process");
+const { stdout, stderr } = require('process');
 
 // Middleware
 
@@ -20,22 +21,26 @@ admin.initializeApp({
     credential: admin.credential.cert(serviceAccount)
 });
 
-cloudinary.config({ 
-    cloud_name: process.env.CLOUDINARY_NAME,
-    api_key: process.env.CLOUDINARY_API_KEY, 
-    api_secret: process.env.CLOUDINARY_API_SECRET
+AWS.config.update({
+    accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+    region: process.env.AWS_REGION
 });
 
-const storage = new CloudinaryStorage({
-    cloudinary: cloudinary,
-    params: {
-      folder: "Touch_Base",
-      format: (req, file) => 'png',
-      public_id: (req, file) => `${Date.now()}-${file.originalname}`,
-    },
-});
+const s3 = new AWS.S3();
 
-const parser = multer({ storage: storage });
+const upload = multer({
+    storage: multerS3({
+        s3: s3,
+        bucket: "touch-base-bucket",
+        metadata: function (req, file, cb) {
+            cb(null, {fieldName: file.fieldname});
+        },
+        key: function (req, file, cb) {
+            cb(null, `${Date.now().toString()}-${file.originalname}`);
+        }
+    })
+});
 
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
@@ -70,11 +75,54 @@ const verifyToken = async (req, res, next) => {
     }
 };
 
+// Restore database from snapshot on demo logout
+app.post("/demo/logout", async (req, res) => {
+    try {
+        // demo user?
+        if (req.body.user_id !== "h8j3g6KvbsSXNBjyEysqAawGbJy2") {
+            return res.status(403).json({ error: "Unauthorized" });
+        }
+
+        // drop db
+        exec("dropdb -h localhost -p 5000 -U postgres touchbase", (error, stdout, stderr) => {
+            if (error) {
+                console.error(`dropdb error: ${error}`);
+                return res.status(500).json({ error: "Failed to drop the database" });
+            }
+            console.log('dropping db... stdout:', stdout);
+            console.log('dropping db... stderr:', stderr);
+
+            // recreate db
+            exec("createdb -h localhost -p 5000 -U postgres touchbase", (error, stdout, stderr) => {
+                if (error) {
+                    console.error(`createdb error: ${error}`);
+                    return res.status(500).json({ error: "Failed to create the database" });
+                }
+                console.log('recreating db... stdout:', stdout);
+                console.log('recreating db... stderr:', stderr);
+
+                // restore db from snapshot
+                exec("psql -h localhost -p 5000 -U postgres -d touchbase < /Users/patriciosalazar/Documents/DEV/Code/Touch-Base/server/demo-snapshot.sql", (error, stdout, stderr) => {
+                    if (error) {
+                        console.error(`exec error: ${error}`);
+                        return res.status(500).json({ error: "Failed to restore database" });
+                    }
+                    console.log('restoring db from snapshot... stdout:', stdout);
+                    console.log('restoring db from snapshot... stderr:', stderr);
+                    return res.json({ message: "Logged out and database restored!" });
+                });
+            });
+        });
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).json({ error: "Server error" });
+    }
+});
 
 // ======== CONTACTS ROUTES ======== //
 
 // Create a contact
-app.post("/contacts", verifyToken, parser.single("photo"), async (req, res) => {
+app.post("/contacts", verifyToken, upload.single("photo"), async (req, res) => {
     try {
         const { first_name, last_name, email, phone, address1, address2, city, state, zip, categories, notes } = req.body;
 
@@ -89,8 +137,8 @@ app.post("/contacts", verifyToken, parser.single("photo"), async (req, res) => {
         let photo_upload_time = null;
 
         if (req.file) {
-            photo_url = req.file.path;
-            photo_filename = req.file.originalname;
+            photo_url = req.file.location;
+            photo_filename = req.file.key;
             photo_mimetype = req.file.mimetype;
             photo_upload_time = new Date();
         }
@@ -117,14 +165,6 @@ app.get("/contacts", verifyToken, async (req, res) => {
         console.error(err.message);
         res.status(500).json({ error: "Server error" });
     }
-    
-    // try {
-    //     const allContacts = await pool.query("SELECT * FROM contacts");
-    //     res.json(allContacts.rows);
-    // } catch (err) {
-    //     console.error(err.message);
-    //     res.status(500).json({ error: "Server error" });
-    // }
 });
 
 // Get a contact
@@ -146,7 +186,7 @@ app.get("/contacts/:id", verifyToken, async (req, res) => {
 });
 
 // Update a contact
-app.put("/contacts/:id", verifyToken, parser.single("photo"), async (req, res) => {
+app.put("/contacts/:id", verifyToken, upload.single("photo"), async (req, res) => {
     try {
         const { id } = req. params;
         const { first_name, last_name, email, phone, address1, address2, city, state, zip, categories, notes } = req.body;
@@ -164,13 +204,13 @@ app.put("/contacts/:id", verifyToken, parser.single("photo"), async (req, res) =
         let { photo_url, photo_filename, photo_mimetype, photo_upload_time } = contact.rows[0];
 
         if (req.file) {
-            photo_url = req.file.path;
-            photo_filename = req.file.originalname;
+            photo_url = req.file.location;
+            photo_filename = req.file.key;
             photo_mimetype = req.file.mimetype;
             photo_upload_time = new Date();
         }
 
-        const updateContact = await pool.query("UPDATE contacts SET first_name = $1, last_name = $2, email = $3, phone = $4, address1 = $5, address2 = $6, city = $7, state = $8, zip = $9, categories = $10, photo_url = $11, photo_filename = $12, photo_mimetype = $13, photo_upload_time = $14, notes = $15 WHERE contacts_id = $16 AND user_id = $17", [first_name, last_name, email, phone, address1, address2, city, state, zip, categories, photo_url, photo_filename, photo_mimetype, photo_upload_time, notes, id, uid]);
+        await pool.query("UPDATE contacts SET first_name = $1, last_name = $2, email = $3, phone = $4, address1 = $5, address2 = $6, city = $7, state = $8, zip = $9, categories = $10, photo_url = $11, photo_filename = $12, photo_mimetype = $13, photo_upload_time = $14, notes = $15 WHERE contacts_id = $16 AND user_id = $17", [first_name, last_name, email, phone, address1, address2, city, state, zip, categories, photo_url, photo_filename, photo_mimetype, photo_upload_time, notes, id, uid]);
 
         res.json({ message: "Contact was updated successfully" });
     } catch (err) {
@@ -190,17 +230,14 @@ app.delete("/contacts/:id", verifyToken, async (req, res) => {
             return res.status(404).json({ error: 'Contact not found or you do not have permission to delete it' });
         }
 
-        let { photo_url } = contact.rows[0];
+        let { photo_url, photo_filename } = contact.rows[0];
         
         if (photo_url) {
-            // get public_id of the image from the photo_url
-            let public_id = photo_url.split('/').pop().split('.')[0];
-
-            // delete image from Cloudinary
-            await cloudinary.uploader.destroy(public_id);
+            // delete image from S3
+            await s3.deleteObject({ Bucket: 'touch-base-bucket', Key: photo_filename }).promise();
         }
 
-        const deleteContact = await pool.query("DELETE FROM contacts WHERE contacts_id = $1 AND user_id = $2", [id, uid]);
+        await pool.query("DELETE FROM contacts WHERE contacts_id = $1 AND user_id = $2", [id, uid]);
 
         res.json({ message: "Contact deleted successfully" });
     } catch (err) {
@@ -212,7 +249,7 @@ app.delete("/contacts/:id", verifyToken, async (req, res) => {
 // ======== GROUPS ROUTES ======== //
 
 // Create a group
-app.post("/app/groups", verifyToken, parser.single("cover_picture"), async (req, res) => {
+app.post("/app/groups", verifyToken, upload.single("cover_picture"), async (req, res) => {
     try {
         const { group_name, about_text } = req.body;
         const user_id = req.user.uid;
@@ -223,7 +260,7 @@ app.post("/app/groups", verifyToken, parser.single("cover_picture"), async (req,
         }
 
         if (req.file) {
-            cover_picture = req.file.path;
+            cover_picture = req.file.location;
         }
 
         const newGroup = await pool.query("INSERT INTO groups (user_id, group_name, cover_picture, about_text) VALUES($1, $2, $3, $4) RETURNING *", [user_id, group_name, cover_picture, about_text]);
@@ -357,7 +394,7 @@ app.get("/app/groups/:groupId", verifyToken, async (req, res) => {
 });
 
 // Update a group
-app.put("/app/groups/:groupId", verifyToken, parser.single("cover_picture"), async (req, res) => {
+app.put("/app/groups/:groupId", verifyToken, upload.single("cover_picture"), async (req, res) => {
     try {
         const groupId = req.params.groupId;
         const { group_name, about_text } = req.body;
@@ -376,18 +413,18 @@ app.put("/app/groups/:groupId", verifyToken, parser.single("cover_picture"), asy
         let cover_picture = group.rows[0].cover_picture;
 
         if (req.file) {
-            //delete old image from Cloudinary
+            //delete old image from S3 if exists
             if (cover_picture) {
-                // get public id of the image from the cover picture
-                let public_id = cover_picture.split('/').pop().split('.')[0];
-                // delete image
-                await cloudinary.uploader.destroy(public_id);
+                const deleteParams = {
+                    Bucket: 'touch-base-bucket',
+                    Key: cover_picture.split('/').pop()
+                };
+                await s3.deleteObject(deleteParams).promise();
             }
 
-            // upload new image to Cloudinary
-            const result = await cloudinary.uploader.upload(req.file.path);
-            // update cover_picture with new image URL
-            cover_picture = result.url;
+            // multer-s3 automatically uploads the file to S3 for you
+            // so just update cover_picture with new S3 URL
+            cover_picture = req.file.location;
         }
 
         // update
@@ -433,7 +470,7 @@ app.delete("/app/groups/:id", verifyToken, async (req, res) => {
             return res.status(404).json({ error: 'Group not found or you do not have permission to delete it' });
         }
 
-        const deleteGroup = await pool.query("DELETE FROM groups WHERE group_id = $1 AND user_id = $2", [id, uid]);
+        await pool.query("DELETE FROM groups WHERE group_id = $1 AND user_id = $2", [id, uid]);
         res.json({ message: "Group deleted successfully" });
     } catch (err) {
         console.error(err.message);

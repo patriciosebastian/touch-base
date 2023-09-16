@@ -8,7 +8,7 @@ import "./EditContact.css";
 
 export default function EditContact() {
   const { id } = useParams();
-  const { updateContact } = useContext(ContactsContext);
+  const { updateContact, setToastAlert } = useContext(ContactsContext);
   const [contact, setContact] = useState({});
   const [photoFile, setPhotoFile] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -59,10 +59,24 @@ export default function EditContact() {
       data.append("photo", photoFile);
     }
 
-    await updateContact(contact.contacts_id, data);
-    setLoading(false);
-    navigate(-1);
-    // give confirmation to user that contact was updated.
+    try {
+      await updateContact(contact.contacts_id, data);
+      navigate(-1);
+      setLoading(false);
+      setToastAlert({
+        visible: true,
+        message: 'Contact updated successfully!',
+        type: 'success'
+      });
+    } catch (err) {
+      console.error(err);
+      setLoading(false);
+      setToastAlert({
+        visible: true,
+        message: 'Failed to update contact!',
+        type: 'error'
+      });
+    }
   };
 
   return (

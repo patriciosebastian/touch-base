@@ -1,6 +1,6 @@
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { useAuth } from "../../context/AuthContext";
+import { AuthContext, useAuth } from "../../context/AuthContext";
 import { FcGoogle } from 'react-icons/fc';
 import Card from "../../components/Card/Card";
 import Button from "../../components/Button/Button";
@@ -14,25 +14,39 @@ export default function SignIn() {
     const [loading, setLoading] = useState(false);
     const { login } = useAuth();
     const { signInWithGoogle } = useAuth();
+    const { demoEmail, demoPassword, isDemo, setIsDemo } = useContext(AuthContext);
     const navigate = useNavigate();
 
+    useEffect(() => {
+      if (isDemo) {
+        setEmail(demoEmail);
+        setPassword(demoPassword);
+        setIsDemo(false);
+      } else {
+        setEmail('');
+        setPassword('');
+        setIsDemo(false);
+      }
+      // eslint-disable-next-line
+    }, [demoEmail, demoPassword]);
+
     const handleSubmit = async (e) => {
-        e.preventDefault();
-        // prevent multiple form submits
-        setLoading(true);
-        setError('');
-        try {
-            await login(email, password);
-            setLoading(false);
-            navigate('/app');
-        } catch (err) {
-            setError(err.message);
-            console.error(err.message);
-            setLoading(false);
-        }
-        // return button to default state
-        setLoading(false);
-    }
+      e.preventDefault();
+      // prevent multiple form submits
+      setLoading(true);
+      setError('');
+      try {
+          await login(email, password);
+          setLoading(false);
+          navigate('/app');
+      } catch (err) {
+          setError(err.message);
+          console.error(err.message);
+          setLoading(false);
+      }
+      // return button to default state
+      setLoading(false);
+    };
 
   return (
     <div className="si-page-container">

@@ -57,3 +57,10 @@ DROP CONSTRAINT group_contacts_group_id_fkey;
 ALTER TABLE group_contacts
 ADD CONSTRAINT group_contacts_group_id_fkey FOREIGN KEY (group_id)
 REFERENCES groups(group_id) ON DELETE CASCADE;
+
+UPDATE contacts
+SET user_id = 'h8j3g6KvbsSXNBjyEysqAawGbJy2'
+WHERE user_id = '2BmD2Y9XuZYezvShOdeYrAZqQGo2';
+
+UPDATE groups
+SET user_id = 'h8j3g6KvbsSXNBjyEysqAawGbJy2';
