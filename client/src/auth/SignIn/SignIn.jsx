@@ -60,7 +60,7 @@ export default function SignIn() {
             <div className="sign-in-buttons-container">
               <Button className="sign-in-button" type="submit" disabled={loading}>Sign In</Button>
               {/* Sign in with Google button has to be used with native button element */}
-              <button className="google-sign-in-button" type="button" onClick={(e) => {e.preventDefault(); signInWithGoogle(() => navigate('/account'));}}><FcGoogle/> Sign In with Google</button>
+              <button className="google-sign-in-button" type="button" onClick={(e) => {e.preventDefault(); signInWithGoogle(() => navigate('/app'));}}><FcGoogle/> Sign In with Google</button>
             </div>
             <p className="sign-in-form-p">Or sign up <Link to={'/sign-up'} className="sign-up-link">here</Link>.</p>
           </form>

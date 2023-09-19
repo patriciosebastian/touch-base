@@ -65,10 +65,10 @@ html, body {
 }
 
 body {
+  background-color: var(--classic-off-white);
+  font-family: 'Be Vietnam Pro', sans-serif;
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
-  font-family: 'Be Vietnam Pro', sans-serif;
-  background-color: var(--classic-off-white);
 }
 
 img, picture, canvas, svg {

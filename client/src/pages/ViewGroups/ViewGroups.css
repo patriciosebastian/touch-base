@@ -144,3 +144,9 @@
         width: 45%;
     }
 }
+
+@media (min-width: 1921px) {
+    .view-groups-container {
+        max-width: 1920px;
+    }
+}
