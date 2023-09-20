@@ -40,7 +40,6 @@ export default function EditContact() {
     await updateGroup(groupId, group_name, about_text, cover_picture);
     setLoading(false);
     navigate(-1);
-    // give confirmation to user that group was updated.
   };
 
   return (

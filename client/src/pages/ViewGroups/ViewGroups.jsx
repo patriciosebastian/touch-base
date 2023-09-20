@@ -12,7 +12,7 @@ import './ViewGroups.css';
 
 export default function Groups() {
   const { groups, fetchGroups } = useContext(GroupsContext);
-  const { idToken, authLoading } = useAuth();
+  const { idToken, authLoading, isRestoring } = useAuth();
   const [loading, setLoading] = useState(false);
   const isDesktop = useMedia('(min-width: 1200px)');
 
@@ -33,6 +33,15 @@ export default function Groups() {
 
   if (authLoading) {
     return <LoadingSpinner />;
+  }
+
+  if (isRestoring) {
+    return (
+      <>
+        <LoadingSpinner />
+        <p className="demo-logout-message">Restoring demo data... Thank you for demo'ing the app!</p>
+      </>
+    )
   }
 
   return (

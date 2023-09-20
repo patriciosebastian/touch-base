@@ -110,8 +110,6 @@ export const ContactsProvider = ({ children }) => {
         );
       });
       console.log("Contact updated successfully");
-      // return setLoading(false);
-      // Confirm to user that update was successful. Exit.
     }
   };
 

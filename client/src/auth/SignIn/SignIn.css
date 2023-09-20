@@ -28,7 +28,7 @@
     margin-top: 1rem;
     border: 1px solid;
     border-radius: 20px;
-    padding: 6px 12px; /* .4rem .8rem; */
+    padding: 6px 12px;
 }
 
 .sign-in-form input:focus {

@@ -1,3 +1,8 @@
+.demo-logout-message {
+    margin-top: 1rem;
+    text-align: center;
+}
+
 .side-nav a, .side-nav li {
     display: flex;
     align-items: center;

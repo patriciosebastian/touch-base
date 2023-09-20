@@ -18,6 +18,7 @@ export function AuthProvider({ children }) {
   const [demoEmail, setDemoEmail] = useState('');
   const [demoPassword, setDemoPassword] = useState('');
   const [isDemo, setIsDemo] = useState(false);
+  const [isRestoring, setIsRestoring] = useState(false);
 
   const demoLogin = () => {
     setIsDemo(true);
@@ -39,6 +40,7 @@ export function AuthProvider({ children }) {
 
   const demoLogout = async () => {
     try {
+      setIsRestoring(true);
       const response = await fetch("http://localhost:5300/demo/logout", {
         method: "POST",
         headers: {
@@ -55,9 +57,11 @@ export function AuthProvider({ children }) {
         throw new Error(responseData.error);
       }
 
+      setIsRestoring(false);
       return signOut(auth);
     } catch (err) {
       console.error("Failed to log out:", err.message);
+      setIsRestoring(false);
     }
   };
 
@@ -87,7 +91,6 @@ export function AuthProvider({ children }) {
   // runs on component mount, and every time auth state changes
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      // console.log(currentUser);
       setCurrentUser(currentUser);
       if (currentUser) {
         //force refresh token if its expired
@@ -106,7 +109,7 @@ export function AuthProvider({ children }) {
 
   return (
     <AuthContext.Provider
-      value={{ currentUser, idToken, authLoading, signup, login, logout, signInWithGoogle, demoEmail, demoPassword, demoLogin, isDemo, setIsDemo, demoLogout }}
+      value={{ currentUser, idToken, authLoading, signup, login, logout, signInWithGoogle, demoEmail, demoPassword, demoLogin, isDemo, setIsDemo, demoLogout, isRestoring }}
     >
       {children}
     </AuthContext.Provider>

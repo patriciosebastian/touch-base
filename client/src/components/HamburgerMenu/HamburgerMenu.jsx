@@ -20,8 +20,10 @@ export default function HamburgerMenu() {
   const handleLogout = async () => {
     try {
       if (currentUser.uid === "h8j3g6KvbsSXNBjyEysqAawGbJy2") {
+        setMobileNavOpen(false);
         await demoLogout();
       }
+      setMobileNavOpen(false);
       await logout();
       console.log("You are logged out");
     } catch (err) {

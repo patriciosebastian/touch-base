@@ -31,7 +31,6 @@ export default function EditContact() {
       setContact(data);
       setPhotoFile(data.photoFile);
       if (response.ok) {
-        // console.log("Contact fetched successfully")
         auth.currentUser ? console.log(data) : console.log(null);
       } else {
         console.error("Error:", response);

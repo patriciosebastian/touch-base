@@ -24,7 +24,7 @@ export default function ViewContacts() {
     contacts, fetchContacts, emailContact, deleteContact,
     toastAlert, setToastAlert,
   } = useContext(ContactsContext);
-  const { idToken, authLoading } = useAuth();
+  const { idToken, authLoading, isRestoring } = useAuth();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [subject, setSubject] = useState("");
   const [message, setMessage] = useState("");
@@ -119,7 +119,6 @@ export default function ViewContacts() {
       });
       setDeletingContactId(null);
       setDisabledAppearance(false);
-      // any other post-delete logic
     } catch (err) {
       console.error(err);
       setToastAlert({
@@ -133,6 +132,15 @@ export default function ViewContacts() {
   const handleCancelDelete = () => {
     setDeletingContactId(null);
     setDisabledAppearance(false);
+  }
+
+  if (isRestoring) {
+    return (
+      <>
+        <LoadingSpinner />
+        <p className="demo-logout-message">Restoring demo data... Thank you for demo'ing the app!</p>
+      </>
+    )
   }
 
   return (
