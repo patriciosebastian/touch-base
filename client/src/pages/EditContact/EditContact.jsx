@@ -1,5 +1,6 @@
 import { useState, useEffect, useContext } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { useAuth } from "../../context/AuthContext";
 import { ContactsContext } from "../../context/ContactsContext";
 import { getAuth } from "firebase/auth";
 import Button from "../../components/Button/Button";
@@ -9,6 +10,7 @@ import "./EditContact.css";
 export default function EditContact() {
   const { id } = useParams();
   const { updateContact, setToastAlert } = useContext(ContactsContext);
+  const { backendURL } = useAuth();
   const [contact, setContact] = useState({});
   const [photoFile, setPhotoFile] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -22,7 +24,7 @@ export default function EditContact() {
         idToken = await auth.currentUser.getIdToken();
       }
 
-      const response = await fetch(`http://localhost:5300/contacts/${id}`, {
+      const response = await fetch(`${backendURL}/contacts/${id}`, {
         headers: {
           Authorization: `Bearer ${idToken}`,
         },

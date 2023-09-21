@@ -19,6 +19,7 @@ export function AuthProvider({ children }) {
   const [demoPassword, setDemoPassword] = useState('');
   const [isDemo, setIsDemo] = useState(false);
   const [isRestoring, setIsRestoring] = useState(false);
+  const backendURL = process.env.REACT_APP_BACKEND_URL;
 
   const demoLogin = () => {
     setIsDemo(true);
@@ -41,7 +42,7 @@ export function AuthProvider({ children }) {
   const demoLogout = async () => {
     try {
       setIsRestoring(true);
-      const response = await fetch("http://localhost:5300/demo/logout", {
+      const response = await fetch(`${backendURL}/demo/logout`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -109,7 +110,7 @@ export function AuthProvider({ children }) {
 
   return (
     <AuthContext.Provider
-      value={{ currentUser, idToken, authLoading, signup, login, logout, signInWithGoogle, demoEmail, demoPassword, demoLogin, isDemo, setIsDemo, demoLogout, isRestoring }}
+      value={{ currentUser, idToken, authLoading, signup, login, logout, signInWithGoogle, demoEmail, demoPassword, demoLogin, isDemo, setIsDemo, demoLogout, isRestoring, backendURL }}
     >
       {children}
     </AuthContext.Provider>
