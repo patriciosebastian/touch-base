@@ -11,6 +11,7 @@ export default function AlertToast({ message, type, duration = 3000, onDismiss }
       }, duration);
 
       return () => clearTimeout(timer);
+      //eslint-disable-next-line
     }, [duration]);
 
     const dismissToast = () => {

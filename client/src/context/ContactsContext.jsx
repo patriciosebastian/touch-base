@@ -26,7 +26,7 @@ export const ContactsProvider = ({ children }) => {
     });
 
     return () => unsubscribe();
-  }, []);
+  }, [auth]);
 
   // Get all user contacts
   const fetchContacts = useCallback(async () => {

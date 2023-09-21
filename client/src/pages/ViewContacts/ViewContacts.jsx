@@ -53,6 +53,7 @@ export default function ViewContacts() {
     };
 
     fetchContactData();
+    // eslint-disable-next-line
   }, [fetchContacts, idToken, authLoading]);
 
   // search query results
