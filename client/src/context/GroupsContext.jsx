@@ -77,7 +77,7 @@ export const GroupsProvider = ({ children }) => {
     console.log('Request successful');
     // return groups;
     return fetchedGroups;
-  }, [idToken]);
+  }, [idToken, backendURL]);
 
   // Get a group
   const getGroup = async (group_id) => {

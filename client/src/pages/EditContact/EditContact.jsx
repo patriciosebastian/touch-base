@@ -41,7 +41,7 @@ export default function EditContact() {
     };
 
     fetchContact();
-  }, [id, auth.currentUser]);
+  }, [id, auth.currentUser, backendURL]);
 
   const handleChange = (e) => {
     setContact({ ...contact, [e.target.name]: e.target.value });

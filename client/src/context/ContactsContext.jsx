@@ -45,7 +45,7 @@ export const ContactsProvider = ({ children }) => {
     setContacts(fetchedContacts);
     console.log('Request successful');
     return fetchedContacts;
-  }, [idToken]);
+  }, [idToken, backendURL]);
 
   // Get a contact
   const fetchAContact = async (id) => {
