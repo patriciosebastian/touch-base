@@ -10,6 +10,7 @@ var admin = require('firebase-admin');
 const sgMail = require('@sendgrid/mail');
 const { exec } = require("child_process");
 const { stdout, stderr } = require('process');
+const path = require('path');
 
 var serviceAccount = {
     type: process.env.TYPE,
@@ -96,8 +97,14 @@ app.post("/demo/logout", async (req, res) => {
             return res.status(403).json({ error: "Unauthorized" });
         }
 
+        const PGHOST = process.env.PGHOST;
+        const PGPORT = process.env.PGPORT;
+        const PGUSER = process.env.PGUSER;
+        const PGDATABASE = process.env.PGDATABASE;
+        const PGPASSWORD = process.env.PGPASSWORD;
+
         // drop db
-        exec("dropdb -h localhost -p 5000 -U postgres touchbase", (error, stdout, stderr) => {
+        exec(`PGPASSWORD=${PGPASSWORD} dropdb -h ${PGHOST} -p ${PGPORT} -U ${PGUSER} ${PGDATABASE}`, (error, stdout, stderr) => {
             if (error) {
                 console.error(`dropdb error: ${error}`);
                 return res.status(500).json({ error: "Failed to drop the database" });
@@ -106,7 +113,7 @@ app.post("/demo/logout", async (req, res) => {
             console.log('dropping db... stderr:', stderr);
 
             // recreate db
-            exec("createdb -h localhost -p 5000 -U postgres touchbase", (error, stdout, stderr) => {
+            exec(`PGPASSWORD=${PGPASSWORD} createdb -h ${PGHOST} -p ${PGPORT} -U ${PGUSER} ${PGDATABASE}`, (error, stdout, stderr) => {
                 if (error) {
                     console.error(`createdb error: ${error}`);
                     return res.status(500).json({ error: "Failed to create the database" });
@@ -114,8 +121,9 @@ app.post("/demo/logout", async (req, res) => {
                 console.log('recreating db... stdout:', stdout);
                 console.log('recreating db... stderr:', stderr);
 
+                const snapshotPath = path.join(__dirname, 'demo-snapshot.sql');
                 // restore db from snapshot
-                exec("psql -h localhost -p 5000 -U postgres -d touchbase < /Users/patriciosalazar/Documents/DEV/Code/Touch-Base/server/demo-snapshot.sql", (error, stdout, stderr) => {
+                exec(`PGPASSWORD=${PGPASSWORD} psql -h ${PGHOST} -p ${PGPORT} -U ${PGUSER} -d ${PGDATABASE} < ${snapshotPath}`, (error, stdout, stderr) => {
                     if (error) {
                         console.error(`exec error: ${error}`);
                         return res.status(500).json({ error: "Failed to restore database" });
@@ -623,6 +631,8 @@ app.post('/app/groups/:groupId/email', async (req, res) => {
     }
 });
 
-app.listen(5300, () => {
-    console.log("server has started on port 5300");
+const PORT = process.env.PORT || 5300;
+
+app.listen(PORT, () => {
+    console.log(`server has started on port ${PORT}`);
 });
