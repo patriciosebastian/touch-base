@@ -24,7 +24,7 @@ export default function EditContact() {
         idToken = await auth.currentUser.getIdToken();
       }
 
-      const response = await fetch(`http://${backendURL}/contacts/${id}`, {
+      const response = await fetch(`https://${backendURL}/contacts/${id}`, {
         headers: {
           Authorization: `Bearer ${idToken}`,
         },

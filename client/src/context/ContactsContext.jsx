@@ -30,7 +30,7 @@ export const ContactsProvider = ({ children }) => {
 
   // Get all user contacts
   const fetchContacts = useCallback(async () => {
-    const response = await fetch(`http://${backendURL}/contacts`, {
+    const response = await fetch(`https://${backendURL}/contacts`, {
       headers: {
         Authorization: `Bearer ${idToken}`
       }
@@ -49,7 +49,7 @@ export const ContactsProvider = ({ children }) => {
 
   // Get a contact
   const fetchAContact = async (id) => {
-     const response = await fetch(`http://${backendURL}/contacts/${id}`, {
+     const response = await fetch(`https://${backendURL}/contacts/${id}`, {
       headers: {
         Authorization: `Bearer ${idToken}`
       }
@@ -66,7 +66,7 @@ export const ContactsProvider = ({ children }) => {
 
   // Create contact
   const addContact = async (newContact) => {
-    const response = await fetch(`http://${backendURL}/contacts`, {
+    const response = await fetch(`https://${backendURL}/contacts`, {
       method: "POST",
       body: newContact,
       headers: {
@@ -86,7 +86,7 @@ export const ContactsProvider = ({ children }) => {
   // Update contact
   const updateContact = async (contacts_id, updatedContact) => {
     console.log(updatedContact);
-    const response = await fetch(`http://${backendURL}/contacts/${contacts_id}`, {
+    const response = await fetch(`https://${backendURL}/contacts/${contacts_id}`, {
       method: "PUT",
       body: updatedContact,
       headers: {
@@ -115,7 +115,7 @@ export const ContactsProvider = ({ children }) => {
 
   // Delete contact
   const deleteContact = async (id) => {
-    const response = await fetch(`http://${backendURL}/contacts/${id}`, {
+    const response = await fetch(`https://${backendURL}/contacts/${id}`, {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${idToken}`
@@ -135,7 +135,7 @@ export const ContactsProvider = ({ children }) => {
 
   // Email indiviual contact
   const emailContact = async (contacts_id, subject, message) => {
-    const response = await fetch(`http://${backendURL}/app/contacts/${contacts_id}/email`, {
+    const response = await fetch(`https://${backendURL}/app/contacts/${contacts_id}/email`, {
       method: "POST",
       headers: {
         'Content-Type': 'application/json',
