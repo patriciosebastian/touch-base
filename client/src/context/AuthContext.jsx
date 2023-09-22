@@ -42,7 +42,7 @@ export function AuthProvider({ children }) {
   const demoLogout = async () => {
     try {
       setIsRestoring(true);
-      const response = await fetch(`${backendURL}/demo/logout`, {
+      const response = await fetch(`http://${backendURL}/demo/logout`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
