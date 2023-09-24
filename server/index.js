@@ -624,6 +624,18 @@ app.post("/demo/logout", async (req, res) => {
             (27, '', 'Wayne', 'Johnson', 'waynejohnson@yahoo.com', '773-355-0371', '2633 Oakmound Drive', '', 'Chicago', 'IL', '60605', '', 'https://touch-base-bucket.s3.us-west-2.amazonaws.com/1694900804197-linkedin-sales-solutions-pAtA8xe_iVM-unsplash.jpg', '1694900804197-linkedin-sales-solutions-pAtA8xe_iVM-unsplash.jpg', 'image/jpeg', '2023-09-16 14:46:45.173', 'h8j3g6KvbsSXNBjyEysqAawGbJy2')
         `;
 
+        // Insert demo data into groups
+        const groupsInsertQuery = `
+            INSERT INTO public.groups (group_id, user_id, group_name, cover_picture, about_text)
+            VALUES 
+            /***** Groups Data *****/
+            (8, 'h8j3g6KvbsSXNBjyEysqAawGbJy2', 'Book Club', 'https://touch-base-bucket.s3.us-west-2.amazonaws.com/1694902514738-alexander-wende-IQuzsQv_bO4-unsplash.jpg', 'Every Wednesday'),
+            (9, 'h8j3g6KvbsSXNBjyEysqAawGbJy2', 'RUN', 'https://touch-base-bucket.s3.us-west-2.amazonaws.com/1694902560570-steven-lelham-atSaEOeE8Nk-unsplash%20%281%29.jpg', 'Running squad'),
+            (6, 'h8j3g6KvbsSXNBjyEysqAawGbJy2', 'Small Group', 'https://touch-base-bucket.s3.us-west-2.amazonaws.com/1694902578651-toa-heftiba-l_ExpFwwOEg-unsplash.jpg', 'Church group'),
+            (7, 'h8j3g6KvbsSXNBjyEysqAawGbJy2', 'Birthday Party', 'https://touch-base-bucket.s3.us-west-2.amazonaws.com/1694902595822-nikhita-singhal-k8y9HrzonOQ-unsplash%20%281%29.jpg', '35!!!!'),
+            (1, 'h8j3g6KvbsSXNBjyEysqAawGbJy2', 'Guys Night', 'https://touch-base-bucket.s3.us-west-2.amazonaws.com/1694902625172-joshua-aragon-KDWRyoHUlvo-unsplash.jpg', 'Legends doing legendary things')
+        `;
+
         // Insert demo data into group_contacts
         const groupContactsInsertQuery = `
             INSERT INTO public.group_contacts (group_id, contacts_id)
@@ -668,18 +680,6 @@ app.post("/demo/logout", async (req, res) => {
             (9, 33),
             (9, 28),
             (9, 22)
-        `;
-
-        // Insert demo data into groups
-        const groupsInsertQuery = `
-            INSERT INTO public.groups (group_id, user_id, group_name, cover_picture, about_text)
-            VALUES 
-            /***** Groups Data *****/
-            (8, 'h8j3g6KvbsSXNBjyEysqAawGbJy2', 'Book Club', 'https://touch-base-bucket.s3.us-west-2.amazonaws.com/1694902514738-alexander-wende-IQuzsQv_bO4-unsplash.jpg', 'Every Wednesday'),
-            (9, 'h8j3g6KvbsSXNBjyEysqAawGbJy2', 'RUN', 'https://touch-base-bucket.s3.us-west-2.amazonaws.com/1694902560570-steven-lelham-atSaEOeE8Nk-unsplash%20%281%29.jpg', 'Running squad'),
-            (6, 'h8j3g6KvbsSXNBjyEysqAawGbJy2', 'Small Group', 'https://touch-base-bucket.s3.us-west-2.amazonaws.com/1694902578651-toa-heftiba-l_ExpFwwOEg-unsplash.jpg', 'Church group'),
-            (7, 'h8j3g6KvbsSXNBjyEysqAawGbJy2', 'Birthday Party', 'https://touch-base-bucket.s3.us-west-2.amazonaws.com/1694902595822-nikhita-singhal-k8y9HrzonOQ-unsplash%20%281%29.jpg', '35!!!!'),
-            (1, 'h8j3g6KvbsSXNBjyEysqAawGbJy2', 'Guys Night', 'https://touch-base-bucket.s3.us-west-2.amazonaws.com/1694902625172-joshua-aragon-KDWRyoHUlvo-unsplash.jpg', 'Legends doing legendary things')
         `;
 
         await pool.query(contactsInsertQuery);
