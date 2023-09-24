@@ -88,3 +88,6 @@ FOREIGN KEY (group_id)
 REFERENCES groups(group_id)
 ON DELETE CASCADE
 ON UPDATE CASCADE;
+
+ALTER TABLE group_contacts
+DROP CONSTRAINT group_contacts_contact_id_fkey;
