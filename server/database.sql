@@ -64,3 +64,6 @@ WHERE user_id = '2BmD2Y9XuZYezvShOdeYrAZqQGo2';
 
 UPDATE groups
 SET user_id = 'h8j3g6KvbsSXNBjyEysqAawGbJy2';
+
+-- type integer was giving me issues
+ALTER TABLE contacts ALTER COLUMN zip TYPE varchar(30) USING zip::text;

@@ -45,7 +45,7 @@ export default function ContactDetails() {
   // filter groups that have the contact,
   // only when contact & all groups are available
   const groupsWithContact =
-    contact && allGroups.length > 0
+    contact && allGroups && allGroups.length > 0
       ? allGroups.filter((group) => {
           return (
             group.contacts &&
