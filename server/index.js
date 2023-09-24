@@ -683,8 +683,8 @@ app.post("/demo/logout", async (req, res) => {
         `;
 
         await pool.query(contactsInsertQuery);
-        await pool.query(groupContactsInsertQuery);
         await pool.query(groupsInsertQuery);
+        await pool.query(groupContactsInsertQuery);
 
         // Commit transaction
         await pool.query('COMMIT');
