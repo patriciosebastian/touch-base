@@ -70,7 +70,7 @@ ALTER TABLE contacts ALTER COLUMN zip TYPE varchar(30) USING zip::text;
 
 
 ALTER TABLE group_contacts
-DROP CONSTRAINT group_contacts_contacts_id_fkey;
+DROP CONSTRAINT group_contacts_contact_id_fkey;
 
 ALTER TABLE group_contacts
 ADD CONSTRAINT group_contacts_contacts_id_fkey
@@ -88,6 +88,3 @@ FOREIGN KEY (group_id)
 REFERENCES groups(group_id)
 ON DELETE CASCADE
 ON UPDATE CASCADE;
-
-ALTER TABLE group_contacts
-DROP CONSTRAINT group_contacts_contact_id_fkey;
