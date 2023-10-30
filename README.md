@@ -19,7 +19,6 @@
 
 * [About the Project](#about-the-project)
 * [Built With](#built-with)
-* [Authors](#authors)
 * [Acknowledgements](#acknowledgements)
 
 ## About The Project
