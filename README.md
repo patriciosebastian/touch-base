@@ -1,7 +1,7 @@
 <br/>
 <p align="center">
   <a href="https://github.com/patriciosebastian/touch-base">
-    <img src="https://www.touchbaseapp.co/static/media/logo.d365f6067407dcc2e3fa04a6bdf1e19f.svg" alt="Logo" width="80" height="80">
+    <img src="https://www.touchbaseapp.co/static/media/logo.d365f6067407dcc2e3fa04a6bdf1e19f.svg" alt="Logo" width="100" height="100">
   </a>
 
   <h3 align="center">Touch Base</h3>
@@ -12,8 +12,6 @@
     <br/>
   </p>
 </p>
-
-![Issues](https://img.shields.io/github/issues/patriciosebastian/touch-base) 
 
 ## Table Of Contents
 
