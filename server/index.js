@@ -8,6 +8,8 @@ const multerS3 = require('multer-s3');
 const AWS = require('aws-sdk');
 var admin = require('firebase-admin');
 const sgMail = require('@sendgrid/mail');
+const Papa = require('papaparse');
+const request = require('request');
 
 var serviceAccount = {
     type: process.env.TYPE,
@@ -207,6 +209,85 @@ app.delete("/contacts/:id", verifyToken, async (req, res) => {
         await pool.query("DELETE FROM contacts WHERE contacts_id = $1 AND user_id = $2", [id, uid]);
 
         res.json({ message: "Contact deleted successfully" });
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).json({ error: "Server error" });
+    }
+});
+
+app.post("/import-contacts", verifyToken, upload.single("file"), async (req, res) => {
+    try {
+        const { uid } = req.user;
+        const { file } = req;
+
+        if (!file) {
+            return res.status(400).json({ error: "Missing required field, No file uploaded" });
+        }
+
+        const fileRows = await pool.query("SELECT * FROM contacts WHERE user_id = $1", [uid]);
+        if (fileRows.rows.length > 0) {
+            return res.status(400).json({ error: "Contacts already exist. Please delete existing contacts before importing a new file" });
+        }
+
+        // generate a signed URL for the file
+        const s3FileUrl = s3.getSignedUrl('getObject', {
+            Bucket: 'touch-base-bucket',
+            Key: file.key,
+            Expires: 60
+        });
+
+        // stream the csv from s3 and parse it with papa parse
+        Papa.parse(request(s3FileUrl), {
+            header: true,
+            download: true,
+            dynamicTyping: true,
+            complete: async (results) => {
+                const contacts = results.data.map(contact => [
+                    uid,
+                    contact.first_name,
+                    contact.last_name,
+                    contact.email,
+                    contact.phone,
+                    contact.address1,
+                    contact.address2,
+                    contact.city,
+                    contact.state,
+                    contact.zip,
+                    contact.categories,
+                    contact.photo_url,
+                    contact.photo_filename,
+                    contact.photo_mimetype,
+                    contact.photo_upload_time,
+                    contact.notes
+                ]);
+
+                const client = await pool.connect();
+                // TODO: Optimize Bulk Insert: Instead of inserting each contact in a separate query within a loop, consider using a single bulk insert statement. This can significantly reduce the number of database round-trips and improve performance. PostgreSQL supports inserting multiple rows in a single INSERT statement, or you could use a library like pg-promise to help with bulk inserts.
+                try {
+                    await client.query('BEGIN');
+                    for (const contact of contacts) {
+                        await client.query('INSERT INTO contacts (user_id, first_name, last_name, email, phone, address1, address2, city, state, zip, categories, photo_url, photo_filename, photo_mimetype, photo_upload_time, notes) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16)', contact);
+                    }
+                    await client.query('COMMIT');
+                    res.status(201).json({ message: "Contacts imported successfully" });
+                } catch (err) {
+                    await client.query('ROLLBACK');
+                    throw err;
+                } finally {
+                    client.release();
+                }
+            },
+            error: (error) => {
+                console.error('Error parsing CSV:', error);
+                res.status(500).json({ error: "Error parsing CSV" });
+            }
+        });
+        // TODO: login to AWS/S3
+        // TODO: test with postman?
+        // TODO: File Cleanup: If you're creating temporary files or need to clean up resources after processing (for files that are downloaded rather than streamed), ensure you have a mechanism in place to do so.
+        // TODO: Rate Limiting and Size Checks: Implement rate limiting and file size checks to prevent abuse and ensure that your service can handle the load.
+        // TODO: Security: Ensure that the file being processed is indeed a CSV file and does not contain malicious code. This can be part of your validation step.
+        // TODO: Validate CSV Data: Before inserting the data into your database, validate the CSV data to ensure it meets your application's and database's constraints, such as required fields, data types, and value ranges.
     } catch (err) {
         console.error(err.message);
         res.status(500).json({ error: "Server error" });
