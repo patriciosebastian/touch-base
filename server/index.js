@@ -215,6 +215,7 @@ app.delete("/contacts/:id", verifyToken, async (req, res) => {
     }
 });
 
+// Import contacts
 app.post("/import-contacts", verifyToken, upload.single("file"), async (req, res) => {
     try {
         const { uid } = req.user;
@@ -262,7 +263,7 @@ app.post("/import-contacts", verifyToken, upload.single("file"), async (req, res
                 ]);
 
                 const client = await pool.connect();
-                // TODO: Optimize Bulk Insert: Instead of inserting each contact in a separate query within a loop, consider using a single bulk insert statement. This can significantly reduce the number of database round-trips and improve performance. PostgreSQL supports inserting multiple rows in a single INSERT statement, or you could use a library like pg-promise to help with bulk inserts.
+                // TODO: Optimize Bulk Insert: Instead of inserting each contact in a separate query within a loop, I think I might use a single bulk insert statement. Reduce the number of database round-trips and improve performance. PostgreSQL supports inserting multiple rows in a single INSERT statement, or use a library like pg-promise to help with bulk inserts.
                 try {
                     await client.query('BEGIN');
                     for (const contact of contacts) {
@@ -283,11 +284,11 @@ app.post("/import-contacts", verifyToken, upload.single("file"), async (req, res
             }
         });
         // TODO: login to AWS/S3
-        // TODO: test with postman?
-        // TODO: File Cleanup: If you're creating temporary files or need to clean up resources after processing (for files that are downloaded rather than streamed), ensure you have a mechanism in place to do so.
-        // TODO: Rate Limiting and Size Checks: Implement rate limiting and file size checks to prevent abuse and ensure that your service can handle the load.
-        // TODO: Security: Ensure that the file being processed is indeed a CSV file and does not contain malicious code. This can be part of your validation step.
-        // TODO: Validate CSV Data: Before inserting the data into your database, validate the CSV data to ensure it meets your application's and database's constraints, such as required fields, data types, and value ranges.
+        // TODO: test with postman
+        // TODO: File Cleanup: If you're creating temporary files or need to clean up resources after processing (for files that are downloaded rather than streamed), ensure I have a mechanism in place to do so.
+        // TODO: Rate Limiting and Size Checks: Implement rate limiting and file size checks to prevent abuse and ensure that my service can handle the load.
+        // TODO: Security: Ensure that the file being processed is indeed a CSV file and does not contain malicious code. This can be part of my validation step.
+        // TODO: Validate CSV Data: Before inserting the data into your database, validate the CSV data to ensure it meets my application's and database's constraints, such as required fields, data types, and value ranges.
     } catch (err) {
         console.error(err.message);
         res.status(500).json({ error: "Server error" });
