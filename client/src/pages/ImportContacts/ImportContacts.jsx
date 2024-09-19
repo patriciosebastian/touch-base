@@ -11,16 +11,13 @@ export default function ImportContacts() {
     const file = e.target.files[0];
     console.log(file);
 
-    // what are some papa parse examples?
-    // and how am I using Context?
     // remember to use loading state
     if (file) {
       const formData = new FormData();
       formData.append("file", file);
 
       // will have to use the $backendURL pattern after testing locally
-      // send file to backend using fetch. consider context
-      // example:
+      // implement in context
       fetch('http://localhost:5300/app/import-contacts', {
         method: 'POST',
         body: formData,

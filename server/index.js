@@ -10,6 +10,7 @@ var admin = require('firebase-admin');
 const sgMail = require('@sendgrid/mail');
 const Papa = require('papaparse');
 const request = require('request');
+const format = require('pg-format');
 
 var serviceAccount = {
     type: process.env.TYPE,
@@ -29,6 +30,10 @@ var serviceAccount = {
 
 app.use(cors());
 app.use(express.json()); //req.body
+app.use((req, res, next) => {
+    req.setTimeout(300000);
+    next();
+});
 
 admin.initializeApp({
     credential: admin.credential.cert(serviceAccount)
@@ -229,22 +234,19 @@ app.post("/app/import-contacts", verifyToken, upload.single("file"), async (req,
             return res.status(400).json({ error: "Missing required field, No file uploaded" });
         }
 
-        const fileRows = await pool.query("SELECT * FROM contacts WHERE user_id = $1", [uid]);
-        if (fileRows.rows.length > 0) {
-            return res.status(400).json({ error: "Contacts already exist. Please delete existing contacts before importing a new file" });
-        }
-
-        // generate a signed URL for the file
-        const s3FileUrl = s3.getSignedUrl('getObject', {
+        const s3Stream = s3.getObject({
             Bucket: 'touch-base-bucket',
-            Key: file.key,
-            Expires: 60
+            Key: file.key
+        }).createReadStream();
+
+        s3Stream.on('error', (err) => {
+            console.error('S3 Stream Error:', err);
+            res.status(500).json({ error: "Error reading file" });
         });
 
-        // stream the csv from s3 and parse it with papa parse
-        Papa.parse(request(s3FileUrl), {
+        let parsedData = [];
+        Papa.parse(s3Stream, {
             header: true,
-            download: true,
             dynamicTyping: true,
             complete: async (results) => {
                 if (results.errors.length > 0) {
@@ -252,7 +254,10 @@ app.post("/app/import-contacts", verifyToken, upload.single("file"), async (req,
                     return res.status(500).json({ error: "Error parsing CSV" });
                 }
 
-                const contacts = results.data.map(contact => [
+                parsedData = results.data;
+
+                // map parsed CSV data to insert into the database
+                const contacts = parsedData.map(contact => [
                     uid,
                     contact.first_name,
                     contact.last_name,
@@ -291,17 +296,15 @@ app.post("/app/import-contacts", verifyToken, upload.single("file"), async (req,
                 res.status(500).json({ error: "Error parsing CSV" });
             }
         });
-        // TODO: login to AWS/S3
-        // TODO: test with postman
-        // TODO: File Cleanup: If you're creating temporary files or need to clean up resources after processing (for files that are downloaded rather than streamed), ensure I have a mechanism in place to do so.
-        // TODO: Rate Limiting and Size Checks: Implement rate limiting and file size checks to prevent abuse and ensure that my service can handle the load.
-        // TODO: Security: Ensure that the file being processed is indeed a CSV file and does not contain malicious code. This can be part of my validation step.
-        // TODO: Validate CSV Data: Before inserting the data into your database, validate the CSV data to ensure it meets my application's and database's constraints, such as required fields, data types, and value ranges.
     } catch (err) {
         console.error(err.message);
         res.status(500).json({ error: "Server error" });
     }
 });
+    // TODO: Rate Limiting and Size Checks: Implement rate limiting and file size checks to prevent abuse and ensure that my service can handle the load.
+    // TODO: Security: Ensure that the file being processed is indeed a CSV file and does not contain malicious code. This can be part of my validation step.
+    // TODO: Validate CSV Data: Before inserting the data into your database, validate the CSV data to ensure it meets my application's and database's constraints, such as required fields, data types, and value ranges.
+    // TODO: File Cleanup: If you're creating temporary files or need to clean up resources after processing (for files that are downloaded rather than streamed), ensure I have a mechanism in place to do so.
 
 // ======== GROUPS ROUTES ======== //
 
