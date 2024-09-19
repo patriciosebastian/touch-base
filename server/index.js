@@ -272,17 +272,16 @@ app.post("/app/import-contacts", verifyToken, upload.single("file"), async (req,
                 ]);
 
                 const client = await pool.connect();
-                // TODO: Optimize Bulk Insert: Instead of inserting each contact in a separate query within a loop, I think I might use a single bulk insert statement. Reduce the number of database round-trips and improve performance. PostgreSQL supports inserting multiple rows in a single INSERT statement, or use a library like pg-promise to help with bulk inserts.
                 try {
                     await client.query('BEGIN');
-                    for (const contact of contacts) {
-                        await client.query('INSERT INTO contacts (user_id, first_name, last_name, email, phone, address1, address2, city, state, zip, categories, photo_url, photo_filename, photo_mimetype, photo_upload_time, notes) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16)', contact);
-                    }
+                    const query = format('INSERT INTO contacts (user_id, first_name, last_name, email, phone, address1, address2, city, state, zip, categories, photo_url, photo_filename, photo_mimetype, photo_upload_time, notes) VALUES %L', contacts);
+                    await client.query(query);
                     await client.query('COMMIT');
                     res.status(201).json({ message: "Contacts imported successfully" });
                 } catch (err) {
                     await client.query('ROLLBACK');
-                    throw err;
+                    console.error('Database error:', err);
+                    res.status(500).json({ error: "Database error" });
                 } finally {
                     client.release();
                 }
