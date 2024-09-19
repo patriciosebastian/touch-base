@@ -1,10 +1,11 @@
 import SideNav from "../../components/SideNav/SideNav";
 import useMedia from "../../hooks/useMedia";
-import Button from "../../components/Button/Button";
+import { useAuth } from "../../context/AuthContext";
 import "./ImportContacts.css";
 
 export default function ImportContacts() {
   const isDesktop = useMedia("(min-width: 1200px)");
+  const { idToken } = useAuth();
 
   const handleFileUpload = (e) => {
     const file = e.target.files[0];
@@ -17,11 +18,15 @@ export default function ImportContacts() {
       const formData = new FormData();
       formData.append("file", file);
 
+      // will have to use the $backendURL pattern after testing locally
       // send file to backend using fetch. consider context
       // example:
-      fetch('/import-contacts', {
+      fetch('http://localhost:5300/import-contacts', {
         method: 'POST',
-        body: formData
+        body: formData,
+        headers: {
+          Authorization: `Bearer ${idToken}`
+        },
       })
       .then(response => response.json())
       .then(data => {
@@ -38,11 +43,7 @@ export default function ImportContacts() {
       <h1 className='import-contacts-main-heading'>Import Contacts</h1>
       {isDesktop && <SideNav className='import-contacts-side-nav' />}
 
-      {/* remove this btn */}
-      <Button className='import-contacts-btn'>
-        Import Contacts
-      </Button>
-      <input type="file" accept=".csv" onChange={handleFileUpload} value="Import Contacts" />
+      <input className="" type="file" accept=".csv" onChange={handleFileUpload} />
     </div>
   );
 }
