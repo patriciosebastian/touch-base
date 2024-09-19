@@ -40,7 +40,11 @@ AWS.config.update({
     region: process.env.AWS_REGION
 });
 
-const s3 = new AWS.S3();
+const s3 = new AWS.S3({
+    httpOptions: {
+        timeout: 600000
+    }
+});
 
 const upload = multer({
     storage: multerS3({
@@ -216,7 +220,7 @@ app.delete("/contacts/:id", verifyToken, async (req, res) => {
 });
 
 // Import contacts
-app.post("/import-contacts", verifyToken, upload.single("file"), async (req, res) => {
+app.post("/app/import-contacts", verifyToken, upload.single("file"), async (req, res) => {
     try {
         const { uid } = req.user;
         const { file } = req;
@@ -243,6 +247,11 @@ app.post("/import-contacts", verifyToken, upload.single("file"), async (req, res
             download: true,
             dynamicTyping: true,
             complete: async (results) => {
+                if (results.errors.length > 0) {
+                    console.error('Error parsing CSV:', results.errors);
+                    return res.status(500).json({ error: "Error parsing CSV" });
+                }
+
                 const contacts = results.data.map(contact => [
                     uid,
                     contact.first_name,

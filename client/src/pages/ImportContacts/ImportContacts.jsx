@@ -21,7 +21,7 @@ export default function ImportContacts() {
       // will have to use the $backendURL pattern after testing locally
       // send file to backend using fetch. consider context
       // example:
-      fetch('http://localhost:5300/import-contacts', {
+      fetch('http://localhost:5300/app/import-contacts', {
         method: 'POST',
         body: formData,
         headers: {
