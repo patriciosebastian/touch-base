@@ -1,15 +1,19 @@
 import SideNav from "../../components/SideNav/SideNav";
 import useMedia from "../../hooks/useMedia";
+import LoadingSpinner from "../../components/LoadingSpinner/LoadingSpinner";
 import { useAuth } from "../../context/AuthContext";
+import { useState } from "react";
 import "./ImportContacts.css";
 
 export default function ImportContacts() {
   const isDesktop = useMedia("(min-width: 1200px)");
   const { idToken } = useAuth();
+  const [loading, setLoading] = useState(false);
 
   const handleFileUpload = (e) => {
+    setLoading(true);
+
     const file = e.target.files[0];
-    console.log(file);
 
     // remember to use loading state
     if (file) {
@@ -32,7 +36,11 @@ export default function ImportContacts() {
       .catch((error) => {
         console.error('Error:', error);
       });
+    } else {
+      console.log('No file selected');
+      setLoading(false);
     }
+    setLoading(false);
   };
 
   return (
@@ -40,7 +48,10 @@ export default function ImportContacts() {
       <h1 className='import-contacts-main-heading'>Import Contacts</h1>
       {isDesktop && <SideNav className='import-contacts-side-nav' />}
 
-      <input className="" type="file" accept=".csv" onChange={handleFileUpload} />
+      {loading ? <LoadingSpinner />
+        :
+        <input className="import-contacts-input" type="file" accept=".csv" onChange={handleFileUpload} />
+      }
     </div>
   );
 }
