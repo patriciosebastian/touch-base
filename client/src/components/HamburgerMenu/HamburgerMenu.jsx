@@ -42,6 +42,7 @@ export default function HamburgerMenu() {
         {/* <li><Link to={'/app/favorites'} onClick={() => handleClick()}>Favorites</Link></li> */}
         <li><Link to={'/app/account'} onClick={() => handleClick()}>Account</Link></li>
         <br />
+        <li><Link to={'/app/import-contacts'}>Import Contacts</Link></li>
         <li className="nav-dropdown-logout" onClick={handleLogout}>Log out</li>
       </Dropdown>
     </div>

@@ -8,6 +8,9 @@ const multerS3 = require('multer-s3');
 const AWS = require('aws-sdk');
 var admin = require('firebase-admin');
 const sgMail = require('@sendgrid/mail');
+const Papa = require('papaparse');
+const request = require('request');
+const format = require('pg-format');
 
 var serviceAccount = {
     type: process.env.TYPE,
@@ -27,6 +30,10 @@ var serviceAccount = {
 
 app.use(cors());
 app.use(express.json()); //req.body
+app.use((req, res, next) => {
+    req.setTimeout(300000);
+    next();
+});
 
 admin.initializeApp({
     credential: admin.credential.cert(serviceAccount)
@@ -38,7 +45,11 @@ AWS.config.update({
     region: process.env.AWS_REGION
 });
 
-const s3 = new AWS.S3();
+const s3 = new AWS.S3({
+    httpOptions: {
+        timeout: 600000
+    }
+});
 
 const upload = multer({
     storage: multerS3({
@@ -212,6 +223,117 @@ app.delete("/contacts/:id", verifyToken, async (req, res) => {
         res.status(500).json({ error: "Server error" });
     }
 });
+// TODO: add the ability to bulk delete contacts.
+
+// Import contacts
+app.post("/app/import-contacts", verifyToken, upload.single("file"), async (req, res) => {
+    try {
+        const { uid } = req.user;
+        const { file } = req;
+
+        if (!file) {
+            return res.status(400).json({ error: "Missing required field, No file uploaded" });
+        }
+
+        const s3Stream = s3.getObject({
+            Bucket: 'touch-base-bucket',
+            Key: file.key
+        }).createReadStream();
+
+        s3Stream.on('error', (err) => {
+            console.error('S3 Stream Error:', err);
+            res.status(500).json({ error: "Error reading file" });
+        });
+
+        let parsedData = [];
+        Papa.parse(s3Stream, {
+            header: true,
+            dynamicTyping: true,
+            complete: async (results) => {
+                if (results.errors.length > 0) {
+                    console.error('Error parsing CSV:', results.errors);
+                    return res.status(500).json({ error: "Error parsing CSV" });
+                }
+
+                parsedData = results.data;
+
+                const client = await pool.connect();
+                try {
+                    await client.query('BEGIN');
+
+                    // fetch existing contacts
+                    const existingContacts = await client.query('SELECT email FROM contacts WHERE user_id = $1', [uid]);
+
+                    // extract emails into a new set for quick lookup
+                    const existingEmails = new Set(existingContacts.rows.map(contact => contact.email));
+
+                    // filter out duplicates before inserting
+                    const filteredContacts = parsedData.filter(contact => {
+                        if (existingEmails.has(contact.email)) {
+                            console.log(`Duplicate contact found: ${contact.email}`);
+                            return false;
+                        }
+                        return true;
+                    });
+
+                    // map filtered contacts to correct format
+                    const contactsToInsert = filteredContacts.map(contact => [
+                        uid,
+                        contact.first_name,
+                        contact.last_name,
+                        contact.email,
+                        contact.phone,
+                        contact.address1,
+                        contact.address2,
+                        contact.city,
+                        contact.state,
+                        contact.zip,
+                        contact.categories,
+                        contact.photo_url,
+                        contact.photo_filename,
+                        contact.photo_mimetype,
+                        contact.photo_upload_time,
+                        contact.notes
+                    ]);
+
+                    // don't insert if no new contacts
+                    if (contactsToInsert.length === 0) {
+                        await client.query('ROLLBACK');
+                        return res.status(400).json({ error: "No new contacts to import" });
+                    }
+
+                    // only insert non-duplicate contacts
+                    if (contactsToInsert.length > 0) {
+                        const query = format(
+                            'INSERT INTO contacts (user_id, first_name, last_name, email, phone, address1, address2, city, state, zip, categories, photo_url, photo_filename, photo_mimetype, photo_upload_time, notes) VALUES %L', contactsToInsert
+                        );
+                        await client.query(query);
+                    }
+
+                    await client.query('COMMIT');
+                    res.status(201).json({ message: "Contacts imported successfully" });
+                } catch (err) {
+                    await client.query('ROLLBACK');
+                    console.error('Database error:', err);
+                    res.status(500).json({ error: "Database error" });
+                } finally {
+                    client.release();
+                }
+            },
+            error: (error) => {
+                console.error('Error parsing CSV:', error);
+                res.status(500).json({ error: "Error parsing CSV" });
+            }
+        });
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).json({ error: "Server error" });
+    }
+});
+    // TODO: Rate Limiting and Size Checks: Implement rate limiting and file size checks to prevent abuse and ensure that my service can handle the load.
+    // TODO: Security: Ensure that the file being processed is indeed a CSV file and does not contain malicious code. This can be part of my validation step.
+    // TODO: Validate CSV Data: Before inserting the data into your database, validate the CSV data to ensure it meets my application's and database's constraints, such as required fields, data types, and value ranges.
+    // TODO: File Cleanup: If you're creating temporary files or need to clean up resources after processing (for files that are downloaded rather than streamed), ensure I have a mechanism in place to do so.
 
 // ======== GROUPS ROUTES ======== //
 

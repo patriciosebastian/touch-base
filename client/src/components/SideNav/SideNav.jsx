@@ -1,6 +1,6 @@
 import { useAuth } from '../../context/AuthContext';
 import { Link } from 'react-router-dom';
-import { LuContact, LuLogOut } from 'react-icons/lu';
+import { LuContact, LuImport, LuLogOut } from 'react-icons/lu';
 import { LiaUsersSolid } from 'react-icons/lia';
 import { MdOutlineAccountCircle } from 'react-icons/md';
 import Dropdown from '../Dropdown/Dropdown';
@@ -31,6 +31,7 @@ export default function SideNav(props) {
       {/* <li><Link to={'/app/favorites'}>Favorites</Link></li> */}
       <li><Link to={'/app/account'}><MdOutlineAccountCircle/> Account</Link></li>
       <br />
+      <li><Link to={'/app/import-contacts'}><LuImport /> Import Contacts</Link></li>
       <li className="nav-dropdown-logout" onClick={handleLogout}><LuLogOut/> Log out</li>
     </Dropdown>
   )

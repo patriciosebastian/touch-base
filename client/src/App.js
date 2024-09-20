@@ -18,6 +18,7 @@ import ViewGroups from "./pages/ViewGroups/ViewGroups";
 import CreateGroup from "./pages/CreateGroup/CreateGroup";
 import GroupDetails from "./pages/GroupDetails/GroupDetails";
 import EditGroup from "./pages/EditGroup/EditGroup";
+import ImportContacts from "./pages/ImportContacts/ImportContacts";
 
 function App() {
   return (
@@ -39,6 +40,7 @@ function App() {
                   <Route path="/app/contacts/:id" element={<ContactDetails />} />
                   <Route path="/app/edit-contact/:id" element={<EditContact />} />
                   <Route path="/app/favorites" element={<Favorites />} />
+                  <Route path="/app/import-contacts" element={<ImportContacts />} />
                   <Route path="/app/groups" element={<ViewGroups />} />
                   <Route path="/app/groups/create-group" element={<CreateGroup />} />
                   <Route path="/app/groups/:groupId" element={<GroupDetails />} />
