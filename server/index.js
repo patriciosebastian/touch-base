@@ -223,6 +223,7 @@ app.delete("/contacts/:id", verifyToken, async (req, res) => {
         res.status(500).json({ error: "Server error" });
     }
 });
+// TODO: add the ability to bulk delete contacts.
 
 // Import contacts
 app.post("/app/import-contacts", verifyToken, upload.single("file"), async (req, res) => {
@@ -256,31 +257,59 @@ app.post("/app/import-contacts", verifyToken, upload.single("file"), async (req,
 
                 parsedData = results.data;
 
-                // map parsed CSV data to insert into the database
-                const contacts = parsedData.map(contact => [
-                    uid,
-                    contact.first_name,
-                    contact.last_name,
-                    contact.email,
-                    contact.phone,
-                    contact.address1,
-                    contact.address2,
-                    contact.city,
-                    contact.state,
-                    contact.zip,
-                    contact.categories,
-                    contact.photo_url,
-                    contact.photo_filename,
-                    contact.photo_mimetype,
-                    contact.photo_upload_time,
-                    contact.notes
-                ]);
-
                 const client = await pool.connect();
                 try {
                     await client.query('BEGIN');
-                    const query = format('INSERT INTO contacts (user_id, first_name, last_name, email, phone, address1, address2, city, state, zip, categories, photo_url, photo_filename, photo_mimetype, photo_upload_time, notes) VALUES %L', contacts);
-                    await client.query(query);
+
+                    // fetch existing contacts
+                    const existingContacts = await client.query('SELECT email FROM contacts WHERE user_id = $1', [uid]);
+
+                    // extract emails into a new set for quick lookup
+                    const existingEmails = new Set(existingContacts.rows.map(contact => contact.email));
+
+                    // filter out duplicates before inserting
+                    const filteredContacts = parsedData.filter(contact => {
+                        if (existingEmails.has(contact.email)) {
+                            console.log(`Duplicate contact found: ${contact.email}`);
+                            return false;
+                        }
+                        return true;
+                    });
+
+                    // map filtered contacts to correct format
+                    const contactsToInsert = filteredContacts.map(contact => [
+                        uid,
+                        contact.first_name,
+                        contact.last_name,
+                        contact.email,
+                        contact.phone,
+                        contact.address1,
+                        contact.address2,
+                        contact.city,
+                        contact.state,
+                        contact.zip,
+                        contact.categories,
+                        contact.photo_url,
+                        contact.photo_filename,
+                        contact.photo_mimetype,
+                        contact.photo_upload_time,
+                        contact.notes
+                    ]);
+
+                    // don't insert if no new contacts
+                    if (contactsToInsert.length === 0) {
+                        await client.query('ROLLBACK');
+                        return res.status(400).json({ error: "No new contacts to import" });
+                    }
+
+                    // only insert non-duplicate contacts
+                    if (contactsToInsert.length > 0) {
+                        const query = format(
+                            'INSERT INTO contacts (user_id, first_name, last_name, email, phone, address1, address2, city, state, zip, categories, photo_url, photo_filename, photo_mimetype, photo_upload_time, notes) VALUES %L', contactsToInsert
+                        );
+                        await client.query(query);
+                    }
+
                     await client.query('COMMIT');
                     res.status(201).json({ message: "Contacts imported successfully" });
                 } catch (err) {
