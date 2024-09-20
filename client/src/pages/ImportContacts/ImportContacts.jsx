@@ -8,7 +8,7 @@ import AlertToast from "../../components/AlertToast/AlertToast";
 
 export default function ImportContacts() {
   const isDesktop = useMedia("(min-width: 1200px)");
-  const { idToken } = useAuth();
+  const { idToken, backendURL } = useAuth();
   const [loading, setLoading] = useState(false);
   const [toastAlert, setToastAlert] = useState({
     visible: false,
@@ -25,9 +25,8 @@ export default function ImportContacts() {
       const formData = new FormData();
       formData.append("file", file);
 
-      // will have to use the $backendURL pattern after testing locally
       // implement in context
-      fetch('http://localhost:5300/app/import-contacts', {
+      fetch(`https://${backendURL}/app/import-contacts`, {
         method: 'POST',
         body: formData,
         headers: {
