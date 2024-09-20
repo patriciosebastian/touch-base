@@ -67,6 +67,7 @@ export default function ImportContacts() {
   return (
     <div className='import-contacts-container'>
       <h1 className='import-contacts-main-heading'>Import Contacts</h1>
+      <p className='csv-copy'>Import contacts via CSV. Support for more file formats coming soon.</p>
       {isDesktop && <SideNav className='import-contacts-side-nav' />}
 
       {loading ?
