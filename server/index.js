@@ -736,7 +736,6 @@ app.post("/demo/logout", async (req, res) => {
             (23, '', 'Sara', 'Endicott', 'sara.endicott@gmail.com', '850-487-3062', '3511 Morgan Street', '', 'Tallahassee', 'FL', '32301', '', 'https://touch-base-bucket.s3.us-west-2.amazonaws.com/1694900729539-christina-wocintechchat-com-0Zx1bDv5BNY-unsplash.jpg', '1694900729539-christina-wocintechchat-com-0Zx1bDv5BNY-unsplash.jpg', 'image/jpeg', '2023-09-16 14:45:30.89', 'h8j3g6KvbsSXNBjyEysqAawGbJy2'),
             (25, '', 'Valorie', 'Bressler', 'valorie.schaef@yahoo.com', '402-565-8805', '1569 Commerce Boulevard', '', 'Hoskins', 'NE', '68740', '', 'https://touch-base-bucket.s3.us-west-2.amazonaws.com/1694900787342-karsten-winegeart-bwDnRf-r4u8-unsplash.jpg', '1694900787342-karsten-winegeart-bwDnRf-r4u8-unsplash.jpg', 'image/jpeg', '2023-09-16 14:46:28.244', 'h8j3g6KvbsSXNBjyEysqAawGbJy2'),
             (35, '', 'William', 'McCullough', 'williammccullough8@gmail.com', '209-245-2041', '3352 Maple Avenue', '', 'Plymouth', 'CA', '95669', '', 'https://touch-base-bucket.s3.us-west-2.amazonaws.com/1694901753746-taylor-grote-UiVe5QvOhao-unsplash%20%281%29.jpg', '1694901753746-taylor-grote-UiVe5QvOhao-unsplash (1).jpg', 'image/jpeg', '2023-09-16 15:02:34.924', 'h8j3g6KvbsSXNBjyEysqAawGbJy2'),
-            (34, '', 'Amir', 'Taghi', 'amirtaghi@gmail.com', '707-697-4976', '3944 Davis Avenue', '', 'Oakland', 'CA', '94612', '', 'https://touch-base-bucket.s3.us-west-2.amazonaws.com/1694902004343-willian-souza-p5BoBF0XJUA-unsplash.jpg', '1694902004343-willian-souza-p5BoBF0XJUA-unsplash.jpg', 'image/jpeg', '2023-09-16 15:06:45.435', 'h8j3g6KvbsSXNBjyEysqAawGbJy2'),
             (19, '', 'Darla', 'Thompson', 'dar.lehne4@gmail.com', '706-366-7118', '2485 Davis Street', '', 'Columbus', 'GA', '31901', '', 'https://touch-base-bucket.s3.us-west-2.amazonaws.com/1694900442685-tony-luginsland-ZAo0cKz_IKM-unsplash.jpg', '1694900442685-tony-luginsland-ZAo0cKz_IKM-unsplash.jpg', 'image/jpeg', '2023-09-16 14:40:43.645', 'h8j3g6KvbsSXNBjyEysqAawGbJy2'),
             (28, '', 'Gregory', 'Hodges', 'gleoniehodges@hotmail.com', '812-869-6145', '1213 Stratford Park', '', 'Seymour', 'IL', '47274', '', 'https://touch-base-bucket.s3.us-west-2.amazonaws.com/1694900515527-josh-scorpio-H3Tuh0hwYQk-unsplash.jpg', '1694900515527-josh-scorpio-H3Tuh0hwYQk-unsplash.jpg', 'image/jpeg', '2023-09-16 14:41:56.78', 'h8j3g6KvbsSXNBjyEysqAawGbJy2'),
             (29, '', 'James', 'Harris', 'jkaleharris@yahoo.com', '731-501-4628', '1653 Melville Street', '', 'Memphis', 'TN', '38141', '', 'https://touch-base-bucket.s3.us-west-2.amazonaws.com/1694900558605-ryan-hoffman-v7Jja2ChN6s-unsplash.jpg', '1694900558605-ryan-hoffman-v7Jja2ChN6s-unsplash.jpg', 'image/jpeg', '2023-09-16 14:42:39.761', 'h8j3g6KvbsSXNBjyEysqAawGbJy2'),
@@ -764,7 +763,6 @@ app.post("/demo/logout", async (req, res) => {
             VALUES 
             /***** Group Contacts Data *****/
             (1, 31),
-            (1, 34),
             (1, 35),
             (1, 36),
             (1, 30),
@@ -788,10 +786,8 @@ app.post("/demo/logout", async (req, res) => {
             (7, 14),
             (7, 25),
             (7, 27),
-            (7, 34),
             (7, 33),
             (8, 37),
-            (8, 34),
             (8, 30),
             (8, 26),
             (8, 17),
