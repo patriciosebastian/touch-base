@@ -36,7 +36,18 @@ export default function ImportContacts() {
       })
       .then(response => response.json())
       .then(data => {
-        console.log('Success:', data);
+        if (data.error) {
+          if (data.error === 'No new contacts to import') {
+            setLoading(false);
+            setToastAlert({
+              visible: true,
+              message: 'Only duplicate contacts found. No new contacts to import.',
+              type: 'info'
+            });
+            return
+          }
+        }
+
         setLoading(false);
         setToastAlert({
           visible: true,

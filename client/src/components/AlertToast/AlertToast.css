@@ -19,6 +19,11 @@
     color: var(--error-text);
 }
 
+.toast-alert.info {
+    background-color: var(--info-color);
+    color: var(--info-text);
+}
+
 .close-toast-icon {
     cursor: pointer;
     font-size: 18px;
