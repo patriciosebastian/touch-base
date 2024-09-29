@@ -25,7 +25,6 @@ export default function ImportContacts() {
       const formData = new FormData();
       formData.append("file", file);
 
-      // implement in context
       fetch(`https://${backendURL}/app/import-contacts`, {
         method: 'POST',
         body: formData,
