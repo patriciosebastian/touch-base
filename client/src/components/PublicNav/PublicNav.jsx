@@ -8,8 +8,15 @@ export default function PublicNav() {
   return (
     <>
       <nav className="public-nav">
-        {path === '/' && <ul className="home-ul"><li><Link className="sign-in-link" to={'/sign-in'}>Sign In</Link></li></ul>}
-        {(path === '/sign-in' || path === '/sign-up') && <ul className="auth-ul"><li><Link className="auth-navbar-brand" to={'/'}>TB</Link></li></ul>}
+        <ul className="auth-ul">
+          <li>
+            <Link className="auth-navbar-brand" to={'/'}>TouchBase</Link>
+          </li>
+          {path === '/' && <li>
+              <Link className="sign-in-link" to={'/sign-in'}>Sign In</Link>
+            </li>
+          }
+        </ul>
       </nav>
       <Outlet />
     </>

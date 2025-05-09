@@ -6,32 +6,25 @@
     text-decoration: none;
 }
 
-.home-ul {
-    display: flex;
-    justify-content: right;
-    align-items: center;
-}
-
-.home-ul li {
-    padding-right: 1rem;
-}
-
-.sign-in-link {
-    font-weight: 600;
-}
-
 .auth-ul {
     display: flex;
-    justify-content: left;
+    justify-content: space-between;
     align-items: center;
-    padding-left: 1.7rem;
+    padding-left: 1rem;
+}
+
+.auth-ul li {
+    padding-inline: 1rem;
 }
 
 .auth-navbar-brand {
-    font-size: 2em;
-    font-weight: bold;
+    font-weight: 600;
     background: var(--text-gradient);
     background-clip: text;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
+}
+
+.sign-in-link {
+    font-weight: 600;
 }
