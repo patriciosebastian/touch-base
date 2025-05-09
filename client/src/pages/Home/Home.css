@@ -21,6 +21,7 @@
 
 .hero-container h1 {
     font-size: calc(1.4rem + 0.5vw);
+    line-height: normal;
     display: -webkit-box;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 4;
@@ -33,6 +34,15 @@
     background-clip: text;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
+}
+
+.hero-subheading {
+  font-size: 1.125rem;
+  color: #666666;
+  margin-bottom: 1.5rem;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .cta-container {
@@ -61,13 +71,94 @@
     font-weight: bold;
 }
 
+/* Wave Divider */
+.wave-divider {
+  width: 100%;
+}
+
+.wave {
+  width: 100%;
+  color: #f7f7f7;
+}
+
+/* Features */
+.features-section {
+  background-color: #f7f7f7;
+}
+
+/* Footer CTA */
+.footer-cta {
+  background-image: linear-gradient(to right, #6E6BEE, #5957D1);
+  color: white;
+  padding: 64px 0;
+  text-align: center;
+}
+
+.footer-cta-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 16px;
+}
+
+.footer-cta-heading {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 24px;
+}
+
+.footer-cta-button {
+  background-color: white;
+  color: #6E6BEE;
+  border: none;
+  border-radius: 6px;
+  padding: 12px 24px;
+  font-weight: 500;
+  transition: background-color 0.3s ease;
+  cursor: pointer;
+}
+
+.footer-cta-button:hover {
+  background-color: #f5f5f5;
+}
+
+/* Footer */
+.main-footer {
+  background-color: #f7f7f7;
+  padding: 32px 0;
+}
+
+.footer-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.footer-logo {
+  font-weight: bold;
+  font-size: 1.25rem;
+  margin-bottom: 16px;
+}
+
+.footer-logo {
+  display: flex;
+  gap: 32px;
+}
+
 /***** MEDIA QUERIES *****/
 
 /* Edge case */
 @media (min-width: 302px) and (max-width: 398px) {
     .hero-container h1 {
         width: 77%;
-        margin: 2rem auto 0 auto;
+        margin: 2rem auto 1rem auto;
+    }
+    .hero-subheading {
+        font-size: 1rem;
+        width: 77%;
+        margin: 0 auto 1rem auto;
     }
 }
 
@@ -88,11 +179,24 @@
     .hero-container h1 {
         font-size: calc(1.5rem + 1vw);
     }
+    .footer-cta-heading {
+      font-size: 1.875rem;
+    }
+    .footer-container {
+      flex-direction: row;
+      justify-content: center;
+    }
+    .footer-logo {
+      margin-bottom: 0;
+    }
 }
 
 /* XX Large */
 @media (min-width: 1921px) {
-    .home-container {
+    .home-container,
+    .features-container,
+    .footer-cta-container,
+    .footer-container {
         max-width: 1920px;
     }
 }
