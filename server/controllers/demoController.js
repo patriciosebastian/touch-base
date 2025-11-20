@@ -1,4 +1,4 @@
-const pool = require('../db');
+const pool = require('../utils/db');
 
 exports.logoutAndRestoreDemoData = async (req, res) => {
   try {

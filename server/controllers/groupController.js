@@ -1,4 +1,4 @@
-const pool = require('../db');
+const pool = require('../utils/db');
 const { s3 } = require('../utils/s3');
 
 exports.getAllGroups = async (req, res) => {

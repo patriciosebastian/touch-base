@@ -1,9 +1,10 @@
-const pool = require('../db');
+const pool = require('../utils/db');
+const resend = require('../utils/resend');
 
 exports.sendEmailToContact = async (req, res) => {
   const { subject, message } = req.body;
   const contactId = req.params.contactId;
-  const fromEmail = process.env.SENDGRID_FROM_EMAIL;
+  const fromEmail = process.env.RESEND_FROM_EMAIL;
 
   try {
     const result = await pool.query('SELECT email FROM contacts WHERE contacts_id = $1', [contactId]);
@@ -21,7 +22,7 @@ exports.sendEmailToContact = async (req, res) => {
     };
 
     try {
-      await sgMail.send(msg);
+      await resend.emails.send(msg);
       res.status(200).send('Email sent successfully');
     } catch (err) {
       res.status(500).send('Failed to send email');
@@ -36,7 +37,7 @@ exports.sendEmailToContact = async (req, res) => {
 exports.sendEmailToGroup = async (req, res) => {
   const { subject, message } = req.body;
   const groupId = req.params.groupId;
-  const fromEmail = process.env.SENDGRID_FROM_EMAIL;
+  const fromEmail = process.env.RESEND_FROM_EMAIL;
 
   try {
     const result = await pool.query(
@@ -60,7 +61,7 @@ exports.sendEmailToGroup = async (req, res) => {
     };
 
     try {
-      await sgMail.send(msg);
+      await resend.emails.send(msg);
       res.status(200).send('Email sent successfully');
     } catch (err) {
       res.status(500).send('Failed to send email');
