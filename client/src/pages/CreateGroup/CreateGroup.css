@@ -29,6 +29,7 @@
     border-bottom: 0 !important;
     margin-bottom: 2rem;
     display: block;
+    width: 75%;
 }
 
 .create-group-submit {
@@ -40,9 +41,9 @@
     box-shadow: -1px 2px 6px 0px var(--box-shadow-color);
     color: var(--classic-off-white);
     cursor: pointer;
-    display: block;
+    display: inline;
     font-weight: bold;
-    margin-bottom: .75rem;
+    margin-right: 1rem;
     padding: 6px 12px;
 }
 
@@ -58,6 +59,15 @@
 
 /* Medium */
 @media (min-width: 768px) {
+    .create-group-container h1 {
+        text-align: center;
+        margin-bottom: 4rem;
+    }
+    .create-group-form {
+        width: fit-content;
+        margin: 0 auto;
+        padding-left: 9%;
+    }
     .create-group-submit {
         display: inline-block;
         margin-right: 2rem;

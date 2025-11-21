@@ -2,7 +2,6 @@ const express = require('express');
 const router = express.Router();
 const groupController = require('../controllers/groupController');
 const { verifyToken } = require('../middleware/auth');
-const { upload } = require('../utils/s3');
 
 router.get('/', verifyToken, groupController.getAllGroups);
 router.post('/', verifyToken, groupController.createGroup);

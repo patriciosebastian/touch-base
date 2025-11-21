@@ -16,7 +16,7 @@ app.use((req, res, next) => {
 });
 
 app.use('/contacts', contactRoutes);
-app.use('/groups', groupRoutes);
+app.use('/app/groups', groupRoutes);
 app.use('/app', emailRoutes);
 app.use('/demo', demoRoutes);
 
