@@ -2,13 +2,13 @@
 
 :root {
   /* colors */
-  --primary-color: #6E6BEE;
-  --primary-dark: #5957D1;
-  --secondary-color: #FFDAB9;
+  --primary-color: #6461E8;
+  --primary-dark: #534FC8;
+  --secondary-color: #FFC89A;
   --alt-secondary-color: #ffbd59;
   --classic-off-white: #FDFDFD;
-  --dark-neutral: #333333;
-  --light-neutral: #E0E0E0;
+  --dark-neutral: #1F1F1F;
+  --light-neutral: #CACACA;
   --success-color: #8EB89F;
   --success-text: #2F4A40;
   --error-color: #D84A5F;
@@ -17,10 +17,10 @@
   --info-color: #6FAED9;
   --info-text: #1F3A56;
   --red-color: #C82333;
-  --box-shadow-color: #bfbfbfdb;
+  --box-shadow-color: #adadade8;
   --google-blue: #4285F4;
   --google-alt-blue: #1669F2;
-  --light-grey: #f5f5f5;
+  --light-grey: #F0F0F0;
   --text-gradient: -webkit-linear-gradient(left, var(--secondary-color), var(--primary-color));
   --overlay-gradient: linear-gradient(rgb(117 116 116 / 40%), rgba(60,60,60,0.7));
 
