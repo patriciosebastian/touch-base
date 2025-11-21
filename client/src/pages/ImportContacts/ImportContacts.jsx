@@ -35,21 +35,19 @@ export default function ImportContacts() {
       .then(response => response.json())
       .then(data => {
         if (data.error) {
-          if (data.error === 'No new contacts to import') {
-            setLoading(false);
-            setToastAlert({
-              visible: true,
-              message: 'Only duplicate contacts found. No new contacts to import.',
-              type: 'info'
-            });
-            return
-          }
+          setLoading(false);
+          setToastAlert({
+            visible: true,
+            message: data.error,
+            type: 'error'
+          });
+          return;
         }
 
         setLoading(false);
         setToastAlert({
           visible: true,
-          message: 'Contacts imported successfully!',
+          message: data.message || 'Contacts imported successfully!',
           type: 'success'
         });
       })
@@ -73,16 +71,52 @@ export default function ImportContacts() {
     }
   };
 
+  const handleDownloadTemplate = () => {
+    const csvContent = "first_name,last_name,email,phone,address1,address2,city,state,zip,categories,notes\nJohn,Doe,john.doe@example.com,555-1234,123 Main St,Apt 4B,Springfield,IL,62701,Family,Example contact";
+    const blob = new Blob([csvContent], { type: 'text/csv' });
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'contacts_template.csv';
+    a.click();
+    window.URL.revokeObjectURL(url);
+  };
+
   return (
     <div className='import-contacts-container'>
       <h1 className='import-contacts-main-heading'>Import Contacts</h1>
-      <p className='csv-copy'>Import contacts by choosing your CSV file.</p>
+      <p className='csv-copy'>Import contacts by uploading a CSV file with your contacts information.</p>
       {isDesktop && <SideNav className='import-contacts-side-nav' />}
+
+      <div className='csv-instructions'>
+        <h2 className='csv-instructions-heading'>CSV Requirements</h2>
+        <p className='csv-instructions-text'>Your CSV file must include the following column names (header row):</p>
+        <ul className='csv-columns-list'>
+          <li><strong>first_name</strong> (required)</li>
+          <li>last_name</li>
+          <li>email</li>
+          <li>phone</li>
+          <li>address1</li>
+          <li>address2</li>
+          <li>city</li>
+          <li>state</li>
+          <li>zip</li>
+          <li>categories</li>
+          <li>notes</li>
+        </ul>
+        <p className='csv-instructions-note'>Note: Column names must match exactly. Only <strong>first_name</strong> is required, all other fields are optional.</p>
+        <button className='download-template-btn' onClick={handleDownloadTemplate}>
+          Download Sample CSV Template
+        </button>
+      </div>
 
       {loading ?
         <LoadingSpinner />
         :
-        <input className="import-contacts-input" type="file" accept=".csv" onChange={handleFileUpload} />
+        <div className='csv-upload-section'>
+          <h3 className='csv-upload-heading'>Upload Your CSV File</h3>
+          <input className="import-contacts-input" type="file" accept=".csv" onChange={handleFileUpload} />
+        </div>
       }
       {toastAlert.visible && <AlertToast type={toastAlert.type} message={toastAlert.message} onDismiss={() => setToastAlert(prev => ({ ...prev, visible: false }))} />}
     </div>

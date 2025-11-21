@@ -63,109 +63,6 @@ exports.createContact = async (req, res) => {
   }
 };
 
-exports.importContacts = async (req, res) => {
-  try {
-    const { uid } = req.user;
-    const { file } = req;
-
-    if (!file) {
-        return res.status(400).json({ error: "Missing required field, No file uploaded" });
-    }
-
-    const s3Stream = s3.getObject({
-        Bucket: 'touch-base-bucket',
-        Key: file.key
-    }).createReadStream();
-
-    s3Stream.on('error', (err) => {
-        console.error('S3 Stream Error:', err);
-        res.status(500).json({ error: "Error reading file" });
-    });
-
-    let parsedData = [];
-
-    Papa.parse(s3Stream, {
-      header: true,
-      dynamicTyping: true,
-      complete: async (results) => {
-        if (results.errors.length > 0) {
-          console.error('Error parsing CSV:', results.errors);
-          return res.status(500).json({ error: "Error parsing CSV" });
-        }
-
-        parsedData = results.data;
-
-        const client = await pool.connect();
-
-        try {
-          await client.query('BEGIN');
-
-          const existingContacts = await client.query('SELECT email FROM contacts WHERE user_id = $1', [uid]);
-
-          const existingEmails = new Set(existingContacts.rows.map(contact => contact.email));
-
-          const filteredContacts = parsedData.filter(contact => {
-            if (existingEmails.has(contact.email)) {
-              console.log(`Duplicate contact found: ${contact.email}`);
-              return false;
-            }
-            return true;
-          });
-
-          const contactsToInsert = filteredContacts.map(contact => [
-            uid,
-            contact.first_name,
-            contact.last_name,
-            contact.email,
-            contact.phone,
-            contact.address1,
-            contact.address2,
-            contact.city,
-            contact.state,
-            contact.zip,
-            contact.categories,
-            contact.photo_url,
-            contact.photo_filename,
-            contact.photo_mimetype,
-            contact.photo_upload_time,
-            contact.notes
-          ]);
-
-          if (contactsToInsert.length === 0) {
-            await client.query('ROLLBACK');
-            return res.status(400).json({ error: "No new contacts to import" });
-          }
-
-          if (contactsToInsert.length > 0) {
-            const query = format(
-              'INSERT INTO contacts (user_id, first_name, last_name, email, phone, address1, address2, city, state, zip, categories, photo_url, photo_filename, photo_mimetype, photo_upload_time, notes) VALUES %L', contactsToInsert
-            );
-
-            await client.query(query);
-          }
-
-          await client.query('COMMIT');
-
-          res.status(201).json({ message: "Contacts imported successfully" });
-        } catch (err) {
-          await client.query('ROLLBACK');
-          console.error('Database error:', err);
-          res.status(500).json({ error: "Database error" });
-        } finally {
-          client.release();
-        }
-      },
-      error: (error) => {
-        console.error('Error parsing CSV:', error);
-        res.status(500).json({ error: "Error parsing CSV" });
-      }
-    });
-  } catch (err) {
-    console.error(err.message);
-    res.status(500).json({ error: "Server error" });
-  }
-};
-
 exports.updateContact = async (req, res) => {
   try {
     const { id } = req.params;
@@ -220,6 +117,164 @@ exports.deleteContact = async (req, res) => {
     await pool.query("DELETE FROM contacts WHERE contacts_id = $1 AND user_id = $2", [id, uid]);
 
     res.json({ message: "Contact deleted successfully" });
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).json({ error: "Server error" });
+  }
+};
+
+exports.importContacts = async (req, res) => {
+  try {
+    const { uid } = req.user;
+    const { file } = req;
+
+    if (!file) {
+      return res.status(400).json({ error: "Missing required field, No file uploaded" });
+    }
+
+    const s3Stream = s3.getObject({
+      Bucket: 'touch-base-bucket',
+      Key: file.key
+    }).createReadStream();
+
+    let responseSent = false;
+
+    s3Stream.on('error', (err) => {
+      console.error('S3 Stream Error:', err);
+      if (!responseSent) {
+        responseSent = true;
+        res.status(500).json({ error: "Error reading file" });
+      }
+    });
+
+    let parsedData = [];
+
+    Papa.parse(s3Stream, {
+      header: true,
+      dynamicTyping: true,
+      complete: async (results) => {
+        if (responseSent) return;
+        if (results.errors.length > 0) {
+          console.error('Error parsing CSV:', results.errors);
+          return res.status(400).json({ error: "Error parsing CSV file. Please ensure it's properly formatted." });
+        }
+
+        parsedData = results.data.filter(row => {
+          return Object.values(row).some(value => value !== null && value !== undefined && value !== '');
+        });
+
+        if (parsedData.length === 0) {
+          return res.status(400).json({ error: "CSV file is empty or contains no valid data" });
+        }
+
+        const requiredColumns = ['first_name'];
+        const csvColumns = Object.keys(parsedData[0]);
+
+        const missingRequired = requiredColumns.filter(col => !csvColumns.includes(col));
+
+        if (missingRequired.length > 0) {
+          return res.status(400).json({
+            error: `Missing required column: ${missingRequired.join(', ')}. Your CSV must include a 'first_name' column.`
+          });
+        }
+
+        const invalidContacts = [];
+        const validContacts = parsedData.filter((contact, index) => {
+          if (!contact.first_name || contact.first_name.trim() === '') {
+            invalidContacts.push(index + 2); // +2 because of 0-index and header row
+            return false;
+          }
+          return true;
+        });
+
+        if (validContacts.length === 0) {
+          return res.status(400).json({
+            error: "No valid contacts found. All contacts must have a 'first_name' value."
+          });
+        }
+
+        const client = await pool.connect();
+
+        try {
+          await client.query('BEGIN');
+
+          const existingContacts = await client.query('SELECT email FROM contacts WHERE user_id = $1', [uid]);
+
+          const existingEmails = new Set(existingContacts.rows.map(contact => contact.email).filter(email => email));
+
+          let duplicateCount = 0;
+          const filteredContacts = validContacts.filter(contact => {
+            if (contact.email && existingEmails.has(contact.email)) {
+              console.log(`Duplicate contact found: ${contact.email}`);
+              duplicateCount++;
+              return false;
+            }
+            return true;
+          });
+
+          const contactsToInsert = filteredContacts.map(contact => [
+            uid,
+            contact.first_name,
+            contact.last_name || null,
+            contact.email || null,
+            contact.phone || null,
+            contact.address1 || null,
+            contact.address2 || null,
+            contact.city || null,
+            contact.state || null,
+            contact.zip || null,
+            contact.categories || null,
+            contact.notes || null
+          ]);
+
+          if (contactsToInsert.length === 0) {
+            await client.query('ROLLBACK');
+            const message = duplicateCount > 0
+              ? `All ${duplicateCount} contact(s) already exist in your account. No new contacts to import.`
+              : "No new contacts to import";
+            return res.status(400).json({ error: message });
+          }
+
+          const query = format(
+            'INSERT INTO contacts (user_id, first_name, last_name, email, phone, address1, address2, city, state, zip, categories, notes) VALUES %L', contactsToInsert
+          );
+
+          await client.query(query);
+
+          await client.query('COMMIT');
+
+          let message = `Successfully imported ${contactsToInsert.length} contact(s)`;
+
+          if (duplicateCount > 0) {
+            message += `. ${duplicateCount} duplicate(s) skipped`;
+          }
+
+          if (invalidContacts.length > 0) {
+            message += `. ${invalidContacts.length} invalid row(s) skipped (missing first_name)`;
+          }
+
+          res.status(201).json({
+            message,
+            imported: contactsToInsert.length,
+            duplicates: duplicateCount,
+            invalid: invalidContacts.length
+          });
+        } catch (err) {
+          await client.query('ROLLBACK');
+          console.error('Database error:', err);
+          res.status(500).json({ error: "Database error occurred while importing contacts" });
+        } finally {
+          client.release();
+        }
+      },
+      error: (error) => {
+        console.error('Error parsing CSV:', error);
+        if (!responseSent) {
+          responseSent = true;
+          res.status(400).json({ error: "Error parsing CSV file. Please ensure it's a valid CSV format." });
+        }
+      }
+    });
   } catch (err) {
     console.error(err.message);
     res.status(500).json({ error: "Server error" });

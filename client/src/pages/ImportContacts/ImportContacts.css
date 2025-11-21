@@ -37,6 +37,76 @@
   width: 58%;
 }
 
+.csv-instructions {
+  background-color: var(--light-grey);
+  border: 1px solid var(--light-neutral);
+  border-radius: 3px;
+  padding: 1.5rem;
+  margin: 2rem 0;
+}
+
+.csv-instructions-heading {
+  margin-top: 0;
+  margin-bottom: 1rem;
+  font-size: 1.3rem;
+  color: var(--dark-neutral);
+}
+
+.csv-instructions-text {
+  margin-bottom: 0.75rem;
+  color: var(--dark-neutral);
+}
+
+.csv-columns-list {
+  margin: 1rem 0 1rem 1.5rem;
+  line-height: 1.8;
+  color: var(--dark-neutral);
+}
+
+.csv-columns-list li {
+  margin-bottom: 0.3rem;
+}
+
+.csv-instructions-note {
+  margin: 1rem 0;
+  padding: 0.75rem;
+  background-color: var(--light-blue);
+  border-left: 4px solid var(--medium-blue);
+  border-radius: 4px;
+  font-size: 0.95rem;
+}
+
+.download-template-btn {
+  background-color: var(--medium-blue);
+  color: var(--primary-color);
+  border: none;
+  border-radius: 6px;
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.download-template-btn:hover {
+  background-color: var(--dark-blue);
+}
+
+.csv-upload-section {
+  margin-top: 2rem;
+  padding: 1.5rem;
+  border: 2px dashed var(--light-neutral);
+  border-radius: 8px;
+  text-align: center;
+}
+
+.csv-upload-heading {
+  margin-top: 0;
+  margin-bottom: 1rem;
+  font-size: 1.2rem;
+  color: var(--dark-neutral);
+}
+
 .import-contacts-input {
   cursor: pointer;
   margin-top: 1rem;
