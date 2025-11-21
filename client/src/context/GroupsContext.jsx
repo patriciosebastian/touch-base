@@ -7,16 +7,15 @@ export const GroupsProvider = ({ children }) => {
   const [groups, setGroups] = useState([]);
   const { idToken, backendURL } = useAuth();
 
-  // Create a group
   const addGroup = async (group_name, about_text, cover_picture) => {
     const formData = new FormData();
     formData.append('group_name', group_name);
     formData.append('about_text', about_text);
     if (cover_picture) {
-        formData.append('cover_picture', cover_picture);
+      formData.append('cover_picture', cover_picture);
     }
 
-    const response = await fetch(`https://${backendURL}/app/groups`, {
+    const response = await fetch(`${backendURL}/app/groups`, {
       method: "POST",
       headers: {
         Authorization: `Bearer ${idToken}`
@@ -34,57 +33,53 @@ export const GroupsProvider = ({ children }) => {
     console.log('Group created successfully');
   };
 
-  // Add contact to a group
   const addContactToGroup = async (group_id, contacts_id) => {
-    const response = await fetch(`https://${backendURL}/app/groups/${group_id}/contacts/${contacts_id}`, {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${idToken}`
-        }
+    const response = await fetch(`${backendURL}/app/groups/${group_id}/contacts/${contacts_id}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${idToken}`
+      }
     });
 
     if (!response.ok) {
-        throw new Error('Failed to add contact to group');
+      throw new Error('Failed to add contact to group');
     }
 
     const updatedGroup = await response.json();
 
     setGroups(prevGroups => {
-        return prevGroups.map(group => group.group_id === group_id ? updatedGroup : group);
+      return prevGroups.map(group => group.group_id === group_id ? updatedGroup : group);
     });
 
     console.log('Contact added to group successfully');
     return updatedGroup;
   };
 
-  // Get all groups
   const fetchGroups = useCallback(async () => {
-    const response = await fetch(`https://${backendURL}/app/groups`, {
-        headers: {
-            Authorization: `Bearer ${idToken}`
-        }
+    const response = await fetch(`${backendURL}/app/groups`, {
+      headers: {
+        Authorization: `Bearer ${idToken}`
+      }
     });
 
     if (!response.ok) {
-        console.error('Error:', response);
-        return;
+      console.error('Error:', response);
+      return;
     }
 
     const fetchedGroups = await response.json();
     setGroups(fetchedGroups);
 
     console.log('Request successful');
-    // return groups;
     return fetchedGroups;
   }, [idToken, backendURL]);
 
-  // Get a group
   const getGroup = async (group_id) => {
-    const response = await fetch(`https://${backendURL}/app/groups/${group_id}`, {
+    const response = await fetch(`${backendURL}/app/groups/${group_id}`, {
       method: "GET",
       headers: {
-          Authorization: `Bearer ${idToken}`
+        Authorization: `Bearer ${idToken}`
       }
     });
   
@@ -98,16 +93,16 @@ export const GroupsProvider = ({ children }) => {
     return group;
   };
 
-  // Update a group
   const updateGroup = async (group_id, group_name, about_text, cover_picture) => {
     const formData = new FormData();
     formData.append('group_name', group_name);
     formData.append('about_text', about_text);
+
     if (cover_picture) {
-        formData.append('cover_picture', cover_picture);
+      formData.append('cover_picture', cover_picture);
     }
 
-    const response = await fetch(`https://${backendURL}/app/groups/${group_id}`, {
+    const response = await fetch(`${backendURL}/app/groups/${group_id}`, {
       method: "PUT",
       headers: {
         Authorization: `Bearer ${idToken}`
@@ -131,12 +126,11 @@ export const GroupsProvider = ({ children }) => {
     // Confirm to user that update was successful.
   };
 
-  // Delete a group
   const deleteGroup = async (group_id) => {
-    const response = await fetch(`https://${backendURL}/app/groups/${group_id}`, {
+    const response = await fetch(`${backendURL}/app/groups/${group_id}`, {
       method: "DELETE",
       headers: {
-          Authorization: `Bearer ${idToken}`
+        Authorization: `Bearer ${idToken}`
       }
     });
   
@@ -150,33 +144,31 @@ export const GroupsProvider = ({ children }) => {
     return groups;
   };
 
-  // Delete a contact from a group
   const deleteContactFromGroup = async (group_id, contacts_id) => {
-    const response = await fetch(`https://${backendURL}/app/groups/${group_id}/contacts/${contacts_id}`, {
-        method: "DELETE",
-        headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${idToken}`
-        }
+    const response = await fetch(`${backendURL}/app/groups/${group_id}/contacts/${contacts_id}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${idToken}`
+      }
     });
 
     if (!response.ok) {
-        throw new Error('Failed to delete contact from group');
+      throw new Error('Failed to delete contact from group');
     }
 
     const updatedGroup = await response.json();
 
     setGroups(prevGroups => {
-        return prevGroups.map(group => group.group_id === group_id ? updatedGroup : group);
+      return prevGroups.map(group => group.group_id === group_id ? updatedGroup : group);
     });
 
     console.log('Contact deleted from group successfully');
     return updatedGroup;
   };
 
-  // Email group
   const emailGroup = async (group_id, subject, message) => {
-    const response = await fetch(`https://${backendURL}/app/groups/${group_id}/email`, {
+    const response = await fetch(`${backendURL}/app/groups/${group_id}/email`, {
       method: "POST",
       headers: {
         'Content-Type': 'application/json',

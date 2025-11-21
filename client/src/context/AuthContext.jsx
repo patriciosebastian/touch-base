@@ -8,6 +8,7 @@ import {
   signInWithPopup,
   GoogleAuthProvider,
 } from "firebase/auth";
+import { API_BASE_URL } from "../config/api";
 
 export const AuthContext = createContext();
 
@@ -19,7 +20,7 @@ export function AuthProvider({ children }) {
   const [demoPassword, setDemoPassword] = useState('');
   const [isDemo, setIsDemo] = useState(false);
   const [isRestoring, setIsRestoring] = useState(false);
-  const backendURL = process.env.REACT_APP_BACKEND_URL;
+  const backendURL = API_BASE_URL;
 
   const demoLogin = () => {
     setIsDemo(true);
@@ -42,7 +43,7 @@ export function AuthProvider({ children }) {
   const demoLogout = async () => {
     try {
       setIsRestoring(true);
-      const response = await fetch(`https://${backendURL}/demo/logout`, {
+      const response = await fetch(`${backendURL}/demo/logout`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -71,7 +72,6 @@ export function AuthProvider({ children }) {
       .then((result) => {
         // const credential = GoogleAuthProvider.credentialFromResult(result);
         // const token = credential.accessToken;
-        // The signed-in user info.
         const user = result.user;
         console.log(user); // remove later
         if (onSuccess) onSuccess();
@@ -89,12 +89,10 @@ export function AuthProvider({ children }) {
       });
   };
 
-  // runs on component mount, and every time auth state changes
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       setCurrentUser(currentUser);
       if (currentUser) {
-        //force refresh token if its expired
         currentUser.getIdToken(true).then((idToken) => {
           setIdToken(idToken);
           setAuthLoading(false);

@@ -28,9 +28,8 @@ export const ContactsProvider = ({ children }) => {
     return () => unsubscribe();
   }, [auth]);
 
-  // Get all user contacts
   const fetchContacts = useCallback(async () => {
-    const response = await fetch(`https://${backendURL}/contacts`, {
+    const response = await fetch(`${backendURL}/contacts`, {
       headers: {
         Authorization: `Bearer ${idToken}`
       }
@@ -47,26 +46,24 @@ export const ContactsProvider = ({ children }) => {
     return fetchedContacts;
   }, [idToken, backendURL]);
 
-  // Get a contact
   const fetchAContact = async (id) => {
-     const response = await fetch(`https://${backendURL}/contacts/${id}`, {
-      headers: {
-        Authorization: `Bearer ${idToken}`
-      }
-     });
-
-     if (!response.ok) {
-      throw new Error("Failed to get contact");
+    const response = await fetch(`${backendURL}/contacts/${id}`, {
+     headers: {
+       Authorization: `Bearer ${idToken}`
      }
+    });
 
-     const fetchedContact = await response.json();
-     console.log('Fetched contact successfully');
-     return fetchedContact;
+    if (!response.ok) {
+     throw new Error("Failed to get contact");
+    }
+
+    const fetchedContact = await response.json();
+    console.log('Fetched contact successfully');
+    return fetchedContact;
   };
 
-  // Create contact
   const addContact = async (newContact) => {
-    const response = await fetch(`https://${backendURL}/contacts`, {
+    const response = await fetch(`${backendURL}/contacts`, {
       method: "POST",
       body: newContact,
       headers: {
@@ -83,10 +80,8 @@ export const ContactsProvider = ({ children }) => {
     console.log('Contact created successfully');
   };
 
-  // Update contact
   const updateContact = async (contacts_id, updatedContact) => {
-    console.log(updatedContact);
-    const response = await fetch(`https://${backendURL}/contacts/${contacts_id}`, {
+    const response = await fetch(`${backendURL}/contacts/${contacts_id}`, {
       method: "PUT",
       body: updatedContact,
       headers: {
@@ -113,29 +108,28 @@ export const ContactsProvider = ({ children }) => {
     }
   };
 
-  // Delete contact
   const deleteContact = async (id) => {
-    const response = await fetch(`https://${backendURL}/contacts/${id}`, {
-        method: "DELETE",
-        headers: {
-          Authorization: `Bearer ${idToken}`
-        },
+    const response = await fetch(`${backendURL}/contacts/${id}`, {
+      method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${idToken}`
+      },
     });
 
     if (!response.ok) {
-        throw new Error('Failed to delete contact');
+      throw new Error('Failed to delete contact');
     }
+
     if (response.ok) {
-        setContacts((prevContacts) => {
-            return prevContacts.filter((contact) => contact.contacts_id !== id);
-        });
-        console.log("Contact deleted successfully");
+      setContacts((prevContacts) => {
+        return prevContacts.filter((contact) => contact.contacts_id !== id);
+      });
+      console.log("Contact deleted successfully");
     }
   };
 
-  // Email indiviual contact
   const emailContact = async (contacts_id, subject, message) => {
-    const response = await fetch(`https://${backendURL}/app/contacts/${contacts_id}/email`, {
+    const response = await fetch(`${backendURL}/app/contacts/${contacts_id}/email`, {
       method: "POST",
       headers: {
         'Content-Type': 'application/json',
