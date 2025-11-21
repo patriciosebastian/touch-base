@@ -1,4 +1,3 @@
-// sort contacts
 export const sortContacts = (contacts) => {
   return contacts.sort((a, b) => {
     if (a.first_name.toLowerCase() < b.first_name.toLowerCase()) return -1;
@@ -9,7 +8,6 @@ export const sortContacts = (contacts) => {
   });
 };
 
-// format phone number
 export const formatPhoneNumber = (phoneNumber) => {
   const cleaned = ("" + phoneNumber).replace(/\D/g, "");
   const match = cleaned.match(/^(\d{3})(\d{3})(\d{4})$/);
