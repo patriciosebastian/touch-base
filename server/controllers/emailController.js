@@ -4,10 +4,11 @@ const resend = require('../utils/resend');
 exports.sendEmailToContact = async (req, res) => {
   const { subject, message } = req.body;
   const contactId = req.params.contactId;
+  const { uid } = req.user;
   const fromEmail = process.env.RESEND_FROM_EMAIL;
 
   try {
-    const result = await pool.query('SELECT email FROM contacts WHERE contacts_id = $1', [contactId]);
+    const result = await pool.query('SELECT email FROM contacts WHERE contacts_id = $1 AND user_id = $2', [contactId, uid]);
 
     if (result.rows.length === 0) {
       return res.status(404).send('Contact not found');
@@ -37,6 +38,7 @@ exports.sendEmailToContact = async (req, res) => {
 exports.sendEmailToGroup = async (req, res) => {
   const { subject, message } = req.body;
   const groupId = req.params.groupId;
+  const { uid } = req.user;
   const fromEmail = process.env.RESEND_FROM_EMAIL;
 
   try {
@@ -44,8 +46,9 @@ exports.sendEmailToGroup = async (req, res) => {
       `SELECT contacts.email
       FROM contacts
       JOIN group_contacts ON contacts.contacts_id = group_contacts.contacts_id
-      WHERE group_contacts.group_id = $1`,
-      [groupId]
+      JOIN groups ON groups.group_id = group_contacts.group_id
+      WHERE group_contacts.group_id = $1 AND groups.user_id = $2`,
+      [groupId, uid]
     );
 
     if (result.rows.length === 0) {
