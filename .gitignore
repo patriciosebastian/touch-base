@@ -5,3 +5,6 @@ serviceAccountKey.json
 tb_backup.sql
 
 .vscode/
+
+# Private notes repo, linked in locally (see patriciosebastian/notes)
+.notes
